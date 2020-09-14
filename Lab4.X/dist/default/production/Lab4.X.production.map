@@ -1,0 +1,70 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Tue Aug 18 14:18:01 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                 RES_VECT       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                INTERRUPT       code   0x000004    program   0x000022
+                MAIN_PROG       code   0x000015    program   0x0000e4
+.config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
+.config_2008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002008    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000086      
+                            0x002007    0x002008      
+            136 out of 8455 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+            ALARMA_RUTINA   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    CONF1   0x00007e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                   CONTAR   0x000010    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                CONTAR_1S   0x00004b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+               DECREMENTO   0x000064    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                DELAY_MED   0x00007c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+              DELAY_SMALL   0x000082    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+         INCREMENTAR_TMR0   0x000050    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+               INCREMENTO   0x000061    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                     LOAD   0x00000b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                     LOOP   0x000034    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+         SONAR_ALARMA_SI0   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    START   0x000015    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    TABLA   0x000067    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+          _MAIN_PROG_0070   0x000085    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                     LOAD   0x00000b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                   CONTAR   0x000010    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    START   0x000015    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                     LOOP   0x000034    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                CONTAR_1S   0x00004b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+         INCREMENTAR_TMR0   0x000050    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+         SONAR_ALARMA_SI0   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+            ALARMA_RUTINA   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+               INCREMENTO   0x000061    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+               DECREMENTO   0x000064    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    TABLA   0x000067    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                DELAY_MED   0x00007c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+                    CONF1   0x00007e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+              DELAY_SMALL   0x000082    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+          _MAIN_PROG_0070   0x000085    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramasASM\Lab4.X\main.asm
+
+

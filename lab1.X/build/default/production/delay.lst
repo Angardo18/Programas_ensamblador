@@ -1,0 +1,912 @@
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;*******************************************************************************
+                      00002 ;                                                                              *
+                      00003 ;    Microchip licenses this software to you solely for use with Microchip     *
+                      00004 ;    products. The software is owned by Microchip and/or its licensors, and is *
+                      00005 ;    protected under applicable copyright laws.  All rights reserved.          *
+                      00006 ;                                                                              *
+                      00007 ;    This software and any accompanying information is for suggestion only.    *
+                      00008 ;    It shall not be deemed to modify Microchip?s standard warranty for its    *
+                      00009 ;    products.  It is your responsibility to ensure that this software meets   *
+                      00010 ;    your requirements.                                                        *
+                      00011 ;                                                                              *
+                      00012 ;    SOFTWARE IS PROVIDED "AS IS".  MICROCHIP AND ITS LICENSORS EXPRESSLY      *
+                      00013 ;    DISCLAIM ANY WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING  *
+                      00014 ;    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS    *
+                      00015 ;    FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL          *
+                      00016 ;    MICROCHIP OR ITS LICENSORS BE LIABLE FOR ANY INCIDENTAL, SPECIAL,         *
+                      00017 ;    INDIRECT OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, HARM TO     *
+                      00018 ;    YOUR EQUIPMENT, COST OF PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY OR    *
+                      00019 ;    SERVICES, ANY CLAIMS BY THIRD PARTIES (INCLUDING BUT NOT LIMITED TO ANY   *
+                      00020 ;    DEFENSE THEREOF), ANY CLAIMS FOR INDEMNITY OR CONTRIBUTION, OR OTHER      *
+                      00021 ;    SIMILAR COSTS.                                                            *
+                      00022 ;                                                                              *
+                      00023 ;    To the fullest extend allowed by law, Microchip and its licensors         *
+                      00024 ;    liability shall not exceed the amount of fee, if any, that you have paid  *
+                      00025 ;    directly to Microchip to use this software.                               *
+                      00026 ;                                                                              *
+                      00027 ;    MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF    *
+                      00028 ;    THESE TERMS.                                                              *
+                      00029 ;                                                                              *
+                      00030 ;*******************************************************************************
+                      00031 ;                                                                              *
+                      00032 ;    Filename:  lab -> principal.asm                                                           *
+                      00033 ;    Date:     21/07/2020                                                                *
+                      00034 ;    File Version:   V.1                                                      *
+                      00035 ;    Author:   Angel Edgardo Orellana                                                       *
+                      00036 ;    Company:   UVG                                          *
+                      00037 ;    Description: INCREMENTE EL PUERTO A CADA CIERTO RETARDO DE TIEMPO                                  
+                                                      *
+                      00038 ;                                                                              *
+                      00039 ;*******************************************************************************
+                      00040 ;                                                                              *
+                      00041 ;    Notes: In the MPLAB X Help, refer to the MPASM Assembler documentation    *
+                      00042 ;    for information on assembly instructions.                                 *
+                      00043 ;                                                                              *
+                      00044 ;*******************************************************************************
+                      00045 ;                                                                              *
+                      00046 ;    Known Issues: This template is designed for relocatable code.  As such,   *
+                      00047 ;    build errors such as "Directive only allowed when generating an object    *
+                      00048 ;    file" will result when the 'Build in Absolute Mode' checkbox is selected  *
+                      00049 ;    in the project properties.  Designing code in absolute mode is            *
+                      00050 ;    antiquated - use relocatable mode.                                        *
+                      00051 ;                                                                              *
+                      00052 ;*******************************************************************************
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00053 ;                                                                              *
+                      00054 ;    Revision History:                                                         *
+                      00055 ;                                                                              *
+                      00056 ;*******************************************************************************
+                      00057 
+                      00058 
+                      00059 
+                      00060 ;*******************************************************************************
+                      00061 ; Processor Inclusion
+                      00062 ;
+                      00063 ; TODO Step #1 Open the task list under Window > Tasks.  Include your
+                      00064 ; device .inc file - e.g. #include <device_name>.inc.  Available
+                      00065 ; include files are in C:\Program Files\Microchip\MPLABX\mpasmx
+                      00066 ; assuming the default installation path for MPLAB X.  You may manually find
+                      00067 ; the appropriate include file for your device here and include it, or
+                      00068 ; simply copy the include generated by the configuration bits
+                      00069 ; generator (see Step #2).
+                      00070 ;
+                      00071 ;*******************************************************************************
+                      00072 
+                      00073 ; TODO INSERT INCLUDE CODE HERE
+                      00074 #include "p16f887.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Mar 17 2019
+                      00005 ;  MPASM PIC16F887 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2019 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00810         LIST
+                      00075 
+                      00076 ;*******************************************************************************
+                      00077 ;
+                      00078 ; TODO Step #2 - Configuration Word Setup
+                      00079 ;
+                      00080 ; The 'CONFIG' directive is used to embed the configuration word within the
+                      00081 ; .asm file. MPLAB X requires users to embed their configuration words
+                      00082 ; into source code.  See the device datasheet for additional information
+                      00083 ; on configuration word settings.  Device configuration bits descriptions
+                      00084 ; are in C:\Program Files\Microchip\MPLABX\mpasmx\P<device_name>.inc
+                      00085 ; (may change depending on your MPLAB X installation directory).
+                      00086 ;
+                      00087 ; MPLAB X has a feature which generates configuration bits source code.  Go to
+                      00088 ; Window > PIC Memory Views > Configuration Bits.  Configure each field as
+                      00089 ; needed and select 'Generate Source Code to Output'.  The resulting code which
+                      00090 ; appears in the 'Output Window' > 'Config Bits Source' tab may be copied
+                      00091 ; below.
+                      00092 ;
+                      00093 ;*******************************************************************************
+                      00094 
+                      00095 ; TODO INSERT CONFIG HERE
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00096 ; CONFIG1
+                      00097 ; __config 0xE0D4
+2007   20D4           00098  __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _B
+                            OREN_OFF & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
+                      00099 ; CONFIG2
+                      00100 ; __config 0xFFFF
+2008   3FFF           00101  __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+                      00102 ;*******************************************************************************
+                      00103 ;
+                      00104 ; TODO Step #3 - Variable Definitions
+                      00105 ;
+                      00106 ; Refer to datasheet for available data memory (RAM) organization assuming
+                      00107 ; relocatible code organization (which is an option in project
+                      00108 ; properties > mpasm (Global Options)).  Absolute mode generally should
+                      00109 ; be used sparingly.
+                      00110 ;
+                      00111 ; Example of using GPR Uninitialized Data
+                      00112 ;
+                      00113 ;   GPR_VAR        UDATA
+                      00114 ;   MYVAR1         RES        1      ; User variable linker places
+                      00115 ;   MYVAR2         RES        1      ; User variable linker places
+                      00116 ;   MYVAR3         RES        1      ; User variable linker places
+                      00117 ;
+                      00118 ;   ; Example of using Access Uninitialized Data Section (when available)
+                      00119 ;   ; The variables for the context saving in the device datasheet may need
+                      00120 ;   ; memory reserved here.
+                      00121 ;   INT_VAR        UDATA_ACS
+                      00122 ;   W_TEMP         RES        1      ; w register for context saving (ACCESS)
+                      00123 ;   STATUS_TEMP    RES        1      ; status used for context saving
+                      00124 ;   BSR_TEMP       RES        1      ; bank select used for ISR context saving
+                      00125 ;
+                      00126 ;*******************************************************************************
+                      00127 
+                      00128 ; TODO PLACE VARIABLE DEFINITIONS GO HERE
+                      00129 
+                      00130 GPR_VAR     UDATA
+Warning[207]: Found label after column 1. (CONT1)
+0000                  00131     CONT1 RES 1
+Warning[207]: Found label after column 1. (CONT2)
+0001                  00132     CONT2 RES 1
+Warning[207]: Found label after column 1. (CONT3)
+0002                  00133     CONT3 RES 1
+                      00134 ;*******************************************************************************
+                      00135 ; Reset Vector
+                      00136 ;*******************************************************************************
+                      00137 
+                      00138 RES_VECT  CODE    0x0000            ; processor reset vector
+0000   2???           00139     GOTO    START                   ; go to beginning of program
+                      00140 
+                      00141 ;*******************************************************************************
+                      00142 ; TODO Step #4 - Interrupt Service Routines
+                      00143 ;
+                      00144 ; There are a few different ways to structure interrupt routines in the 8
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00145 ; bit device families.  On PIC18's the high priority and low priority
+                      00146 ; interrupts are located at 0x0008 and 0x0018, respectively.  On PIC16's and
+                      00147 ; lower the interrupt is at 0x0004.  Between device families there is subtle
+                      00148 ; variation in the both the hardware supporting the ISR (for restoring
+                      00149 ; interrupt context) as well as the software used to restore the context
+                      00150 ; (without corrupting the STATUS bits).
+                      00151 ;
+                      00152 ; General formats are shown below in relocatible format.
+                      00153 ;
+                      00154 ;------------------------------PIC16's and below--------------------------------
+                      00155 ;
+                      00156 ; ISR       CODE    0x0004           ; interrupt vector location
+                      00157 ;
+                      00158 ;     <Search the device datasheet for 'context' and copy interrupt
+                      00159 ;     context saving code here.  Older devices need context saving code,
+                      00160 ;     but newer devices like the 16F#### don't need context saving code.>
+                      00161 ;
+                      00162 ;     RETFIE
+                      00163 ;
+                      00164 ;----------------------------------PIC18's--------------------------------------
+                      00165 ;
+                      00166 ; ISRHV     CODE    0x0008
+                      00167 ;     GOTO    HIGH_ISR
+                      00168 ; ISRLV     CODE    0x0018
+                      00169 ;     GOTO    LOW_ISR
+                      00170 ;
+                      00171 ; ISRH      CODE                     ; let linker place high ISR routine
+                      00172 ; HIGH_ISR
+                      00173 ;     <Insert High Priority ISR Here - no SW context saving>
+                      00174 ;     RETFIE  FAST
+                      00175 ;
+                      00176 ; ISRL      CODE                     ; let linker place low ISR routine
+                      00177 ; LOW_ISR
+                      00178 ;       <Search the device datasheet for 'context' and copy interrupt
+                      00179 ;       context saving code here>
+                      00180 ;     RETFIE
+                      00181 ;
+                      00182 ;*******************************************************************************
+                      00183 
+                      00184 ; TODO INSERT ISR HERE
+                      00185 
+                      00186 ;*******************************************************************************
+                      00187 ; MAIN PROGRAM
+                      00188 ;*******************************************************************************
+                      00189 
+                      00190 MAIN_PROG CODE 0X0100                     ; let linker place main program
+0100                  00191 START
+                      00192     ; TODO Step #5 - Insert Your Program Here
+0100                  00193 SETUP:
+0100   1283           00194     BCF STATUS,5
+0101   1303           00195     BCF STATUS,6 ;BANCO 0
+0102   0185           00196     CLRF PORTA   ;BORRA EL PUERTO A
+0103   0187           00197     CLRF PORTC  ;BORRA EL PUERTO C
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00198     
+0104   1683           00199     BSF STATUS,5
+0105   1703           00200     BSF STATUS,6 ;BANCO 3
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0106   0188           00201     CLRF ANSEL  ;BORRA EL CONTROL DE ENTRADAS ANALOGICAS
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0107   0189           00202     CLRF ANSELH ;BORRA EL CONTROL DE ENTRADAS ANALOGICAS
+                      00203     
+0108   1303           00204     BCF STATUS,6
+0109   1683           00205     BSF STATUS,5 ;BANCO 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+010A   0185           00206     CLRF TRISA 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+010B   0187           00207     CLRF TRISC
+                      00208     
+010C   1283           00209     BCF STATUS,5 ; BANCO 0
+010D   0187           00210     CLRF PORTC
+                      00211 
+010E                  00212 LOOP:
+010E   0A85           00213     INCF PORTA,1 ;INCREMENTA EL PUERTO A Y GUARDA EN F
+010F   2???           00214     CALL DELAY_BIG ;LLAMAR A RUTINA DE DELAY
+                      00215     ;BSF PORTC, .7
+0110   2???           00216     GOTO LOOP
+                      00217 
+Warning[207]: Found label after column 1. (DELAY_BIG)
+0111                  00218     DELAY_BIG:      ;GENERA UN RETRASO DE 100.47mS
+0111   3013           00219     MOVLW .19       ; RETRASO DE 1uS
+0112   00??           00220     MOVWF CONT2     ;RETRASO DE 1uS
+0113                  00221 CONFIG1:
+0113   2???           00222     CALL DELAY_MEDIUM  ; 19(5.283mS + 2uS) = 100.41 mS
+0114   0B??           00223     DECFSZ  CONT2,F     ; 18uS + 2uS = 20 uS
+0115   2???           00224     GOTO CONFIG1        ;  34uS
+Warning[203]: Found opcode in column 1. (RETURN)
+0116   0008           00225 RETURN          ; 2uS
+                      00226     
+0117                  00227 DELAY_MEDIUM:  ;GENERA UN RETRASO DE  5.283mS
+0117   3060           00228     MOVLW .96       ;1 uS
+0118   00??           00229     MOVWF  CONT3    ;1 uS
+0119                  00230 CONFIG2:
+0119   2???           00231     CALL DELAY_SMALL ; 96(50 uS + 2uS) = 4.992 mS
+011A   0B??           00232     DECFSZ CONT3, F  ; 95 uS + 2 uS = 97uS
+011B   2???           00233     GOTO    CONFIG2 ; 2(95 uS) = 190uS    
+Warning[203]: Found opcode in column 1. (RETURN)
+011C   0008           00234 RETURN                  ; 2uS
+                      00235     
+011D                  00236 DELAY_SMALL:  ; GENERA UN RETRASO DE 50 US,     
+011D   300F           00237     MOVLW .15   ; CONSUME 1 US
+011E   00??           00238     MOVWF CONT1 ; UTILIZA 1 US
+011F   0B??           00239     DECFSZ CONT1,F ;EN LOS PRIMEROS 14 CICLOS CONSUME 14 US Y EN EL 15AVO CONSUME 2 TOT: 16uS
+0120   2???           00240     GOTO    $-1 ;IR A PC= 1 REGRESAR A DECFSZ, CONSUME 2 US EN LOS PRIMEROS 14 CICLOS EN EL 16 NO SE EJE
+                            CUTA TOT: 28uS
+0121   0000           00241     NOP         ;1uS
+0122   0000           00242     NOP         ;1uS
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (RETURN)
+0123   0008           00243 RETURN      ;CONSUME 2 US, 
+20D4 3FFF             00244     END
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ABDEN                             00000000
+ABDOVF                            00000007
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ANS0                              00000000
+ANS1                              00000001
+ANS10                             00000002
+ANS11                             00000003
+ANS12                             00000004
+ANS13                             00000005
+ANS2                              00000002
+ANS3                              00000003
+ANS4                              00000004
+ANS5                              00000005
+ANS6                              00000006
+ANS7                              00000007
+ANS8                              00000000
+ANS9                              00000001
+ANSEL                             00000188
+ANSELH                            00000189
+BAUDCTL                           00000187
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRG0                              00000000
+BRG1                              00000001
+BRG10                             00000002
+BRG11                             00000003
+BRG12                             00000004
+BRG13                             00000005
+BRG14                             00000006
+BRG15                             00000007
+BRG16                             00000003
+BRG2                              00000002
+BRG3                              00000003
+BRG4                              00000004
+BRG5                              00000005
+BRG6                              00000006
+BRG7                              00000007
+BRG8                              00000000
+BRG9                              00000001
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BRGH                              00000002
+C                                 00000000
+C1CH0                             00000000
+C1CH1                             00000001
+C1IE                              00000005
+C1IF                              00000005
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+C1POL                             00000004
+C1R                               00000002
+C1RSEL                            00000005
+C1SEN                             00000005
+C2CH0                             00000000
+C2CH1                             00000001
+C2IE                              00000006
+C2IF                              00000006
+C2OE                              00000005
+C2ON                              00000007
+C2OUT                             00000006
+C2POL                             00000004
+C2R                               00000002
+C2REN                             00000004
+C2RSEL                            00000004
+C2SYNC                            00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKE                               00000006
+CKP                               00000004
+CM1CON0                           00000107
+CM2CON0                           00000108
+CM2CON1                           00000109
+CONFIG1                           00000113
+CONFIG2                           00000119
+CONT1                             00000000
+CONT2                             00000001
+CONT3                             00000002
+CREN                              00000004
+CSRC                              00000007
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DELAY_BIG                         00000111
+DELAY_MEDIUM                      00000117
+DELAY_SMALL                       0000011D
+D_A                               00000005
+D_NOT_A                           00000005
+ECCPAS                            0000009C
+ECCPAS0                           00000004
+ECCPAS1                           00000005
+ECCPAS2                           00000006
+ECCPASE                           00000007
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDAT                             0000010C
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+FVREN                             00000000
+GCEN                              00000007
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HTS                               00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IOCB6                             00000006
+IOCB7                             00000007
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
+IRP                               00000007
+LOOP                              0000010E
+LTS                               00000001
+MC1OUT                            00000007
+MC2OUT                            00000006
+MSK                               00000093
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MSK6                              00000006
+MSK7                              00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OERR                              00000001
+OPTION_REG                        00000081
+OSCCON                            0000008F
+OSCTUNE                           00000090
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000003
+P                                 00000004
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+P1M0                              00000006
+P1M1                              00000007
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PDC0                              00000000
+PDC1                              00000001
+PDC2                              00000002
+PDC3                              00000003
+PDC4                              00000004
+PDC5                              00000005
+PDC6                              00000006
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PRSEN                             00000007
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSSAC0                            00000002
+PSSAC1                            00000003
+PSSBD0                            00000000
+PSSBD1                            00000001
+PSTRCON                           0000009D
+PULSR                             00000002
+PULSS                             00000003
+PWM1CON                           0000009B
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIDL                             00000006
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+RE3                               00000003
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SBOREN                            00000004
+SCKP                              00000004
+SCS                               00000000
+SEN                               00000000
+SENDB                             00000003
+SETUP                             00000100
+SMP                               00000007
+SPBRG                             00000099
+SPBRGH                            0000009A
+SPEN                              00000007
+SR0                               00000006
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SR1                               00000007
+SRCON                             00000185
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPMSK                            00000093
+SSPOV                             00000006
+SSPSTAT                           00000094
+START                             00000100
+STATUS                            00000003
+STRA                              00000000
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
+SWDTEN                            00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1GINV                            00000007
+T1GIV                             00000007
+T1GSS                             00000001
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRISE3                            00000003
+TRMT                              00000001
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TUN3                              00000003
+TUN4                              00000004
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+ULPWUE                            00000005
+ULPWUIE                           00000002
+ULPWUIF                           00000002
+VCFG0                             00000004
+VCFG1                             00000005
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000097
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+VRSS                              00000004
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000105
+WDTPS0                            00000001
+WDTPS1                            00000002
+WDTPS2                            00000003
+WDTPS3                            00000004
+WPUB                              00000095
+WPUB0                             00000000
+WPUB1                             00000001
+WPUB2                             00000002
+WPUB3                             00000003
+WPUB4                             00000004
+WPUB5                             00000005
+WPUB6                             00000006
+WPUB7                             00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BOR21V                           00003EFF
+_BOR40V                           00003FFF
+_BOR4V_BOR21V                     00003EFF
+_BOR4V_BOR40V                     00003FFF
+_BOREN_NSLEEP                     00003EFF
+_BOREN_OFF                        00003CFF
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_BOREN_ON                         00003FFF
+_BOREN_SBODEN                     00003DFF
+_BOR_NSLEEP                       00003EFF
+_BOR_OFF                          00003CFF
+_BOR_ON                           00003FFF
+_BOR_SBODEN                       00003DFF
+_CONFIG1                          00002007
+_CONFIG2                          00002008
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003F7F
+_CP_OFF                           00003FFF
+_CP_ON                            00003FBF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         00001FFF
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC                            00003FFF
+_EXTRCIO                          00003FFE
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FCMEN_OFF                        000037FF
+_FCMEN_ON                         00003FFF
+_FOSC_EC                          00003FFB
+_FOSC_EXTRC_CLKOUT                00003FFF
+_FOSC_EXTRC_NOCLKOUT              00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRC_CLKOUT                00003FFD
+_FOSC_INTRC_NOCLKOUT              00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_IESO_OFF                         00003BFF
+_IESO_ON                          00003FFF
+_INTOSC                           00003FFD
+_INTOSCIO                         00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_LVP_OFF                          00002FFF
+_LVP_ON                           00003FFF
+_MAIN_PROG_0120                   00000120
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+MPASM 5.84                         DELAY.ASM   7-27-2020  18:39:37         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FF9
+__16F887                          00000001
+
+Errors   :     0
+Warnings :     7 reported,     0 suppressed
+Messages :     4 reported,     0 suppressed
+
+

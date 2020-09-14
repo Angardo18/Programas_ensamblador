@@ -1,0 +1,20 @@
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 136 : Found label after column 1. (VARIABLES)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 137 : Found label after column 1. (SUMANDO1)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 138 : Found label after column 1. (SUMANDO2)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 139 : Found label after column 1. (RESULTADO)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 140 : Found label after column 1. (CONTADOR1)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 141 : Found label after column 1. (CONTADOR2)
+Warning[207] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 142 : Found label after column 1. (FLAGS)
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 208 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 209 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 211 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 214 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 215 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 217 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 258 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 266 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 274 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 283 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 292 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 302 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB2.X\MAIN.ASM 309 : Found opcode in column 1. (RETURN)

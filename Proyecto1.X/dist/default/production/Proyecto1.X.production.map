@@ -1,0 +1,227 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Sun Sep 13 15:17:55 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                 RES_VECT       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+            INTERRUPT_VEC       code   0x000004    program   0x0000a4
+                MAIN_PROG       code   0x000056    program   0x000388
+.config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
+.config_2008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002008    program   0x000002
+                    DATOS      udata   0x000020       data   0x00001a
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000219      
+                            0x002007    0x002008      
+            539 out of 8455 program addresses used, program memory utilization is 6%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  CAMBIAR   0x000192    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CAMBIAR_0   0x000191    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CAMBIAR_1   0x000200    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            CAMBIAR_FECHA   0x000201    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           CONTAR_SEGUNDO   0x000031    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CORRECCION_HORA   0x000173    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+ CORREGIR_BCD_HORA_EDITAR   0x0001c2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+CORREGIR_BCD_MINUTO_EDITAR   0x00019f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+       DECREMENTAR_MINUTE   0x000194    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 DELAY_US   0x000215    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DIA_1   0x0000f6    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DIA_2   0x0000fa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            DISPLAY_FECHA   0x0000e5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             DISPLAY_HORA   0x0000fe    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+      DISPLAY_HORA_EDITAR   0x000117    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           EDITANDO_FECHA   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            EDITANDO_HORA   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           EDITANDO_TIMER   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             EDITAR_FECHA   0x0001e8    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              EDITAR_HORA   0x00017b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 EDIT_DAY   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                EDIT_HOUR   0x0001b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              EDIT_MINUTE   0x000194    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               EDIT_MONTH   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+        ESTABLECER_OPCION   0x00009f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  HORAS_1   0x00010f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           HORAS_1_EDITAR   0x000130    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+    HORAS_1_EDITAR_NORMAL   0x000134    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  HORAS_2   0x000113    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           HORAS_2_EDITAR   0x000138    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+    HORAS_2_EDITAR_NORMAL   0x00013c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         INCREMENTAR_HOUR   0x0001c9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+       INCREMENTAR_MINUTE   0x0001a6    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     LOAD   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     LOOP   0x000089    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    MES_1   0x0000ee    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    MES_2   0x0000f2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                MINUTOS_1   0x000107    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         MINUTOS_1_EDITAR   0x000120    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+  MINUTOS_1_EDITAR_NORMAL   0x000124    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                MINUTOS_2   0x00010b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         MINUTOS_2_EDITAR   0x000128    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+  MINUTOS_2_EDITAR_NORMAL   0x00012c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                   NORMAL   0x000095    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           NO_EDITAR_HORA   0x0000b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 OPCIONES   0x0000ad    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          OPCIONES_NORMAL   0x0000aa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             OPCION_FECHA   0x0000c2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             OPCION_RELOJ   0x0000b4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           PUNTOS_ENMEDIO   0x000025    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    SALIR   0x0001d9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              SALIR_FECHA   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              SELECCIONAR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           SI_EDITAR_HORA   0x0000bc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+     SI_YA_SE_ENTRO_ANTES   0x000188    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+SI_YA_SE_ENTRO_ANTES_FECHA   0x0001f7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    START   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    TABLA   0x0000c7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              TABLA_MESES   0x0000d3    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               TITILAR_7S   0x000019    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 TMR0_INT   0x00000c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 TMR1_INT   0x000038    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              VALOR_FECHA   0x000140    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                VALOR_MES   0x000149    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              VALOR_RELOJ   0x00015e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+VERIFICAR_OVERFLOW_HORA_EDITAR   0x0001d5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+VERIFICAR_OVERFLOW_MINUTO_EDITAR   0x0001b2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          _MAIN_PROG_01C2   0x000218    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CONTADOR_BUZZER   0x000038       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            CONTADOR_TMR1   0x000036       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CONTROL_DISPLAY   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CUENTALED   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               CUENTATMR0   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DELAY   0x00002f       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                      DIA   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               DIA_EDITAR   0x000034       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  DIA_MAX   0x000039       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    FLAGS   0x00002d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    HORAS   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              HORA_EDITAR   0x000031       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MES_BCD   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           MES_BCD_EDITAR   0x000032       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MES_BIN   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           MES_BIN_EDITAR   0x000033       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MINUTOS   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            MINUTO_EDITAR   0x000030       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                   OPCION   0x00002e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             PORTB_ACTUAL   0x00002b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           PORTB_ANTERIOR   0x00002c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                SAVE_TEMP   0x000035       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 SEGUNDOS   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                STATUSRAM   0x00002a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         TITILAR_DISPLAYS   0x000037       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     WRAM   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              SELECCIONAR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 TMR0_INT   0x00000c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               TITILAR_7S   0x000019    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           PUNTOS_ENMEDIO   0x000025    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           CONTAR_SEGUNDO   0x000031    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 TMR1_INT   0x000038    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            EDITANDO_HORA   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           EDITANDO_TIMER   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           EDITANDO_FECHA   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     LOAD   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    START   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     LOOP   0x000089    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                   NORMAL   0x000095    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+        ESTABLECER_OPCION   0x00009f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          OPCIONES_NORMAL   0x0000aa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 OPCIONES   0x0000ad    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             OPCION_RELOJ   0x0000b4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           NO_EDITAR_HORA   0x0000b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           SI_EDITAR_HORA   0x0000bc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             OPCION_FECHA   0x0000c2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    TABLA   0x0000c7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              TABLA_MESES   0x0000d3    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            DISPLAY_FECHA   0x0000e5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    MES_1   0x0000ee    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    MES_2   0x0000f2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DIA_1   0x0000f6    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DIA_2   0x0000fa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             DISPLAY_HORA   0x0000fe    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                MINUTOS_1   0x000107    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                MINUTOS_2   0x00010b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  HORAS_1   0x00010f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  HORAS_2   0x000113    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+      DISPLAY_HORA_EDITAR   0x000117    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         MINUTOS_1_EDITAR   0x000120    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+  MINUTOS_1_EDITAR_NORMAL   0x000124    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         MINUTOS_2_EDITAR   0x000128    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+  MINUTOS_2_EDITAR_NORMAL   0x00012c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           HORAS_1_EDITAR   0x000130    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+    HORAS_1_EDITAR_NORMAL   0x000134    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           HORAS_2_EDITAR   0x000138    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+    HORAS_2_EDITAR_NORMAL   0x00013c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              VALOR_FECHA   0x000140    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                VALOR_MES   0x000149    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              VALOR_RELOJ   0x00015e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CORRECCION_HORA   0x000173    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              EDITAR_HORA   0x00017b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+     SI_YA_SE_ENTRO_ANTES   0x000188    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CAMBIAR_0   0x000191    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  CAMBIAR   0x000192    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              EDIT_MINUTE   0x000194    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+       DECREMENTAR_MINUTE   0x000194    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+CORREGIR_BCD_MINUTO_EDITAR   0x00019f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+       INCREMENTAR_MINUTE   0x0001a6    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+VERIFICAR_OVERFLOW_MINUTO_EDITAR   0x0001b2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                EDIT_HOUR   0x0001b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+ CORREGIR_BCD_HORA_EDITAR   0x0001c2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         INCREMENTAR_HOUR   0x0001c9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+VERIFICAR_OVERFLOW_HORA_EDITAR   0x0001d5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    SALIR   0x0001d9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             EDITAR_FECHA   0x0001e8    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+SI_YA_SE_ENTRO_ANTES_FECHA   0x0001f7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CAMBIAR_1   0x000200    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            CAMBIAR_FECHA   0x000201    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 EDIT_DAY   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               EDIT_MONTH   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              SALIR_FECHA   0x000206    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 DELAY_US   0x000215    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          _MAIN_PROG_01C2   0x000218    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               CUENTATMR0   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                CUENTALED   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                 SEGUNDOS   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MINUTOS   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    HORAS   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                      DIA   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MES_BCD   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  MES_BIN   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CONTROL_DISPLAY   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                     WRAM   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                STATUSRAM   0x00002a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+             PORTB_ACTUAL   0x00002b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           PORTB_ANTERIOR   0x00002c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    FLAGS   0x00002d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                   OPCION   0x00002e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                    DELAY   0x00002f       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            MINUTO_EDITAR   0x000030       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+              HORA_EDITAR   0x000031       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           MES_BCD_EDITAR   0x000032       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+           MES_BIN_EDITAR   0x000033       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+               DIA_EDITAR   0x000034       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                SAVE_TEMP   0x000035       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+            CONTADOR_TMR1   0x000036       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+         TITILAR_DISPLAYS   0x000037       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+          CONTADOR_BUZZER   0x000038       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+                  DIA_MAX   0x000039       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\Proyecto1.X\main.asm
+
+

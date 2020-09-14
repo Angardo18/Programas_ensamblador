@@ -1,0 +1,11 @@
+Warning[207] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 131 : Found label after column 1. (CONT1)
+Warning[207] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 132 : Found label after column 1. (CONT2)
+Warning[207] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 133 : Found label after column 1. (CONT3)
+Message[302] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 201 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 202 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 206 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 207 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 218 : Found label after column 1. (DELAY_BIG)
+Warning[203] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 225 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 234 : Found opcode in column 1. (RETURN)
+Warning[203] D:\PROGRAMACION\PIC\LAB1.X\DELAY.ASM 243 : Found opcode in column 1. (RETURN)
