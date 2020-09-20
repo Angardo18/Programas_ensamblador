@@ -1,0 +1,2603 @@
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 
+                      00002 ;*******************************************************************************
+                      00003 ;    Filename:   Alarma
+                      00004 ;    Date:          08/08/2020
+                      00005 ;    File Version: 1V
+                      00006 ;    Author:   Angel Orellana
+                      00007 ;    Company:   UVG
+                      00008 ;    Description:   Proyecto 1 
+                      00009 ;*******************************************************************************
+                      00010 #include "p16f887.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Mar 17 2019
+                      00005 ;  MPASM PIC16F887 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2019 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00810         LIST
+                      00011 
+                      00012 ; CONFIG1
+                      00013 ; __config 0xE0D4
+2007   20D4           00014  __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _B
+                            OREN_OFF & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
+                      00015 ; CONFIG2
+                      00016 ; __config 0xFFFF
+2008   3FFF           00017  __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+                      00018 
+                      00019 ; TODO INSERT CONFIG HERE
+                      00020 
+                      00021 ;******************************************************************************
+                      00022 
+                      00023 ; TODO PLACE VARIABLE DEFINITIONS GO HERE
+                      00024   
+  000000FA            00025 VALOR_CUENTATMR0 EQU  .250 ;250
+  0000003F            00026 VALOR_LED EQU .63   ;63
+  000000DC            00027 VALOR_TMR1L EQU .220 ;220
+Warning[207]: Found label after column 1. (VALOR_TMR1H)
+  0000000B            00028  VALOR_TMR1H EQU .11 ; 11 ENTRE LOS DOS REGISTROS HACEN 3036 VALOR INICIAR DEL TMR1
+Warning[207]: Found label after column 1. (VALOR_TMR0)
+  00000006            00029  VALOR_TMR0 EQU .6 ;.6 
+  00000002            00030 VALOR_TMR1  EQU .2  ;2 VECES QUE SE TIENE QUE ENTRAR EN TMR1_INT 
+Warning[207]: Found label after column 1. (VALOR_TITILAR_7S)
+  0000007D            00031  VALOR_TITILAR_7S EQU .125 ;63
+Warning[207]: Found label after column 1. (VALOR_BUZZER)
+  0000007D            00032  VALOR_BUZZER EQU .125 ;125
+Warning[207]: Found label after column 1. (VALOR_TMR2)
+  0000007D            00033  VALOR_TMR2 EQU .125 ;125
+Warning[207]: Found label after column 1. (VALOR_CONTADOR_TMR2)
+  00000032            00034  VALOR_CONTADOR_TMR2 EQU .50 ;50
+  000000FA            00035 VALOR_CONTADOR_ALARMA EQU .250
+Warning[207]: Found label after column 1. (VALOR_SEGUNDOS_ALARMA)
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  0000003C            00036  VALOR_SEGUNDOS_ALARMA EQU .60
+                      00037  
+                      00038 DATOS   UDATA
+                      00039 ;------------   CONTADORES PARA EVENTOS ----------------------------------------------------------------
+                            ---------------------
+0000                  00040 CUENTATMR0      RES 1 ;CUENTA CUANTAS VECES SE HA ACTIVADO LA INTERRUPCION DEL TMR 0
+0001                  00041 CUENTALED   RES 1 ;USADA PARA REALIZAR EL ENCENDIDO Y APAGADO DEL LED
+0002                  00042 CONTADOR_TMR1 RES 1 ;USADO PARA GATE TMR1 
+0003                  00043 TITILAR_DISPLAYS RES 1 ;CONTADOR USADO PARA HACER TITILAR LOS DISPLAYS
+0004                  00044 CONTADOR_BUZZER RES 1 ;CONTADOR USADO PARA HACER SONAR EL BUZZER
+0005                  00045 CONTADOR_TMR2 RES 1 ;USADO PARA CONTAR EL NUMERO DE VECES QUE SE ENTRA EN TMR2_INT CUANDO
+0006                  00046 CONTADOR_ALARMA RES 1 ;USADO PARA CONTAR 1 SEGUNDO DESDE QUE SE ACTIVO LA ALARMA
+0007                  00047 SEGUNDOS_ALARMA RES 1 ;USADOR PARA CONTAR 1 MINUTO DESDE QUE SE ACTIVO LA ALARMA
+Warning[207]: Found label after column 1. (DELAY)
+0008                  00048  DELAY  RES 1 ;USADO PARA CREAR DELAY
+                      00049         
+                      00050  ;--------------------------------CONTROL DE EJECUCION -------------------------------------------------
+                            -------------------------
+0009                  00051 CONTROL_DISPLAY RES 1 ;DISPLAY QUE SERA ENCENDIDO
+Warning[207]: Found label after column 1. (FLAGS)
+000A                  00052  FLAGS RES 1 ;BANDERAS QUE INDICAN QUE ALGUNA CONDICION SE CUMPLIO
+                      00053             ; BIT 0, CAMBIO DE DIA 
+                      00054             ;BIT 1, SE ESTA EN MODO  EDICION, 
+                      00055             ;BIT 2 SI SE EDITA MINUTO/MES (O) O SI SE EDITA MES/DIA(1)
+                      00056             ; BIT 3 ES PARA VERIFICAR SI  YA SE ENTRO EN EL MODO EDICION ANTERIORMENTE
+                      00057             ;BIT 4 ES PARA CONTROLAR LA TITILACION DE LOS DISPLAYS
+                      00058             ;BIT 5 CONTROLAR SI SE DEBE SONAR EL BUZZER PARA AL GUARDAR UN DATO
+                      00059             ;BIT 6 CONTROLA SI SUENA LA ALARMA DEL TEMPORIZADOR
+000B                  00060 OPCION RES 1 ;SELECCION DEL MODO DE OPERACION
+000C                  00061 PORTB_ACTUAL RES 1 ;VALOR A GUARDAR EL VALOR DEL PUERTO B 
+000D                  00062 PORTB_ANTERIOR RES 1; VALOR ANTERIOR DEL PUERTO B
+                      00063  
+                      00064 ;---------------------------------------MODO DE RELOJ --------------------------------------------------
+                            ------------------------------- 
+000E                  00065 SEGUNDOS    RES     1
+000F                  00066 MINUTOS     RES 1  ;GUARDA EL VALOR DE LOS MINUTOS EN BCD
+0010                  00067 HORAS   RES 1   ;GUARDA LA HORA EN BCD
+                      00068         
+                      00069 ;----------------------------------MODO DE RELOJ EDICION------------------------------------------------
+                            ---------------------------
+0011                  00070 MINUTO_EDITAR RES 1 ;USADA PARA GUARDAR EL VALOR A ESTABLECER AL EDITAR MINUTO
+0012                  00071 HORA_EDITAR  RES 1 ;USADA PARA GUARDAR EL VALOR A ESTABLECER AL EDITAR HORA
+                      00072   
+                      00073 ;-----------------------------------------MODO FECHA ---------------------------------------------------
+                            ---------------------------------
+0013                  00074 MES_BCD RES 1; VALOR DEL MES EN BCD
+0014                  00075 MES_BIN RES 1 ;VALOR DEL MES EN BINARIO
+0015                  00076 DIA RES 1   ;VALOR DEL DIA EN BCD
+0016                  00077 DIA_MAX RES 1 ;DIA MAXIMO POSIBLE
+                      00078  
+                      00079 ;-----------------------------------------MODO FECHA EDICION--------------------------------------------
+                            ----------------------------
+0017                  00080 MES_BCD_EDITAR RES 1  ;USADA PARA GUARDAR EL VALOR A ESTABLECER AL EDITAR LA HORA EN BCD
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0018                  00081 MES_BIN_EDITAR RES 1 ; ;USADA PARA GUARDAR EL VALOR A ESTABLECER AL EDITAR LA HORA EN BINARIO
+0019                  00082 DIA_EDITAR RES 1  ;USADA PARA GUARDAR EL VALOR A ESTABLECER AL EDITAR EL DIA
+                      00083  
+                      00084 ;-----------------------------------------MODO TEMPORIZADOR---------------------------------------------
+                            ---------------------------
+001A                  00085 SEGUNDOS_TEMPORIZADOR RES 1 ;SEGUNDOS EN EL TEMPORIZADOR
+001B                  00086 MINUTOS_TEMPORIZADOR RES 1 ;MINUTOS EN EL TEMPORIZADOR
+                      00087  
+                      00088 ;-----------------------------------------MODO TEMPORIZADOR EDICION-------------------------------------
+                            -----------------------
+001C                  00089 SEGUNDOS_TEMPORIZADOR_EDITAR RES 1 ;SEGUNDOS EN EL TEMPORIZADOR A EDITAR
+001D                  00090 MINUTOS_TEMPORIZADOR_EDITAR RES 1 ;MINUTOS EN EL TEMPORIZADOR A EDITAR
+                      00091  
+                      00092 ;-----------------------------------------ALMACENAMIENTO TEMPORAL DE DATOS------------------------------
+                            ------------------
+Warning[207]: Found label after column 1. (SAVE_TEMP)
+001E                  00093  SAVE_TEMP RES 1  ; SE USA PARA GUARDAR TEMPORALMENTE EL VALOR ESCRITO EN ALGUN PUERTO
+Warning[207]: Found label after column 1. (WRAM)
+001F                  00094  WRAM RES 1 ; GUARDAR EL VALOR DE W AL ENTRAR A UNA INTERRUPCION
+Warning[207]: Found label after column 1. (STATUSRAM)
+0020                  00095  STATUSRAM RES 1 ;GUARDAR EL VALOR DE STATUS AL ENTRAR EN UNA INTERRUPCION
+                      00096  ;---------------------------------------- VARIABLES COMO PARAMETROS DE FUNCIONES ----------------------
+                            ----------------
+Warning[207]: Found label after column 1. (DISPLAY_1)
+0021                  00097  DISPLAY_1 RES 1 ;USADA PARA ALMACENAR EL VALOR EN EL DISPLAY 1 Y 2 
+Warning[207]: Found label after column 1. (DISPLAY_2)
+0022                  00098  DISPLAY_2  RES 1;USADA PARA ALMACENAR EL VALOR EN EL DISPLAY 3 Y 4
+                      00099  ;*******************************************************************************
+                      00100 ; Reset Vector
+                      00101 ;*******************************************************************************
+                      00102 
+                      00103 RES_VECT  CODE    0x0000            ; processor reset vector
+0000   2???           00104     GOTO    START                   ; go to beginning of program
+                      00105 
+                      00106 INTERRUPT_VEC CODE 0x0004
+Warning[207]: Found label after column 1. (SAVE)
+0004                  00107   SAVE:
+0004   00??           00108     MOVWF WRAM
+0005   0E03           00109     SWAPF   STATUS,W
+0006   00??           00110     MOVWF   STATUSRAM
+Warning[207]: Found label after column 1. (SELECCIONAR)
+0007                  00111     SELECCIONAR
+0007   190B           00112     BTFSC   INTCON,2 ; SI ESTA ACTIVA SE EJECUTA LO SIGUIENTE
+0008   2???           00113     GOTO TMR0_INT
+0009   180C           00114     BTFSC PIR1, 0 ;OVERFLOW EN EL TIMER 1
+000A   2???           00115     GOTO    TMR1_INT
+000B   188C           00116     BTFSC   PIR1,1 ;OVERFLOW EN EL TIMER 2
+000C   2???           00117     GOTO TMR2_INT
+                      00118     
+000D   2???           00119     GOTO LOAD
+000E                  00120 TMR0_INT:
+000E   3006           00121     MOVLW   VALOR_TMR0
+000F   0081           00122     MOVWF   TMR0
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0010   110B           00123     BCF INTCON,2
+                      00124     
+                      00125     ;---------------------------- CUENTA DE LA ALARMA -----------------------------------------------
+0011   1F00           00126     BTFSS   FLAGS,6 ;SI LA ALARMA ESTA ACTIVA SE REALIZA LA CUENTA 
+0012   2???           00127     GOTO SONAR_BUZZER
+                      00128     
+Message[305]: Using default destination of 1 (file).
+0013   0B??           00129     DECFSZ  CONTADOR_ALARMA
+0014   2???           00130     GOTO    SONAR_BUZZER
+                      00131     
+0015   30FA           00132     MOVLW   VALOR_CONTADOR_ALARMA
+0016   00??           00133     MOVWF   CONTADOR_ALARMA
+0017   0B??           00134    DECFSZ   SEGUNDOS_ALARMA,F 
+0018   2???           00135    GOTO SONAR_BUZZER
+                      00136    
+0019   1300           00137    BCF  FLAGS,6
+001A   303C           00138    MOVLW    VALOR_SEGUNDOS_ALARMA
+001B   00??           00139    MOVWF    SEGUNDOS_ALARMA
+                      00140     ;----------------------- SE HACE SONAR EL BUZZER ----------------------------------------------
+Warning[207]: Found label after column 1. (SONAR_BUZZER)
+001C                  00141     SONAR_BUZZER
+001C   1E80           00142     BTFSS   FLAGS,5 ;SI SE ACTIVA ESTE FLAG SE HACE SONAR EL BUZZER
+001D   2???           00143     GOTO    TITILAR_7S
+                      00144     
+001E   1489           00145     BSF PORTE,1
+001F   03??           00146     DECF    CONTADOR_BUZZER,F
+0020   1D03           00147     BTFSS   STATUS,2 ;SI DA CERO LO ANTERIOR SE SALTA
+0021   2???           00148     GOTO    TITILAR_7S
+                      00149     
+0022   307D           00150     MOVLW   VALOR_BUZZER
+0023   00??           00151     MOVWF   CONTADOR_BUZZER
+0024   1089           00152     BCF PORTE,1
+0025   1280           00153     BCF FLAGS,5
+                      00154     ;--------------------- SE HACE TITILAR LOS DISPLAYS ------------------------------------------
+Warning[207]: Found label after column 1. (TITILAR_7S)
+0026                  00155     TITILAR_7S
+0026   0B??           00156     DECFSZ    TITILAR_DISPLAYS,F ;SI LO ANTERIOR DA 0 SE SALTA EL GOTO
+0027   2???           00157     GOTO    PUNTOS_ENMEDIO
+                      00158     
+0028   307D           00159     MOVLW   VALOR_TITILAR_7S
+0029   00??           00160     MOVWF   TITILAR_DISPLAYS
+                      00161     
+002A   08??           00162     MOVF    FLAGS,W
+002B   39EF           00163     ANDLW   B'11101111' ;SE CONSERVAN TODOS MENOS EL BIT 4 
+002C   00??           00164     MOVWF   SAVE_TEMP
+002D   09??           00165     COMF        FLAGS, W
+002E   3910           00166     ANDLW   B'0010000' ;SE CONSERVA SOLO EL BIT4 
+002F   07??           00167     ADDWF   SAVE_TEMP,W
+0030   00??           00168     MOVWF   FLAGS
+                      00169     
+                      00170 ;-------------------------------------- TITILAR LOS PUNTOS DE EN MEDIO EN MODO NORMAL ------------------
+                            ----------
+Warning[207]: Found label after column 1. (PUNTOS_ENMEDIO)
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0031                  00171     PUNTOS_ENMEDIO
+0031   0B??           00172     DECFSZ    CUENTALED,F ;SI DA 0 ES QUE YA PASARON 500 MS
+0032   2???           00173     GOTO    CONTAR_SEGUNDO
+                      00174     
+                      00175         
+                      00176     ;--------------------- SE HACE TITILAR EL LED -----------------------------------------------------
+0033   0809           00177     MOVF    PORTE,W
+                      00178     ;----- SI LA ALARMA DEL TEMPORIZADOR ESTA ACTIVA SE CAMBIA EL RE1 TAMBIEN
+0034   1F00           00179     BTFSS   FLAGS,6    
+0035   390B           00180     ANDLW   B'1011' ;SE CONSERVAN TODOS MENOS RE2 
+0036   1B00           00181     BTFSC   FLAGS,6 
+0037   3909           00182     ANDLW   B'1001'
+                      00183    ;-------CONTINUA NORMAL----------
+0038   00??           00184     MOVWF   SAVE_TEMP
+0039   0909           00185     COMF        PORTE, W
+003A   1F00           00186     BTFSS   FLAGS,6
+003B   3904           00187     ANDLW   B'0100' ;SE CONSERVA SOLO RE2 
+003C   1B00           00188     BTFSC   FLAGS,6
+003D   3906           00189     ANDLW   B'0110' ;SE CONSERVA SOLO RE2 Y RE1 PARA HACER SONAR LA ALARMA DEL TEMPORIZADOR
+003E   07??           00190     ADDWF   SAVE_TEMP,W
+003F   0089           00191     MOVWF   PORTE
+0040   303F           00192     MOVLW   VALOR_LED
+0041   00??           00193     MOVWF   CUENTALED
+                      00194     
+                      00195     ;------------------- SE REGISTRA LA CUENTA DE CADA SEGUNDO ---------------------------------
+Warning[207]: Found label after column 1. (CONTAR_SEGUNDO)
+0042                  00196     CONTAR_SEGUNDO
+Message[305]: Using default destination of 1 (file).
+0042   0B??           00197     DECFSZ      CUENTATMR0  ;SI LO ANTERIOR DA 0 SE EJECUTA EL RESTO
+                      00198     
+0043   2???           00199     GOTO LOAD
+                      00200     
+                      00201  
+0044   30FA           00202     MOVLW  VALOR_CUENTATMR0
+0045   00??           00203     MOVWF   CUENTATMR0
+0046   0A??           00204     INCF    SEGUNDOS,F
+0047   2???           00205     GOTO LOAD
+                      00206     
+0048                  00207 TMR1_INT:
+0048   300B           00208     MOVLW   VALOR_TMR1H
+0049   008F           00209     MOVWF   TMR1H
+004A   30DC           00210     MOVLW   VALOR_TMR1L
+004B   008E           00211     MOVWF   TMR1L
+004C   100C           00212     BCF PIR1,0 ;SE LIMPIA EL FLAG DE LA INTERRUPCION
+                      00213     
+Message[305]: Using default destination of 1 (file).
+004D   03??           00214     DECF CONTADOR_TMR1
+004E   1D03           00215     BTFSS   STATUS,2 ;SI LO ANTERIOR DA 0 SE EJECUTA EL CODIGO QUE LE SIGUE
+004F   2???           00216     GOTO    LOAD
+                      00217     
+0050   3002           00218     MOVLW  VALOR_TMR1
+0051   00??           00219     MOVWF   CONTADOR_TMR1
+0052   1010           00220     BCF T1CON,0 ;SE APAGA EL TMR1
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0053   1080           00221     BCF FLAGS,1 ;SE SALE DEL MODO EDICION
+0054   1100           00222     BCF FLAGS,2 ;SE COLOCA EN DIA/HORA EN LA EDICION
+0055   1680           00223     BSF FLAGS,5 ;SE ACTIVA QUE SUENE EL BUZZER
+                      00224     
+0056   1800           00225     BTFSC   OPCION,0 ;SI ESTABA ACTIVO ES QUE SE ESTABA EDITANDO LA HORA
+0057   2???           00226     GOTO    EDITANDO_HORA
+0058   1880           00227     BTFSC   OPCION,1 ;SE ESTABA EN 1, ES QUE SE ESTABA EDITANDO LA FECHA
+0059   2???           00228     GOTO    EDITANDO_FECHA
+005A   1900           00229     BTFSC   OPCION,2 ;SI ESTABA EN 1, ES QUE SE ESTABA EDITANDO EL CRONOMETRO
+005B   2???           00230     GOTO    EDITANDO_TIMER
+                      00231     
+Warning[207]: Found label after column 1. (EDITANDO_HORA)
+005C                  00232     EDITANDO_HORA; SE ESTABA EDITANDO LA HORA Y SE GUARDAN LOS VALORES ESTABLECIDOS
+005C   08??           00233     MOVF    MINUTO_EDITAR,W
+005D   00??           00234     MOVWF   MINUTOS
+005E   08??           00235     MOVF    HORA_EDITAR,W
+005F   00??           00236     MOVWF   HORAS
+0060   01??           00237     CLRF    SEGUNDOS
+0061   2???           00238     GOTO LOAD
+                      00239     
+Warning[207]: Found label after column 1. (EDITANDO_FECHA)
+0062                  00240     EDITANDO_FECHA; SE ESTABA EDITANDO LA FECHA Y SE GUARDAN LOS VALORES ESTABLECIDOS
+0062   08??           00241     MOVF    MES_BCD_EDITAR,W
+0063   00??           00242     MOVWF   MES_BCD
+0064   08??           00243     MOVF    DIA_EDITAR,W
+0065   00??           00244     MOVWF   DIA
+0066   08??           00245     MOVF    MES_BIN_EDITAR,W
+0067   00??           00246     MOVWF   MES_BIN
+0068   2???           00247     GOTO LOAD
+                      00248     
+Warning[207]: Found label after column 1. (EDITANDO_TIMER)
+0069                  00249     EDITANDO_TIMER
+0069   1512           00250     BSF T2CON,2 ;SE ENCIENDE EL TEMPORIZADOR
+006A   08??           00251     MOVF    SEGUNDOS_TEMPORIZADOR_EDITAR,W
+006B   00??           00252     MOVWF   SEGUNDOS_TEMPORIZADOR
+006C   08??           00253     MOVF   MINUTOS_TEMPORIZADOR_EDITAR,W
+006D   00??           00254     MOVWF   MINUTOS_TEMPORIZADOR
+                      00255     
+006E                  00256 TMR2_INT:
+006E   108C           00257     BCF PIR1,1 ;SE LIMPIA
+006F   03??           00258     DECF    CONTADOR_TMR2,F
+0070   1D03           00259     BTFSS   STATUS,2
+0071   2???           00260     GOTO    LOAD
+                      00261     
+0072   3032           00262     MOVLW   VALOR_CONTADOR_TMR2
+0073   00??           00263     MOVWF   CONTADOR_TMR2
+0074   0B??           00264     DECFSZ    SEGUNDOS_TEMPORIZADOR,F
+0075   2???           00265     GOTO    FUNCIONAMIENTO_NORMAL_TEMPORIZADOR
+                      00266       ;--------- SE VERIFICA SE SE AGOTO EL TIEMPO ----------------
+0076   3000           00267     MOVLW   .0
+0077   02??           00268     SUBWF   MINUTOS_TEMPORIZADOR,W ;LA UNICA FORMA DE QUE ESTO DE 0 ES SI MINUTOS ES 0
+0078   1D03           00269     BTFSS   STATUS,2 ;1 SI LO ANTERIOR DA 0
+0079   2???           00270     GOTO  FUNCIONAMIENTO_NORMAL_TEMPORIZADOR
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00271     ;SI ES CERO ESTO PASA
+007A   1700           00272     BSF FLAGS,6 ;SUENA LA ALARMA DEL TEMPORIZADOR
+007B   1112           00273     BCF T2CON,2 ; SE APAGA EL TMR2
+007C   0191           00274     CLRF        TMR2 ;SE LIMPIA EL REGISTRO DEL TMR2
+007D   01??           00275     CLRF    SEGUNDOS_TEMPORIZADOR
+007E   2???           00276     GOTO LOAD
+                      00277     
+Warning[207]: Found label after column 1. (FUNCIONAMIENTO_NORMAL_TEMPORIZADOR)
+Warning[208]: Label truncated at 32 characters. (FUNCIONAMIENTO_NORMAL_TEMPORIZADOR)
+007F                  00278     FUNCIONAMIENTO_NORMAL_TEMPORIZADOR
+                      00279     ;--- SE VERIFICA SI PASA DE 00 A 59
+007F   30FF           00280     MOVLW .255 
+0080   02??           00281     SUBWF   SEGUNDOS_TEMPORIZADOR,W
+0081   1D03           00282     BTFSS   STATUS,2 ; SI DA 0 ES QUE SI SE PASO DE 00 A 59
+0082   2???           00283     GOTO LOAD
+                      00284     
+0083   3059           00285     MOVLW B'01011001' ;59 EN BCD
+0084   00??           00286     MOVWF   SEGUNDOS_TEMPORIZADOR
+                      00287   
+                      00288     
+                      00289     
+                      00290     
+Warning[207]: Found label after column 1. (DECREMENTAR_MINUTOS_TEMPORIZADOR)
+0085                  00291     DECREMENTAR_MINUTOS_TEMPORIZADOR
+                      00292     ;------- SI NO SE ACABO EL TIEMPO DE DECREMENTAN LOS MINUTOS
+Message[305]: Using default destination of 1 (file).
+0085   03??           00293     DECF    MINUTOS_TEMPORIZADOR 
+                      00294     
+                      00295     ;LA CORRECCION DE LA CODIFICACION EN BCD SE SE REALIZA EN EN LOOP PRINCIPAL
+                      00296     
+                      00297     
+0086                  00298 LOAD:
+0086   0E??           00299     SWAPF STATUSRAM,W
+0087   0083           00300     MOVWF   STATUS
+0088   0E??           00301     SWAPF   WRAM,F
+0089   0E??           00302     SWAPF   WRAM,W
+008A   0009           00303     RETFIE
+                      00304 
+                      00305     ;----------------------- TABLAS --------------------------------------------------------------------
+                            ----------------------
+Warning[207]: Found label after column 1. (TABLA)
+008B                  00306  TABLA:
+008B   0782           00307     ADDWF   PCL,F
+008C   3477           00308     RETLW B'01110111'  ; 0  EN EL DISPLAY
+008D   3441           00309     RETLW B'01000001' ;1
+008E   343B           00310     RETLW B'00111011' ;2
+008F   346B           00311     RETLW B'01101011';3
+0090   344D           00312     RETLW B'01001101';4
+0091   346E           00313     RETLW   B'01101110' ;5
+0092   347E           00314     RETLW B'01111110' ;6
+0093   3443           00315     RETLW   B'01000011' ;7
+0094   347F           00316     RETLW   B'01111111';8
+0095   346F           00317     RETLW   B'01101111';9
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00318     
+0096                  00319 TABLA_MESES:
+0096   1880           00320     BTFSC   FLAGS, 1; SI SE ESTA EN MODO EDICION SE  PASA ESTE VALOR 
+0097   08??           00321     MOVF    MES_BIN_EDITAR,W
+0098   1C80           00322     BTFSS   FLAGS,1 ; SI SE ESTA EN MODO VISUALIZACION SE PASA ESTE VALOR 
+0099   08??           00323     MOVF    MES_BIN,W
+009A   0782           00324     ADDWF   PCL,F
+009B   0000           00325     NOP ; VARIABLE PARA 0 (EN FUNCIONAMIENTO NORMAL NO DEBERIA EJECUTARSE)
+009C   3432           00326     RETLW   B'00110010'  ;32 EN BCD  ENERO
+009D   3429           00327     RETLW   B'00101001' ;29 EN BCD FEBRERO
+009E   3432           00328     RETLW   B'00110010'  ;32 EN BCD  MARZO
+009F   3431           00329     RETLW   B'00110001' ;31 EN BCD ABRIL
+00A0   3432           00330     RETLW   B'00110010'  ;32 EN BCD  MAYO
+00A1   3431           00331     RETLW   B'00110001' ;31 EN BCD JUNIO
+00A2   3432           00332     RETLW   B'00110010'  ;32 EN BCD  JULIO
+00A3   3432           00333     RETLW   B'00110010'  ;32 EN BCD  AGOSTO
+00A4   3431           00334     RETLW   B'00110001' ;31 EN BCD SEPTIEMBRE
+00A5   3432           00335     RETLW   B'00110010'  ;32 EN BCD  OCTUBRE
+00A6   3431           00336     RETLW   B'00110001' ;31 EN BCD NOVIEMBRE
+00A7   3432           00337     RETLW   B'00110010'  ;32 EN BCD  DICIEMBRE    
+                      00338     
+                      00339 ;*******************************************************************************
+                      00340 ; MAIN PROGRAM
+                      00341 ;*******************************************************************************
+                      00342 
+                      00343 MAIN_PROG CODE                      ; let linker place main program
+                      00344 
+0000                  00345 START:
+0000   1703           00346     BSF STATUS,6
+0001   1683           00347     BSF STATUS,5 ;BANCO 3
+                      00348     
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0002   0188           00349     CLRF    ANSEL
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0003   0189           00350     CLRF    ANSELH ;PUERTOS A, E Y B COMO I/O DIGITALES
+                      00351     
+                      00352     
+0004   1303           00353     BCF STATUS,6; BANCO 1 
+                      00354 
+                      00355     
+0005   30FF           00356     MOVLW   .255
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0006   0086           00357     MOVWF   TRISB ;PUERTO B COMO ENTRADA DIGITAL
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0185           00358     CLRF   TRISA ;PUERTO A COMO SALIDA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   0189           00359     CLRF    TRISE ;PUERTO E COMO SALIDA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   0187           00360     CLRF    TRISC  ;PUERTO C, PARA EL DISPLAY
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000A   0188           00361     CLRF    TRISD ;PUERTO D, PARA CONTROLAR LOS DISPLAYS
+                      00362     
+000B   3003           00363     MOVLW   B'00000011' ;PULL UP ACTIVAS, PRESCALER DE 1:16 ASIGNADO AL TMR0 
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000C   0081           00364     MOVWF   OPTION_REG ;
+000D   3003           00365     MOVLW   B'0000011' ;TMR2 Y TMR1 INTERUPCCION ACTIVADA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000E   008C           00366     MOVWF   PIE1
+                      00367     
+000F   307D           00368     MOVLW   VALOR_TMR2
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0010   0092           00369     MOVWF   PR2 ;CUENTA 125 VECES SE EJECUTA LA INTERRUPCION CADA 20mS
+                      00370     
+0011   30E0           00371     MOVLW   B'11100000' ;INTERRUPCIONES ACTIVADAS, TMR0 INTERRUPCION ACTIVADA, PORTB INT ACTIVADA
+0012   008B           00372     MOVWF   INTCON
+                      00373     
+                      00374     
+0013   1283           00375     BCF STATUS,5 ;BANCO 0
+                      00376     
+0014   3060           00377     MOVLW   B'01100000' ;APAGADO, GATE MODE ES ACTIVE LOW, Y CON PREESCALER DE 1:4
+0015   0090           00378     MOVWF   T1CON ;SE USARA PARA EL PARPADEO DE LOS DISPLAY CUANDO SE ESTE EN MODO DE EDICION
+0016   304A           00379     MOVLW B'1001010'
+0017   0092           00380     MOVWF   T2CON ;PRESSCALER 16 POST ESCALER DE 10 SE USA PARA EL CRONOMETRO OVERFLOW CADA 20mS
+                      00381     
+0018   0188           00382     CLRF  PORTD
+0019   0187           00383     CLRF    PORTC
+001A   0189           00384     CLRF    PORTE
+001B   3006           00385     MOVLW  VALOR_TMR0;CUENTA DEL TMR0 INICIA EN 131 PARA QUE LA INTERRUPCION SE EJECUTE CADA
+001C   0081           00386     MOVWF   TMR0 ;4 ms 
+001D   300B           00387     MOVLW   VALOR_TMR1H
+001E   008F           00388     MOVWF   TMR1H
+001F   30DC           00389     MOVLW   VALOR_TMR1L
+0020   008E           00390     MOVWF   TMR1L
+                      00391     
+0021   303F           00392     MOVLW   VALOR_LED
+0022   00??           00393     MOVWF   CUENTALED
+0023   30FA           00394     MOVLW  VALOR_CUENTATMR0
+0024   00??           00395    MOVWF    CUENTATMR0
+0025   01??           00396     CLRF        SEGUNDOS
+0026   01??           00397     CLRF    MINUTOS
+0027   01??           00398     CLRF    HORAS
+0028   01??           00399     CLRF    FLAGS
+0029   01??           00400     CLRF    MINUTOS_TEMPORIZADOR
+002A   01??           00401     CLRF    SEGUNDOS_TEMPORIZADOR
+002B   30FF           00402     MOVLW   .255
+002C   00??           00403     MOVWF          PORTB_ACTUAL
+002D   00??           00404     MOVWF    PORTB_ANTERIOR
+                      00405     
+002E   3002           00406     MOVLW   VALOR_TMR1
+002F   00??           00407     MOVWF   CONTADOR_TMR1
+                      00408     
+0030   3001           00409     MOVLW   B'00000001'
+0031   00??           00410     MOVWF   CONTROL_DISPLAY
+0032   00??           00411     MOVWF   OPCION
+0033   00??           00412    MOVWF   DIA
+0034   00??           00413     MOVWF   MES_BCD
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0035   00??           00414     MOVWF   MES_BIN
+0036   307D           00415     MOVLW   VALOR_BUZZER
+0037   00??           00416     MOVWF   CONTADOR_BUZZER
+0038   3032           00417     MOVLW   VALOR_CONTADOR_TMR2
+0039   00??           00418     MOVWF   CONTADOR_TMR2
+003A   0085           00419     MOVWF   PORTA
+                      00420     
+                      00421     
+003B   303C           00422    MOVLW    VALOR_SEGUNDOS_ALARMA
+003C   00??           00423    MOVWF    SEGUNDOS_ALARMA
+003D   30FA           00424     MOVLW   VALOR_CONTADOR_ALARMA
+003E   00??           00425     MOVWF   CONTADOR_ALARMA
+003F                  00426 LOOP:
+                      00427     ;-------------------------------------- CONTROL DE LA HORA Y FECHA DEL RELOJ -----------------------
+                            --------------------
+003F   303C           00428     MOVLW .60
+0040   02??           00429     SUBWF   SEGUNDOS,W
+0041   1903           00430     BTFSC       STATUS,2    ;SI SE CONTO 1 SEGUNDO SE EJECUTA 
+0042   2???           00431     CALL VALOR_RELOJ
+0043   1800           00432     BTFSC   FLAGS,0 ; SI SE ACTIVA LA BANDERA DE FECHA ENTONCES SE CAMBIA LA FECHA
+0044   2???           00433     CALL VALOR_FECHA
+                      00434     ;-------------------------------------- CONTROL DEL TEMPORIZADOR -----------------------------------
+                            ------------------------
+0045   1912           00435     BTFSC  T2CON,2 ;SE VERIFICA QUE EL TEMPORIZADOR ESTE EN FUNCIONAMIENTO
+0046   2???           00436     CALL    VALOR_TEMPORIZADOR
+                      00437     ;---------------------------------------------------------------------------------------------------
+                            ----------------------------------------
+                      00438         ; ----------CONTROL DE LA PRSISTENCIA DE VISION PARA LOS DISPLAYS-------------------------------
+                            --------
+0047   3E00           00439     ADDLW   .0 ;SE ASEGURA QUE EL BIT CARRY DE STATUS ESTE EN 0 PARA QUE EL CORRIEMENTO DE BIS SEA 
+0048   1D80           00440     BTFSS       CONTROL_DISPLAY,3
+0049   2???           00441     GOTO    NORMAL
+                      00442    
+004A   01??           00443     CLRF    CONTROL_DISPLAY
+004B   30FF           00444     MOVLW   .255
+004C   3E01           00445     ADDLW   .1
+                      00446 
+Warning[207]: Found label after column 1. (NORMAL)
+004D                  00447     NORMAL
+Message[305]: Using default destination of 1 (file).
+004D   0D??           00448     RLF CONTROL_DISPLAY ;SE CORREN 1 ESPACIO A LA IZQUIERDA LOS BITS
+                      00449    ;----------------------------------------------------------------------------------------------------
+                            -------------------------------------
+                      00450     ;---------------------------------------- LECTURA DEL PUERTOB --------------------------------------
+                            --------------------------
+                      00451     ;SI HAY UN FLANCO DE SUBIDA EN CUALQUIERA DE LOS PUERTOS ENTONCES SE CAMBIA DE OPCION
+004E   08??           00452     MOVF    PORTB_ACTUAL,W
+004F   00??           00453     MOVWF   PORTB_ANTERIOR
+0050   2???           00454     CALL DELAY_US ;SE ESPERA UN MOMENTO
+0051   0806           00455     MOVF    PORTB,W
+0052   00??           00456     MOVWF   PORTB_ACTUAL
+                      00457     ;------------------------ SE VERIFICA SI SE PRESIONO EL BOTON PARA ENTRAR EN MODO EDICION-----------
+                            -
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0053   1A80           00458     BTFSC   PORTB_ANTERIOR,5
+0054   2???           00459    GOTO    ESTABLECER_OPCION
+                      00460     
+0055   1A80           00461     BTFSC   PORTB_ACTUAL,5
+0056   1480           00462     BSF FLAGS,1
+                      00463     
+                      00464     
+                      00465     ;------------------------SE VERIFICA SI SE PRESIONO EL BOTON PARA CAMBIAR DE OPCION ----------------
+                            -----
+Warning[207]: Found label after column 1. (ESTABLECER_OPCION)
+0057                  00466     ESTABLECER_OPCION
+                      00467     ;----------------------SE VERIFICA QUE NO SI SE ENCUENTRA EN EL MODO EDICION------------------------
+                            ------
+0057   1880           00468     BTFSC   FLAGS,1
+0058   2???           00469     GOTO OPCIONES ;SI SE ENCUENTRA EN ESTE MODO NO SE ATIENDE A RB2 PARA EL CAMBIO DE MODO
+                      00470     ;---------------------------------------------------------------------------------------------------
+                            -------------------------------------
+                      00471     ;----------------------------------- SI SE ENCUENTRA EN MODO VISUALIZACION -------------------------
+                            --------------
+                      00472     ;-------FLANCO DE SUBIDA EN RB2 -------
+0059   1900           00473     BTFSC   PORTB_ANTERIOR,2 ;SI EL ANTERIOR ES 1 SE VERIFICA QUE EL VALOR ACTUAL SEA 0
+005A   2???           00474     GOTO OPCIONES
+                      00475     
+005B   1D00           00476     BTFSS   PORTB_ACTUAL,2 ;SI ES 0 SE CAMBIA DE OPCION
+005C   2???           00477     GOTO OPCIONES
+                      00478     ;----------------------------------------------------
+                      00479    ;------------- SE LLEGA A AQUI SI SE DETECTA UN FLANCO DE SUBIDA-------------------------------------
+                            -----------
+005D   1D00           00480     BTFSS   OPCION,2 ;SI ES 0 ES QUE TODAVIA NO SE HA ENTRADO A LA OPCION 3
+005E   2???           00481     GOTO OPCIONES_NORMAL
+                      00482     
+005F   3001           00483     MOVLW .1
+0060   00??           00484     MOVWF   OPCION
+0061   2???           00485     GOTO OPCIONES
+                      00486     
+Warning[207]: Found label after column 1. (OPCIONES_NORMAL)
+0062                  00487     OPCIONES_NORMAL
+0062   3000           00488     MOVLW .0
+0063   3E00           00489     ADDLW   .0 ;SE ASEGURA QUE EL BIT C DE STATUS ESTE EN 0
+Message[305]: Using default destination of 1 (file).
+0064   0D??           00490     RLF OPCION  
+                      00491    ;----------------------------------------------------------------------------------------------------
+                            -------------------------------------
+0065                  00492 OPCIONES:
+0065   08??           00493     MOVF    OPCION,W
+0066   0085           00494     MOVWF   PORTA ;SE VISUALIZA QUE OPCION ESTA SELECCIONADA
+0067   1800           00495     BTFSC   OPCION,0
+0068   2???           00496     GOTO OPCION_RELOJ
+0069   1880           00497     BTFSC  OPCION,1
+006A   2???           00498     GOTO OPCION_FECHA
+006B   1900           00499     BTFSC   OPCION,2
+006C   2???           00500     GOTO OPCION_TEMPORIZADOR
+006D   2???           00501     GOTO LOOP
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00502     
+Warning[207]: Found label after column 1. (OPCION_RELOJ)
+006E                  00503     OPCION_RELOJ:
+                      00504     
+                      00505     ;--------------- SE VERIFICA SI SE ENCUENTRA EN MODO EDITAR O NO------------------------------------
+                            -----
+006E   1C80           00506     BTFSS   FLAGS,1
+006F   2???           00507     GOTO NO_EDITAR_HORA
+0070   2???           00508     GOTO SI_EDITAR_HORA
+                      00509     
+Warning[207]: Found label after column 1. (NO_EDITAR_HORA)
+0071                  00510     NO_EDITAR_HORA:
+0071   08??           00511     MOVF    MINUTOS,W
+0072   00??           00512     MOVWF   DISPLAY_1
+0073   08??           00513     MOVF    HORAS,W
+0074   00??           00514     MOVWF   DISPLAY_2
+0075   2???           00515     CALL DISPLAY_NO_EDITAR
+                      00516    
+0076   2???           00517     GOTO    LOOP
+                      00518     
+Warning[207]: Found label after column 1. (SI_EDITAR_HORA)
+0077                  00519     SI_EDITAR_HORA:
+0077   2???           00520     CALL    EDITAR_HORA
+0078   08??           00521     MOVF    MINUTO_EDITAR,W
+0079   00??           00522     MOVWF   DISPLAY_1
+007A   08??           00523     MOVF    HORA_EDITAR,W
+007B   00??           00524     MOVWF   DISPLAY_2
+007C   2???           00525     CALL DISPLAY_EDITAR
+007D   2???           00526     GOTO LOOP
+                      00527     
+Warning[207]: Found label after column 1. (OPCION_FECHA)
+007E                  00528     OPCION_FECHA:
+007E   1C80           00529     BTFSS   FLAGS,1
+007F   2???           00530     GOTO NO_EDITAR_FECHA
+0080   2???           00531     GOTO SI_EDITAR_FECHA
+                      00532     
+Warning[207]: Found label after column 1. (NO_EDITAR_FECHA)
+0081                  00533     NO_EDITAR_FECHA:
+0081   08??           00534     MOVF    DIA,W
+0082   00??           00535     MOVWF   DISPLAY_2
+0083   08??           00536     MOVF    MES_BCD,W
+0084   00??           00537     MOVWF   DISPLAY_1
+0085   2???           00538      CALL DISPLAY_NO_EDITAR
+                      00539     
+0086   2???           00540      GOTO LOOP
+                      00541     
+Warning[207]: Found label after column 1. (SI_EDITAR_FECHA)
+0087                  00542     SI_EDITAR_FECHA:
+0087   2???           00543     CALL EDITAR_FECHA
+0088   08??           00544     MOVF    MES_BCD_EDITAR,W
+0089   00??           00545     MOVWF   DISPLAY_1
+008A   08??           00546     MOVF    DIA_EDITAR,W
+008B   00??           00547     MOVWF   DISPLAY_2
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+008C   2???           00548     CALL DISPLAY_EDITAR
+008D   2???           00549     GOTO LOOP
+                      00550     
+Warning[207]: Found label after column 1. (OPCION_TEMPORIZADOR)
+008E                  00551     OPCION_TEMPORIZADOR:
+008E   1C80           00552     BTFSS FLAGS,1
+008F   2???           00553     GOTO    NO_EDITAR_TEMPORIZADOR
+0090   2???           00554     GOTO    SI_EDITAR_TEMPORIZADOR
+                      00555     
+Warning[207]: Found label after column 1. (NO_EDITAR_TEMPORIZADOR)
+0091                  00556     NO_EDITAR_TEMPORIZADOR:
+0091   1880           00557     BTFSC PORTB_ANTERIOR,1 ;SI SE HACE UN FLANCO DE SUBIDA EN RB1 SE APAGA LA ALARMA
+0092   2???           00558     GOTO SEGUIR_NO_EDITAR
+                      00559     
+0093   1880           00560     BTFSC  PORTB_ACTUAL,1
+0094   2???           00561     GOTO    SEGUIR_NO_EDITAR
+                      00562     
+0095   1300           00563     BCF FLAGS,6
+0096   1089           00564     BCF PORTE,1
+0097   30FA           00565     MOVLW   VALOR_CONTADOR_ALARMA
+0098   00??           00566     MOVWF   CONTADOR_ALARMA
+0099   303C           00567     MOVLW   VALOR_SEGUNDOS_ALARMA
+009A   00??           00568     MOVWF   SEGUNDOS_ALARMA
+                      00569     
+Warning[207]: Found label after column 1. (SEGUIR_NO_EDITAR)
+009B                  00570     SEGUIR_NO_EDITAR:
+009B   08??           00571      MOVF    SEGUNDOS_TEMPORIZADOR,W
+009C   00??           00572     MOVWF   DISPLAY_1
+009D   08??           00573     MOVF    MINUTOS_TEMPORIZADOR,W
+009E   00??           00574     MOVWF   DISPLAY_2
+009F   2???           00575      CALL DISPLAY_NO_EDITAR
+00A0   2???           00576     GOTO LOOP
+                      00577     
+Warning[207]: Found label after column 1. (SI_EDITAR_TEMPORIZADOR)
+00A1                  00578     SI_EDITAR_TEMPORIZADOR:
+00A1   2???           00579     CALL EDITAR_TEMPORIZADOR
+00A2   08??           00580      MOVF    SEGUNDOS_TEMPORIZADOR_EDITAR,W
+00A3   00??           00581     MOVWF   DISPLAY_1
+00A4   08??           00582     MOVF    MINUTOS_TEMPORIZADOR_EDITAR,W
+00A5   00??           00583     MOVWF   DISPLAY_2
+00A6   2???           00584     CALL DISPLAY_EDITAR
+                      00585     
+00A7   2???           00586     GOTO LOOP
+                      00587     
+                      00588 
+                      00589 ;------------------- SUBRUTINAS DE VISTA ------------------------------------------------
+Warning[207]: Found label after column 1. (DISPLAY_NO_EDITAR)
+00A8                  00590     DISPLAY_NO_EDITAR:
+00A8   1880           00591     BTFSC   CONTROL_DISPLAY,1
+00A9   2???           00592     GOTO DISP_1_2
+00AA   1900           00593     BTFSC   CONTROL_DISPLAY,2
+00AB   2???           00594     GOTO DISP_2_1
+00AC   1980           00595     BTFSC   CONTROL_DISPLAY,3
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00AD   2???           00596     GOTO DISP_2_2
+                      00597     ;SI NINGUNO DE LOS ANTERIORES SE DIO ES QUE SE TENIA QUE ENTRAR AQUI
+00AE   08??           00598     MOVF    DISPLAY_1,W
+00AF   390F           00599     ANDLW   B'00001111' ;SE CONSERVA EL NIBBLE MENOS SIGNFICATIVO
+00B0   2???           00600     CALL TABLA
+00B1   2???           00601     GOTO MOSTRAR_VALOR
+                      00602     
+Warning[207]: Found label after column 1. (DISP_1_2)
+00B2                  00603     DISP_1_2
+00B2   0E??           00604     SWAPF   DISPLAY_1,W 
+00B3   390F           00605     ANDLW B'00001111'; SE CONSERVA EL VALOR DEL BIT MENOS SIGNIFICATIVO
+00B4   2???           00606     CALL TABLA
+00B5   2???           00607     GOTO MOSTRAR_VALOR
+                      00608     
+Warning[207]: Found label after column 1. (DISP_2_1)
+00B6                  00609     DISP_2_1
+00B6   08??           00610     MOVF DISPLAY_2,W
+00B7   390F           00611     ANDLW   B'00001111'
+00B8   2???           00612     CALL TABLA
+00B9   2???           00613     GOTO MOSTRAR_VALOR
+                      00614     
+Warning[207]: Found label after column 1. (DISP_2_2)
+00BA                  00615    DISP_2_2
+00BA   0E??           00616    SWAPF   DISPLAY_2,W
+00BB   390F           00617    ANDLW   B'00001111'
+00BC   2???           00618    CALL TABLA
+                      00619    
+Warning[207]: Found label after column 1. (MOSTRAR_VALOR)
+00BD                  00620     MOSTRAR_VALOR
+00BD   0188           00621     CLRF    PORTD
+00BE   0087           00622     MOVWF   PORTC
+00BF   08??           00623     MOVF    CONTROL_DISPLAY,W
+00C0   0088           00624     MOVWF   PORTD
+00C1   0008           00625     RETURN
+                      00626     
+00C2                  00627 DISPLAY_EDITAR:
+00C2   3000           00628     MOVLW .0 ;W SOLO SE SOBREESCRIBE SI EL DISPLAY TIENE QUE ESTAR ENCENDIDO
+00C3   1880           00629     BTFSC   CONTROL_DISPLAY,1
+00C4   2???           00630     GOTO DISPLAY_1_2_EDITAR
+00C5   1900           00631     BTFSC   CONTROL_DISPLAY,2
+00C6   2???           00632     GOTO DISPLAY_2_1_EDITAR
+00C7   1980           00633     BTFSC   CONTROL_DISPLAY,3
+00C8   2???           00634     GOTO DISPLAY_2_2_EDITAR
+                      00635     
+                      00636     ;SI SE LLEGA AQUI ES QUE ESTE ERA EL QUE SE TENIA QUE ENCENDER
+00C9   1E00           00637     BTFSS   FLAGS,4
+00CA   2???           00638     GOTO    DISPLAY_1_1_EDITAR_NORMAL
+                      00639     
+                      00640     
+00CB   1D00           00641     BTFSS   FLAGS,2
+00CC   2???           00642     GOTO MOSTRAR_DISPLAY_EDITAR
+Warning[207]: Found label after column 1. (DISPLAY_1_1_EDITAR_NORMAL)
+00CD                  00643     DISPLAY_1_1_EDITAR_NORMAL
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00CD   08??           00644     MOVF    DISPLAY_1,W
+00CE   390F           00645     ANDLW   B'00001111' ;SE CONSERVA EL NIBBLE MENOS SIGNFICATIVO
+00CF   2???           00646     CALL TABLA
+00D0   2???           00647     GOTO MOSTRAR_DISPLAY_EDITAR
+                      00648     
+Warning[207]: Found label after column 1. (DISPLAY_1_2_EDITAR)
+00D1                  00649     DISPLAY_1_2_EDITAR
+00D1   1E00           00650      BTFSS   FLAGS,4
+00D2   2???           00651     GOTO    DISPLAY_1_2_EDITAR_NORMAL
+                      00652     
+00D3   1D00           00653     BTFSS   FLAGS,2
+00D4   2???           00654     GOTO MOSTRAR_DISPLAY_EDITAR
+Warning[207]: Found label after column 1. (DISPLAY_1_2_EDITAR_NORMAL)
+00D5                  00655     DISPLAY_1_2_EDITAR_NORMAL
+00D5   0E??           00656     SWAPF   DISPLAY_1,W 
+00D6   390F           00657     ANDLW B'00001111'; SE CONSERVA EL VALOR DEL BIT MENOS SIGNIFICATIVO
+00D7   2???           00658     CALL TABLA
+00D8   2???           00659     GOTO MOSTRAR_DISPLAY_EDITAR
+                      00660     
+Warning[207]: Found label after column 1. (DISPLAY_2_1_EDITAR)
+00D9                  00661     DISPLAY_2_1_EDITAR
+00D9   1E00           00662      BTFSS   FLAGS,4
+00DA   2???           00663     GOTO    DISPLAY_2_1_EDITAR_NORMAL
+                      00664     
+00DB   1900           00665     BTFSC   FLAGS,2
+00DC   2???           00666     GOTO MOSTRAR_DISPLAY_EDITAR ;SE APAGAN TODOS LOS BITS DEL PUERTO C
+Warning[207]: Found label after column 1. (DISPLAY_2_1_EDITAR_NORMAL)
+00DD                  00667     DISPLAY_2_1_EDITAR_NORMAL
+00DD   08??           00668     MOVF DISPLAY_2,W
+00DE   390F           00669     ANDLW   B'00001111'
+00DF   2???           00670     CALL TABLA
+00E0   2???           00671     GOTO MOSTRAR_DISPLAY_EDITAR
+                      00672     
+Warning[207]: Found label after column 1. (DISPLAY_2_2_EDITAR)
+00E1                  00673     DISPLAY_2_2_EDITAR
+00E1   1E00           00674     BTFSS   FLAGS,4
+00E2   2???           00675     GOTO    DISPLAY_2_2_EDITAR_NORMAL
+                      00676     
+00E3   1900           00677     BTFSC   FLAGS,2
+00E4   2???           00678     GOTO MOSTRAR_DISPLAY_EDITAR ;SE APAGAN TODOS LOS BITS DEL PUERTO C
+Warning[207]: Found label after column 1. (DISPLAY_2_2_EDITAR_NORMAL)
+00E5                  00679     DISPLAY_2_2_EDITAR_NORMAL
+00E5   0E??           00680     SWAPF   DISPLAY_2,W
+00E6   390F           00681     ANDLW   B'00001111'
+00E7   2???           00682     CALL TABLA
+                      00683     
+Warning[207]: Found label after column 1. (MOSTRAR_DISPLAY_EDITAR)
+00E8                  00684     MOSTRAR_DISPLAY_EDITAR
+00E8   0188           00685     CLRF    PORTD
+00E9   0087           00686     MOVWF   PORTC
+00EA   08??           00687     MOVF    CONTROL_DISPLAY,W
+00EB   0088           00688     MOVWF   PORTD
+00EC   0008           00689     RETURN
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00690 ;--------------------- SUBRUTINAS PRA EL CONTROL DE LOS DATOS -----------------------------------------
+00ED                  00691 VALOR_TEMPORIZADOR: ;EN ESTA SUBRUTINA UNICAMENTE SE CORRIGEN LOS VALORES BCD
+                      00692     ;EL VALOR DE LA VARIABLE SEGUNDOS SE DISMINUYE EN LA INTERRUPCION DEL TMR2 AQUI SE CORRIGE EL BCD
+00ED   300F           00693     MOVLW   B'00001111' ;QUEDARSE CON EL PRIMER DIGITO
+00EE   05??           00694     ANDWF   SEGUNDOS_TEMPORIZADOR,W
+00EF   3C0F           00695     SUBLW   .15 ;SI SE PASO DE X0 A (X-1)9 AL RESTAR VA A QUEDAR VALOR 15 EN BINARIO EN ESTE NIBBLE
+00F0   1D03           00696     BTFSS   STATUS,2 ;SI LO ANTERIOR DA 0 ES QUE SI SE DEBE CORREGIR
+00F1   2???           00697     GOTO    DEC_MINUTO_TEMPORIZADOR
+                      00698     
+00F2   3006           00699     MOVLW .6
+00F3   02??           00700     SUBWF   SEGUNDOS_TEMPORIZADOR,F; SE COLOCA DE NUEVO EN 9
+                      00701     
+Warning[207]: Found label after column 1. (DEC_MINUTO_TEMPORIZADOR)
+00F4                  00702     DEC_MINUTO_TEMPORIZADOR
+00F4   300F           00703     MOVLW   B'00001111'
+00F5   05??           00704     ANDWF   MINUTOS_TEMPORIZADOR,W
+00F6   3C0F           00705     SUBLW   .15 ;
+00F7   1D03           00706     BTFSS   STATUS,2 
+00F8   0008           00707     RETURN
+                      00708     
+                      00709     ;-------- SE CORRIGE EL BCD -------------
+00F9   3006           00710     MOVLW   .6
+00FA   02??           00711     SUBWF   MINUTOS_TEMPORIZADOR ,F
+                      00712     
+00FB   0008           00713     RETURN
+                      00714     
+                      00715     
+                      00716 ; SUBRUTINA ENCARGADA DE REALIZAR EL CONTROL DE LA HORA Y LA FECHA DEL RELOJ
+00FC                  00717 VALOR_FECHA:
+00FC   1000           00718     BCF FLAGS,0 ;SE APAGA LA BANDERA DE CAMBIO DE FECHA
+00FD   0A??           00719     INCF    DIA,F ;SE AUMENTA EL VALOR
+                      00720     
+00FE   300F           00721     MOVLW   B'00001111'; CONSERVAR SOLO EL PRIMER DIGITO
+00FF   05??           00722     ANDWF   DIA,W 
+0100   3C0A           00723     SUBLW   .10 ;SI ES 10 SE CORRIJE LA CODIFICACION
+0101   1D03           00724     BTFSS   STATUS, 2 ;1 SI LA RESTA ANTERIOR DA 0
+0102   2???           00725     GOTO VALOR_MES
+                      00726     
+0103   3006           00727     MOVLW .6
+0104   07??           00728     ADDWF   DIA,F ;SE CORRIJE EL VALOR EN BCD
+                      00729     
+Warning[207]: Found label after column 1. (VALOR_MES)
+0105                  00730     VALOR_MES
+                      00731     ;AQUI SE VERIFICA SI EL NUEVO VALOR PARA EL DIA ES VALIDO O SI YA SE ENCUENTRA EN EL MES SIGUIENTE
+0105   2???           00732     CALL TABLA_MESES
+0106   02??           00733     SUBWF   DIA,W
+0107   1D03           00734     BTFSS   STATUS,2 ;SI LO ANTERIOR DA 0 SE SALTA LA SIGUENTE INSTRUCCION
+0108   0008           00735     RETURN
+                      00736     
+                      00737     ;SI  SE SALTA AQUI SIGUE
+0109   3001           00738     MOVLW   .1
+010A   00??           00739     MOVWF   DIA
+010B   0A??           00740     INCF    MES_BIN,F
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+010C   0A??           00741     INCF    MES_BCD,F
+                      00742     
+010D   300A           00743     MOVLW   .10
+010E   02??           00744     SUBWF   MES_BCD,W
+010F   3006           00745     MOVLW .6; POR SI LO ANTERIOR DA 0
+0110   1903           00746     BTFSC   STATUS,2 ;SI DA 0 LA RESTA LO SE EJECUTA LA SIGUIENTE INSTRUCCION
+Message[305]: Using default destination of 1 (file).
+0111   07??           00747     ADDWF   MES_BCD ;ESTO  SOLO ES PARA CORREGIR EL BCD
+                      00748     
+0112   300D           00749     MOVLW   .13
+0113   02??           00750     SUBWF   MES_BIN,W
+0114   1D03           00751     BTFSS   STATUS,2 ;SI DA 0 SE SALTA LA SIGUEINTE INSTRUCCION 
+0115   0008           00752     RETURN
+                      00753     
+0116   3001           00754     MOVLW .1
+0117   00??           00755     MOVWF   MES_BIN
+0118   00??           00756     MOVWF   MES_BCD
+0119   0008           00757     RETURN
+                      00758 
+                      00759     
+011A                  00760 VALOR_RELOJ:
+011A   0A??           00761     INCF    MINUTOS,F
+011B   01??           00762     CLRF    SEGUNDOS
+011C   08??           00763     MOVF   MINUTOS,W
+011D   390F           00764     ANDLW   B'00001111' ;NOS QUEDAMOS CON  EL PRIMER DIGITO
+011E   3C0A           00765     SUBLW   .10 ;SI LLEGA A 10 SE LE SUMAN 6 PARA CORREGIR EL BCD
+011F   1D03           00766     BTFSS        STATUS,2
+0120   0008           00767     RETURN
+                      00768     
+0121   3006           00769     MOVLW   .6
+0122   07??           00770     ADDWF   MINUTOS,F
+                      00771     
+                      00772     ;SE VERIFICA QUE LLEGUE A 60 
+0123   3060           00773     MOVLW B'01100000' ;60 EN BCD
+0124   02??           00774     SUBWF  MINUTOS,W
+0125   1D03           00775     BTFSS   STATUS,2 
+0126   0008           00776     RETURN
+                      00777     
+                      00778     ; SI SI LLEGO A 60 SE INCREMENTAN LAS HORAS 
+0127   01??           00779     CLRF    MINUTOS
+0128   0A??           00780     INCF    HORAS, F
+                      00781     
+0129   3024           00782     MOVLW B'00100100' ;24 EN BCD
+012A   02??           00783     SUBWF   HORAS,W
+012B   1D03           00784     BTFSS  STATUS, 2 ;SI LLEGA A ESTO SE LIMPIA EL VALOR DE HORAS Y TERMINA LA RUTINA
+012C   2???           00785     GOTO CORRECCION_HORA
+                      00786     
+012D   01??           00787     CLRF    HORAS
+012E   1400           00788     BSF FLAGS,0 ;ESTE BIT INDICA QUE HAY QUE INCREMENTAR LA FECHA
+                      00789     
+Warning[207]: Found label after column 1. (CORRECCION_HORA)
+012F                  00790     CORRECCION_HORA
+012F   08??           00791     MOVF   HORAS,W
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0130   390F           00792     ANDLW   B'00001111' ;SE CONSERVA EL PRIMER DIGITO
+0131   3C0A           00793     SUBLW   .10
+0132   1D03           00794     BTFSS   STATUS,2 ;SI DA 0 SE EJECUTA LO SIGUENTE
+0133   0008           00795     RETURN
+                      00796     
+0134   3006           00797     MOVLW .6
+0135   07??           00798     ADDWF   HORAS,F
+0136   0008           00799     RETURN
+                      00800 
+0137                  00801 EDITAR_HORA:
+                      00802     ;CUANDO SE ENTRA EN ESTE MODO RB2 REALIZA LA FUNCION DE SELECTOR DE EDICION DE HORA O MINUTO
+                      00803     ;RB5 DETERMINA CUANDO SE SALE DE ESTE MODO, 
+0137   1980           00804     BTFSC   FLAGS,3
+0138   2???           00805     GOTO SI_YA_SE_ENTRO_ANTES
+                      00806     ;-----------------SE ENTRA A ESTA PARTE SOLO CUANDO ES LA PRIMERA VEZ ------------------------------
+                            --------------
+0139   1580           00807     BSF FLAGS,3 ;PARA QUE NO SE VUELVA A ENTRAR AQUI HASTA QUE SE SALGA DEL MODO EDICION
+013A   08??           00808     MOVF    HORAS,W
+013B   00??           00809     MOVWF   HORA_EDITAR
+                      00810     
+013C   1410           00811     BSF T1CON,0 ;SE ACTIVA EL TIMER 1
+                      00812     
+013D   08??           00813     MOVF    MINUTOS,W
+013E   00??           00814     MOVWF   MINUTO_EDITAR ;SE GUARDAN LOS VALORES EN EL INSTANTE QUE SE ENTRA AL MODO DE EDICION
+                      00815    
+013F   08??           00816     MOVF    PORTB_ACTUAL,W ; SE ACTUALIZAN ESTOS REGISTROS YA QUE SI NO SE HACE, AL SER LA CONDICION
+0140   00??           00817     MOVWF   PORTB_ANTERIOR ;DE ENTRADA IGUAL QUE LA DE SALIDA, SOLO SE VA A EJECUTAR 1 VEZ
+0141   2???           00818     CALL DELAY_US ;SE ESPERA UN MOMENTO
+                      00819     ;CALL DELAY_US ;SE ESPERA UN MOMENTO
+0142   0806           00820     MOVF    PORTB,W
+0143   00??           00821     MOVWF   PORTB_ACTUAL
+                      00822     ;---------------------------------------------------------------------------------------------------
+                            --------------------------------
+Warning[207]: Found label after column 1. (SI_YA_SE_ENTRO_ANTES)
+0144                  00823     SI_YA_SE_ENTRO_ANTES
+                      00824     ;-------------------- SE EVITA EL PARPADEO DE LOS LEDS DEL CENTRO ----------------------------------
+                            ------
+0144   1509           00825     BSF PORTE,2
+                      00826     ;---------------------------------------------------------------------------------------------------
+                            ----------------------------
+                      00827     ;SE HACE EL CAMBIO ENTRE 0 O 1 PARA EL VALOR A EDITAR (SE VERIFICA QUE HAYA OCURRIDO FLANCO DE SUBID
+                            A)
+0145   1900           00828     BTFSC PORTB_ANTERIOR,2 ;RB2 
+0146   2???           00829     GOTO    CAMBIAR
+                      00830     
+0147   1D00           00831     BTFSS   PORTB_ACTUAL,2 
+0148   2???           00832     GOTO CAMBIAR
+                      00833     ;---------SE HACE EL CAMBIO DEL VALOR A EDITAR -----------------
+0149   1D00           00834     BTFSS   FLAGS,2 ;SE VE SI ESTA EN 1
+014A   2???           00835     GOTO CAMBIAR_0
+                      00836     
+014B   1100           00837     BCF FLAGS,2 ;SE  LIMPIA SI ESTA EN 1
+014C   2???           00838     GOTO    CAMBIAR
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[207]: Found label after column 1. (CAMBIAR_0)
+014D                  00839     CAMBIAR_0  ;SI NO ESTA EN 1 ESTA EN CERO ENTONCES 
+014D   1500           00840     BSF FLAGS,2 
+                      00841     ;-------------------------------------------------------------------------------------------
+Warning[207]: Found label after column 1. (CAMBIAR)
+014E                  00842     CAMBIAR
+014E   1900           00843     BTFSC   FLAGS,2 ; SE VE SI LA EDICION ESTA EN HORAS(1) O MINUTOS(0)
+014F   2???           00844     GOTO EDIT_HOUR
+                      00845     
+                      00846     
+Warning[207]: Found label after column 1. (EDIT_MINUTE)
+0150                  00847     EDIT_MINUTE
+                      00848     ;---------SE VERIFICA SI SE DEBE DECREMENTAR--------------------------------------
+Warning[207]: Found label after column 1. (DECREMENTAR_MINUTE)
+0150                  00849     DECREMENTAR_MINUTE
+0150   1800           00850     BTFSC   PORTB_ANTERIOR,0
+0151   2???           00851     GOTO    INCREMENTAR_MINUTE
+                      00852     
+0152   1C00           00853     BTFSS   PORTB_ACTUAL,0
+0153   2???           00854     GOTO INCREMENTAR_MINUTE
+                      00855     ;--------SI HUBO UN FLANCO DE SUBIDA SE EN RB0 SE EJECUTA ESTO  DECREMENTAR ---------------
+0154   03??           00856     DECF    MINUTO_EDITAR,F
+                      00857     ;--- CORRECCION DEL BCD ----------
+                      00858     ;PRIMERO SE VERIFICA SI SE PASO DE 00 A 59
+0155   30FF           00859     MOVLW .255 ;ESTE VALOR HABRIA SI SE LE RESTA 1 A 0X00H 
+0156   02??           00860     SUBWF   MINUTO_EDITAR,W
+0157   1D03           00861     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+0158   2???           00862     GOTO    CORREGIR_BCD_MINUTO_EDITAR
+                      00863     
+0159   3059           00864     MOVLW   B'01011001' ;59 EN BCD
+015A   00??           00865     MOVWF   MINUTO_EDITAR
+                      00866     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_MINUTO_EDITAR)
+015B                  00867     CORREGIR_BCD_MINUTO_EDITAR
+015B   300F           00868     MOVLW   B'00001111' 
+015C   05??           00869     ANDWF   MINUTO_EDITAR,W;SE CONSERVA EL PRIMER DIGITO
+015D   3C0F           00870     SUBLW   .15 ;ESTE VALOR DARIA SI PASA DE 0 A 9 
+015E   1D03           00871     BTFSS   STATUS,2 ;SI DA 1 SE SALTA LA INSTRUCCION (SE CORRIGE EL BCD)
+015F   2???           00872     GOTO INCREMENTAR_MINUTE
+                      00873     
+0160   3006           00874     MOVLW   .6 
+0161   02??           00875     SUBWF   MINUTO_EDITAR,F ;SE COLOCA  EN 9 COMO DEBERIA DE SER
+                      00876     
+Warning[207]: Found label after column 1. (INCREMENTAR_MINUTE)
+0162                  00877     INCREMENTAR_MINUTE
+                      00878     ;---------------------- SE VERIFICA SI SE DEBE INCREMENTAR -------------------------
+0162   1880           00879     BTFSC   PORTB_ANTERIOR,1  ;SI EL ANTERIOR ERA 0 SE VERIFICA QUE EL SIGUIENTE SEA 1
+0163   2???           00880     GOTO    SALIR
+                      00881     
+0164   1C80           00882     BTFSS   PORTB_ACTUAL,1
+0165   2???           00883     GOTO    SALIR
+                      00884     
+                      00885     ;----------- SI SE LLEGA HASTA AQUI ES QUE SE DEBIA INCREMENTAR ----------------------
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0166   0A??           00886     INCF    MINUTO_EDITAR,F
+                      00887     
+                      00888     ;----------------CORRECION DE BCD CUANDO SE PASA DE X9 A (X+1)0
+0167   300F           00889     MOVLW   B'00001111' ;SE CONSERVA EL PRIMER DIGITO
+0168   05??           00890     ANDWF   MINUTO_EDITAR,W
+0169   3C0A           00891     SUBLW .10 ;SI DA 0 SE DEBE SUMAR LAS DECENAS
+016A   1D03           00892     BTFSS   STATUS,2 ;SI DA 0 SE SALTA ESTA INSTRUCCION
+016B   2???           00893     GOTO VERIFICAR_OVERFLOW_MINUTO_EDITAR
+                      00894     
+016C   3006           00895     MOVLW   .6
+016D   07??           00896     ADDWF   MINUTO_EDITAR,F ;SE ARREGLA EL BCD
+                      00897     ;-----------------VERIFICAR SI SE PASA DE 59 A 00
+Warning[207]: Found label after column 1. (VERIFICAR_OVERFLOW_MINUTO_EDITAR)
+016E                  00898     VERIFICAR_OVERFLOW_MINUTO_EDITAR
+016E   3060           00899     MOVLW B'01100000' ;60 EN BCD
+016F   02??           00900     SUBWF   MINUTO_EDITAR,W
+0170   1903           00901     BTFSC   STATUS,2 ;SI DA 0 SE REINICIA
+0171   01??           00902     CLRF    MINUTO_EDITAR
+                      00903     
+0172   2???           00904     GOTO SALIR 
+                      00905     
+Warning[207]: Found label after column 1. (EDIT_HOUR)
+0173                  00906     EDIT_HOUR
+                      00907     ;SI HUBO UN FLANCO DE SUBIDA EN RB0 SE DECREMENTA EN 1 LAS HORAS
+                      00908     ;------SE VERIFICA SI SE DEBE DECREMENTAR------------------
+0173   1800           00909     BTFSC   PORTB_ANTERIOR,0 ;SE MIRA SI HUBO UN CAMBIO DE 0 A 1 (FLANCO DE SUBIDA
+0174   2???           00910     GOTO    INCREMENTAR_HOUR
+                      00911     
+0175   1C00           00912     BTFSS   PORTB_ACTUAL,0
+0176   2???           00913     GOTO INCREMENTAR_HOUR
+                      00914     ;--------SI HUBO UN FLANCO DE SUBIDA SE EN RB0 SE EJECUTA ESTO ---------------
+0177   03??           00915     DECF    HORA_EDITAR,F
+                      00916     ;--- CORRECCION DEL BCD ----------
+                      00917     ;PRIMERO SE VERIFICA SI SE PASO DE 00 A 24
+0178   30FF           00918     MOVLW .255 ;ESTE VALOR HABRIA SI SE LE RESTA 1 A 0X00H 
+0179   02??           00919     SUBWF   HORA_EDITAR,W
+017A   1D03           00920     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+017B   2???           00921     GOTO    CORREGIR_BCD_HORA_EDITAR
+                      00922     
+017C   3023           00923     MOVLW   B'00100011' ;23 EN BCD
+017D   00??           00924     MOVWF   HORA_EDITAR
+                      00925     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_HORA_EDITAR)
+017E                  00926     CORREGIR_BCD_HORA_EDITAR
+017E   300F           00927     MOVLW   B'00001111' 
+017F   05??           00928     ANDWF   HORA_EDITAR,W;SE CONSERVA EL PRIMER DIGITO
+0180   3C0F           00929     SUBLW   .15 ;ESTE VALOR DARIA SI PASA DE 0 A 9 
+0181   1D03           00930     BTFSS   STATUS,2 ;SI DA 1 SE SALTA LA INSTRUCCION
+0182   2???           00931     GOTO INCREMENTAR_HOUR
+                      00932     
+0183   3006           00933     MOVLW   .6 
+0184   02??           00934     SUBWF   HORA_EDITAR,F ;SE COLOCA  EN 9 COMO DEBERIA DE SER
+                      00935     
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[207]: Found label after column 1. (INCREMENTAR_HOUR)
+0185                  00936     INCREMENTAR_HOUR
+                      00937     ;---------------SE VERIFICA SI SE DEBE INCREMENTAR-----------------------------------------------
+0185   1880           00938     BTFSC   PORTB_ANTERIOR,1
+0186   2???           00939     GOTO    SALIR
+                      00940     
+0187   1C80           00941     BTFSS   PORTB_ACTUAL,1
+0188   2???           00942     GOTO    SALIR
+                      00943     
+                      00944     ;----------- SI SE LLEGA HASTA AQUI ES QUE SE DEBIA INCREMENTAR ----------------------
+0189   0A??           00945     INCF    HORA_EDITAR,F
+                      00946     
+                      00947     ;----------------CORRECION DE BCD CUANDO SE PASA DE X9 A (X+1)0
+018A   300F           00948     MOVLW   B'00001111' ;SE CONSERVA EL PRIMER DIGITO
+018B   05??           00949     ANDWF   HORA_EDITAR,W
+018C   3C0A           00950     SUBLW .10 ;SI DA 0 SE DEBE SUMAR LAS DECENAS
+018D   1D03           00951     BTFSS   STATUS,2 ;SI DA 0 SE SALTA ESTA INSTRUCCION
+018E   2???           00952     GOTO VERIFICAR_OVERFLOW_HORA_EDITAR
+                      00953     
+018F   3006           00954     MOVLW   .6
+0190   07??           00955     ADDWF  HORA_EDITAR,F ;SE ARREGLA EL BCD
+                      00956     ;-----------------VERIFICAR SI SE PASA DE 23 A 00
+Warning[207]: Found label after column 1. (VERIFICAR_OVERFLOW_HORA_EDITAR)
+0191                  00957     VERIFICAR_OVERFLOW_HORA_EDITAR
+0191   3024           00958     MOVLW B'00100100' ;24 EN BCD
+0192   02??           00959     SUBWF   HORA_EDITAR,W
+0193   1903           00960     BTFSC   STATUS,2 ;SI DA 0 SE REINICIA
+0194   01??           00961     CLRF    HORA_EDITAR
+                      00962     ;------- LUEGO DE TODO SE LLEGA A ESTE PUNTO --------------------------------------------------
+Warning[207]: Found label after column 1. (SALIR)
+0195                  00963     SALIR 
+                      00964     ;------- SE VERIFICA QUE SI SE HA SALIDO SOLO PULSANDO EL BOTON (SALIDA SIN GUARDAR DATOS)--------
+0195   1A80           00965     BTFSC   PORTB_ANTERIOR,5
+0196   0008           00966     RETURN
+                      00967     
+0197   1E80           00968     BTFSS   PORTB_ACTUAL,5
+0198   0008           00969     RETURN
+                      00970     
+                      00971   
+                      00972     ;-------------- SI HUBO FLANCO DE SUBIDA SE LLEGA A ESTE PUNTO -----------------------------------
+0199   1180           00973     BCF FLAGS,3 ;SE DESHABILITA EL BIT DE VERIFICACION DE PRIMERA VEZ ENTRANDO A EDITAR HORA
+019A   1100           00974     BCF FLAGS,2 ;SE COLOCA EN EDITAR MINUTO/DIA 
+019B   1080           00975     BCF FLAGS,1 ;SE DESHABILITA EL MODO DE EDICION
+                      00976     
+019C   300B           00977    MOVLW   VALOR_TMR1H
+019D   008F           00978    MOVWF   TMR1H
+019E   30DC           00979    MOVLW   VALOR_TMR1L
+019F   008E           00980     MOVWF   TMR1L
+                      00981     
+01A0   3002           00982     MOVLW   VALOR_TMR1
+01A1   00??           00983     MOVWF   CONTADOR_TMR1
+01A2   1010           00984     BCF T1CON,0 ;SE APAGA EL TMR1
+                      00985     
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01A3   0008           00986     RETURN 
+                      00987     
+01A4                  00988 EDITAR_FECHA:
+                      00989         ;CUANDO SE ENTRA EN ESTE MODO RB2 REALIZA LA FUNCION DE SELECTOR DE EDICION DE HORA O MINUTO
+                      00990     ;RB5 DETERMINA CUANDO SE SALE DE ESTE MODO, 
+01A4   1980           00991     BTFSC   FLAGS,3
+01A5   2???           00992     GOTO SI_YA_SE_ENTRO_ANTES_FECHA
+                      00993     ;-----------------SE ENTRA A ESTA PARTE SOLO CUANDO ES LA PRIMERA VEZ ------------------------------
+                            --------------
+01A6   1580           00994     BSF FLAGS,3 ;PARA QUE NO SE VUELVA A ENTRAR AQUI HASTA QUE SE SALGA DEL MODO EDICION
+01A7   08??           00995     MOVF    DIA,W
+01A8   00??           00996     MOVWF   DIA_EDITAR
+                      00997     
+01A9   1410           00998     BSF T1CON,0 ;SE ACTIVA EL TIMER 1
+                      00999     
+01AA   08??           01000     MOVF    MES_BCD,W
+01AB   00??           01001     MOVWF   MES_BCD_EDITAR ;SE GUARDAN LOS VALORES EN EL INSTANTE QUE SE ENTRA AL MODO DE EDICION
+                      01002    
+01AC   08??           01003     MOVF    MES_BIN,W
+01AD   00??           01004     MOVWF   MES_BIN_EDITAR
+01AE   08??           01005     MOVF    PORTB_ACTUAL,W ; SE ACTUALIZAN ESTOS REGISTROS YA QUE SI NO SE HACE, AL SER LA CONDICION
+01AF   00??           01006     MOVWF   PORTB_ANTERIOR ;DE ENTRADA IGUAL QUE LA DE SALIDA, SOLO SE VA A EJECUTAR 1 VEZ
+01B0   2???           01007     CALL DELAY_US ;SE ESPERA UN MOMENTO
+                      01008     ;CALL DELAY_US ;SE ESPERA UN MOMENTO
+01B1   0806           01009     MOVF    PORTB,W
+01B2   00??           01010     MOVWF   PORTB_ACTUAL
+                      01011     ;
+                      01012     
+                      01013     ;SE VERIFICA SI ES EL MINUTO O LA HORA QUE SE VA A EDITAR
+                      01014     ;---------------------------------------------------------------------------------------------------
+                            --------------------------------
+Warning[207]: Found label after column 1. (SI_YA_SE_ENTRO_ANTES_FECHA)
+01B3                  01015     SI_YA_SE_ENTRO_ANTES_FECHA
+                      01016     ;-------------------- SE EVITA EL PARPADEO DE LOS LEDS DEL CENTRO ----------------------------------
+                            ------
+01B3   1509           01017     BSF PORTE,2
+                      01018     ;---------------------------------------------------------------------------------------------------
+                            ----------------------------
+                      01019     ;SE HACE EL CAMBIO ENTRE 0 O 1 PARA EL VALOR A EDITAR (SE VERIFICA QUE HAYA OCURRIDO FLANCO DE SUBID
+                            A)
+01B4   1900           01020     BTFSC PORTB_ANTERIOR,2 ;RB2 
+01B5   2???           01021     GOTO    CAMBIAR_FECHA
+                      01022     
+01B6   1D00           01023     BTFSS   PORTB_ACTUAL,2 
+01B7   2???           01024     GOTO CAMBIAR_FECHA
+                      01025     ;---------SE HACE EL CAMBIO DEL VALOR A EDITAR -----------------
+01B8   1D00           01026     BTFSS   FLAGS,2 ;SE VE SI ESTA EN 1
+01B9   2???           01027     GOTO CAMBIAR_1
+                      01028     
+01BA   1100           01029     BCF FLAGS,2 ;SE  LIMPIA SI ESTA EN 1
+01BB   2???           01030     GOTO    CAMBIAR_FECHA
+Warning[207]: Found label after column 1. (CAMBIAR_1)
+01BC                  01031     CAMBIAR_1  ;SI NO ESTA EN 1 ESTA EN CERO ENTONCES 
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01BC   1500           01032     BSF FLAGS,2 
+                      01033     ;-------------------------------------------------------------------------------------------
+Warning[207]: Found label after column 1. (CAMBIAR_FECHA)
+01BD                  01034     CAMBIAR_FECHA
+01BD   2???           01035     CALL TABLA_MESES ;SE GUARDA PARA SABER EL NUMERO MAXIMO DE DIAS EN EL MES SELECCIONADO
+01BE   00??           01036     MOVWF DIA_MAX ;SE GUARDA EN DIA MAX
+                      01037     
+                      01038     ;--------SE VERIFICA QUE EDITAR DIA NO SEA MAYOR QUE EL DIA ESTABLECIDO PARA EL MES-------------
+01BF   08??           01039      MOVF       DIA_MAX,W
+01C0   02??           01040     SUBWF DIA_EDITAR,W
+01C1   1C03           01041     BTFSS   STATUS, C ; SI C=1  QUIERE DECIR QUE DIA_MAX<= DIA_EDITAR Y ENTONCES SE CORRIGE
+01C2   2???           01042     GOTO    DECISION_FECHA
+                      01043     
+01C3   03??           01044     DECF    DIA_MAX,W
+01C4   00??           01045     MOVWF   DIA_EDITAR
+                      01046     
+Warning[207]: Found label after column 1. (DECISION_FECHA)
+01C5                  01047     DECISION_FECHA
+01C5   1D00           01048     BTFSS   FLAGS,2 ;SE MIRA SI LO QUE SE DESEA EDITAR ES EL DIA O EL MES
+01C6   2???           01049     GOTO EDIT_MONTH
+01C7   2???           01050     GOTO EDIT_DAY
+                      01051     
+Warning[207]: Found label after column 1. (EDIT_DAY)
+01C8                  01052     EDIT_DAY
+                      01053     ;----------------------------------- DISMINUIR -----------------------------------------------------
+                            ---------
+Warning[207]: Found label after column 1. (DECREMENTAR_DAY)
+01C8                  01054     DECREMENTAR_DAY
+                      01055    ; --------------------------------SE COMPRUEBA QUE HAYA UN FLANCO DE SUBIDA EN RB0 ------------------
+                            ----
+01C8   1800           01056     BTFSC   PORTB_ANTERIOR,0
+01C9   2???           01057     GOTO    INCREMENTAR_DAY
+                      01058     
+01CA   1C00           01059     BTFSS   PORTB_ACTUAL,0
+01CB   2???           01060     GOTO INCREMENTAR_DAY
+                      01061     ;--------SI HUBO UN FLANCO DE SUBIDA SE EN RB0 SE EJECUTA ESTO  DECREMENTAR ---------------
+01CC   03??           01062     DECF    DIA_EDITAR,F
+                      01063     ;--- CORRECCION DEL BCD -----------------
+                      01064     ;PRIMERO SE VERIFICA SI SE PASO DE 00 A DIA_MAX
+01CD   1D03           01065     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+01CE   2???           01066     GOTO    CORREGIR_BCD_DIA_EDITAR
+                      01067     
+01CF   03??           01068    DECF DIA_MAX,W
+01D0   00??           01069     MOVWF   DIA_EDITAR
+                      01070     ;--------------------------------------------------
+                      01071     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_DIA_EDITAR)
+01D1                  01072     CORREGIR_BCD_DIA_EDITAR
+01D1   300F           01073     MOVLW   B'00001111' 
+01D2   05??           01074     ANDWF   DIA_EDITAR,W;SE CONSERVA EL PRIMER DIGITO
+01D3   3C0F           01075     SUBLW   .15 ;ESTE VALOR DARIA SI PASA DE 0 A 9 
+01D4   1D03           01076     BTFSS   STATUS,2 ;SI DA 1 SE SALTA LA INSTRUCCION (SE CORRIGE EL BCD)
+01D5   2???           01077     GOTO INCREMENTAR_DAY
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      01078     
+01D6   3006           01079     MOVLW   .6 
+01D7   02??           01080     SUBWF   DIA_EDITAR,F ;SE COLOCA  EN 9 COMO DEBERIA DE SER
+                      01081     ;---------------------------------------------------------------------------------------------------
+                            ---------------------------
+Warning[207]: Found label after column 1. (INCREMENTAR_DAY)
+01D8                  01082     INCREMENTAR_DAY
+                      01083     ;---------------------- SE VERIFICA SI SE DEBE INCREMENTAR(FLANCO DE SUBIDA EN RB1) ----------------
+                            ---------
+01D8   1880           01084     BTFSC   PORTB_ANTERIOR,1  ;SI EL ANTERIOR ERA 0 SE VERIFICA QUE EL SIGUIENTE SEA 1
+01D9   2???           01085     GOTO    SALIR_FECHA
+                      01086     ;SI LA CONDICION 0 ANTES Y 1 DESPUES NO SE DA ENTONCES NO SE EJECUTA LA SECCION QUE LE SIGUE    
+01DA   1C80           01087     BTFSS   PORTB_ACTUAL,1
+01DB   2???           01088     GOTO    SALIR_FECHA
+                      01089     ;------------------------------ SI SE VERIFICA QUE SE DEBE INCREMENTAR SE EJECUTA ESTO--------------
+                            ----
+01DC   0A??           01090     INCF    DIA_EDITAR,F 
+                      01091     
+                      01092    ;SE CORRIGE EL BCD
+01DD   08??           01093     MOVF    DIA_EDITAR,W
+01DE   390F           01094     ANDLW   B'00001111' ;CONSERVAR EL PRIMER DIGITO
+01DF   3C0A           01095     SUBLW   .10 
+01E0   1D03           01096     BTFSS   STATUS,2 ; SE SE LLEGA  A 10 SE CORRIGE
+01E1   2???           01097     GOTO    OVERFLOW_DIA
+                      01098     
+01E2   3006           01099     MOVLW   .6
+01E3   07??           01100     ADDWF   DIA_EDITAR,F 
+                      01101     
+Warning[207]: Found label after column 1. (OVERFLOW_DIA)
+01E4                  01102     OVERFLOW_DIA
+                      01103     ;SE VERIFICA QUE NO SE HAYA PASADO DEL DIA MAXIMO PERMITIDO
+01E4   08??           01104     MOVF    DIA_MAX,W
+01E5   02??           01105     SUBWF   DIA_EDITAR,W
+01E6   1D03           01106     BTFSS STATUS,2 ; Z=1 SI DIA_MAX = DIA_EDITAR    SE LIMPIAN LOS DIAS
+01E7   2???           01107     GOTO SALIR_FECHA ;SE SALE DE LA RUTINA
+                      01108     
+01E8   3001           01109     MOVLW .1
+01E9   00??           01110     MOVWF   DIA_EDITAR
+01EA   2???           01111     GOTO    SALIR_FECHA
+                      01112     
+Warning[207]: Found label after column 1. (EDIT_MONTH)
+01EB                  01113     EDIT_MONTH
+                      01114    ; --------------------------------SE COMPRUEBA QUE HAYA UN FLANCO DE SUBIDA EN RB0 ------------------
+                            ----
+01EB   1800           01115     BTFSC   PORTB_ANTERIOR,0
+01EC   2???           01116     GOTO    INCREMENTAR_MONTH
+                      01117     
+01ED   1C00           01118     BTFSS   PORTB_ACTUAL,0
+01EE   2???           01119     GOTO INCREMENTAR_MONTH
+                      01120     ;---------------------------------------------------------------------------------------------------
+                            ---------------------------------
+                      01121     ;--------------------------------- SE DECREMENTA SI SE DETECTA UN FLANCO DE SUBIDA------------------
+                            ------
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01EF   03??           01122     DECF    MES_BCD_EDITAR,F
+01F0   03??           01123     DECF    MES_BIN_EDITAR,F
+                      01124     
+                      01125     
+                      01126     ;PRIMERO SE VERIFICA SI SE PASO DE 01 A 12
+01F1   1D03           01127     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+01F2   2???           01128     GOTO    CORREGIR_BCD_MES_EDITAR
+                      01129     
+01F3   300C           01130     MOVLW   .12
+01F4   00??           01131     MOVWF   MES_BIN_EDITAR
+01F5   3012           01132     MOVLW   B'00010010' ; 12 EN BCD
+01F6   00??           01133     MOVWF   MES_BCD_EDITAR
+                      01134     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_MES_EDITAR)
+01F7                  01135     CORREGIR_BCD_MES_EDITAR
+                      01136     ;--------- SE CORRIGE EL BCD -------------------------------------------------------------
+01F7   300F           01137     MOVLW B'00001111'
+01F8   05??           01138     ANDWF  MES_BCD_EDITAR,W
+01F9   3C0F           01139     SUBLW   .15
+01FA   1D03           01140     BTFSS   STATUS,2
+01FB   2???           01141     GOTO    INCREMENTAR_MONTH
+                      01142     
+01FC   3006           01143     MOVLW   .6
+Message[305]: Using default destination of 1 (file).
+01FD   02??           01144     SUBWF   MES_BCD_EDITAR
+                      01145     ;-------------------------------------------------------------------------------------------------
+Warning[207]: Found label after column 1. (INCREMENTAR_MONTH)
+01FE                  01146     INCREMENTAR_MONTH
+                      01147       ;---------------------- SE VERIFICA SI SE DEBE INCREMENTAR(FLANCO DE SUBIDA EN RB1) --------------
+                            -----------
+01FE   1880           01148     BTFSC   PORTB_ANTERIOR,1  ;SI EL ANTERIOR ERA 0 SE VERIFICA QUE EL SIGUIENTE SEA 1
+01FF   2???           01149     GOTO    SALIR_FECHA
+                      01150     ;SI LA CONDICION 0 ANTES Y 1 DESPUES NO SE DA ENTONCES NO SE EJECUTA LA SECCION QUE LE SIGUE    
+0200   1C80           01151     BTFSS   PORTB_ACTUAL,1
+0201   2???           01152     GOTO    SALIR_FECHA
+                      01153     ;------------------------------ SI SE VERIFICA QUE SE DEBE INCREMENTAR SE EJECUTA ESTO--------------
+                            ----
+0202   0A??           01154     INCF    MES_BCD_EDITAR,F
+0203   0A??           01155     INCF    MES_BIN_EDITAR,F
+                      01156     
+                      01157     ;-------- SE VERIFICA EL PASO DE 12 A 00 ---------------------------
+0204   300D           01158     MOVLW   .13
+0205   02??           01159     SUBWF   MES_BIN_EDITAR,W
+0206   1D03           01160     BTFSS   STATUS,2
+0207   2???           01161     GOTO    CORREGIR_BCD_MES_INCREMENTAR
+                      01162     
+0208   3001           01163     MOVLW .1
+0209   00??           01164     MOVWF MES_BIN_EDITAR
+020A   00??           01165     MOVWF MES_BCD_EDITAR
+                      01166     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_MES_INCREMENTAR)
+020B                  01167     CORREGIR_BCD_MES_INCREMENTAR
+020B   08??           01168     MOVF    MES_BCD_EDITAR,W
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+020C   390F           01169     ANDLW B'00001111' 
+020D   3C0A           01170     SUBLW   .10
+020E   1D03           01171     BTFSS   STATUS,2
+020F   2???           01172     GOTO SALIR_FECHA
+                      01173     
+0210   3006           01174     MOVLW   .6
+0211   07??           01175     ADDWF   MES_BCD_EDITAR,F
+                      01176     ;------- LUEGO DE TODO SE LLEGA A ESTE PUNTO --------------------------------------------------
+Warning[207]: Found label after column 1. (SALIR_FECHA)
+0212                  01177     SALIR_FECHA 
+                      01178     ;------- SE VERIFICA QUE SI SE HA SALIDO SOLO PULSANDO EL BOTON (SALIDA SIN GUARDAR DATOS)--------
+0212   1A80           01179     BTFSC   PORTB_ANTERIOR,5
+0213   0008           01180     RETURN
+                      01181    ; SI NO HAY FLANCO DE SUBIDA SOLO SE SALE DE LA RUTINA PERO LA CONDICION DE EDICION SIEMPRE
+                      01182    ;ESTA ACTIVA
+0214   1E80           01183     BTFSS   PORTB_ACTUAL,5
+0215   0008           01184     RETURN
+                      01185    
+                      01186     ;-------------- SI HUBO FLANCO DE SUBIDA SE LLEGA A ESTE PUNTO -----------------------------------
+0216   1180           01187     BCF FLAGS,3 ;SE DESHABILITA EL BIT DE VERIFICACION DE PRIMERA VEZ ENTRANDO A EDITAR HORA
+0217   1100           01188     BCF FLAGS,2 ;SE COLOCA EN EDITAR MINUTO/DIA 
+0218   1080           01189     BCF FLAGS,1 ;SE DESHABILITA EL MODO DE EDICION
+                      01190     
+0219   300B           01191    MOVLW   VALOR_TMR1H
+021A   008F           01192    MOVWF   TMR1H
+021B   30DC           01193    MOVLW   VALOR_TMR1L
+021C   008E           01194     MOVWF   TMR1L
+                      01195     
+021D   3002           01196     MOVLW   VALOR_TMR1
+021E   00??           01197     MOVWF   CONTADOR_TMR1
+021F   1010           01198     BCF T1CON,0 ;SE APAGA EL TMR1
+                      01199     
+0220   0008           01200     RETURN
+                      01201     
+Warning[207]: Found label after column 1. (EDITAR_TEMPORIZADOR)
+0221                  01202    EDITAR_TEMPORIZADOR:
+                      01203     ;CUANDO SE ENTRA EN ESTE MODO RB2 REALIZA LA FUNCION DE SELECTOR DE EDICION DE HORA O MINUTO
+                      01204     ;RB5 DETERMINA CUANDO SE SALE DE ESTE MODO, 
+0221   1980           01205     BTFSC   FLAGS,3
+0222   2???           01206     GOTO SI_YA_SE_ENTRO_ANTES_TEMPORIZADOR
+                      01207     ;-----------------SE ENTRA A ESTA PARTE SOLO CUANDO ES LA PRIMERA VEZ ------------------------------
+                            --------------
+0223   1580           01208     BSF FLAGS,3 ;PARA QUE NO SE VUELVA A ENTRAR AQUI HASTA QUE SE SALGA DEL MODO EDICION
+0224   08??           01209      MOVF    SEGUNDOS_TEMPORIZADOR,W
+0225   3C00           01210     SUBLW   .0 ;SI ES CERO LO ANTERIOR Z=1 
+0226   1D03           01211     BTFSS   STATUS,2 
+0227   2???           01212     GOTO    IF_NOT_CERO
+                      01213     ;ya que el tiempo MINIMO PARA CONFIGURAR ES 1 SEGUNDO SE TIENE QUE VERIFICAR QUE EL TEMPORIZADOR
+                      01214     ;NUNCA SE COLOQUE EN 00 MINUTOS Y 00 SEGUNDOS AL EDITAR,
+0228   08??           01215     MOVF    MINUTOS_TEMPORIZADOR,W
+0229   3C00           01216     SUBLW   .0 ;UNICAMENTE SI W ES SERO Z=1
+022A   1D03           01217     BTFSS   STATUS,2
+022B   2???           01218     GOTO IF_NOT_CERO
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      01219     
+                      01220     ;SI SI ESTA EN 0 MINUTOS SE CONTINUA AQUI
+022C   08??           01221     MOVF    SEGUNDOS_TEMPORIZADOR,W
+022D   3C00           01222     SUBLW .0 ;SOLO SI W ES CERO Z=1
+022E   1D03           01223     BTFSS   STATUS,2
+022F   2???           01224     GOTO IF_NOT_CERO
+                      01225     
+0230   3001           01226     MOVLW   .1
+0231   00??           01227     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+0232   2???           01228     GOTO CONTINUE
+Warning[207]: Found label after column 1. (IF_NOT_CERO)
+0233                  01229     IF_NOT_CERO
+0233   08??           01230     MOVF    SEGUNDOS_TEMPORIZADOR,W
+0234   00??           01231     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+Warning[207]: Found label after column 1. (CONTINUE)
+0235                  01232     CONTINUE
+0235   1410           01233     BSF T1CON,0 ;SE ACTIVA EL TIMER 1
+                      01234     
+0236   08??           01235     MOVF    MINUTOS_TEMPORIZADOR,W
+0237   00??           01236     MOVWF   MINUTOS_TEMPORIZADOR_EDITAR ;SE GUARDAN LOS VALORES EN EL INSTANTE QUE SE ENTRA AL MODO DE E
+                            DICION
+                      01237    
+0238   08??           01238     MOVF    PORTB_ACTUAL,W ; SE ACTUALIZAN ESTOS REGISTROS YA QUE SI NO SE HACE, AL SER LA CONDICION
+0239   00??           01239     MOVWF   PORTB_ANTERIOR ;DE ENTRADA IGUAL QUE LA DE SALIDA, SOLO SE VA A EJECUTAR 1 VEZ
+023A   2???           01240     CALL DELAY_US ;SE ESPERA UN MOMENTO
+                      01241     ;CALL DELAY_US ;SE ESPERA UN MOMENTO
+023B   0806           01242     MOVF    PORTB,W
+023C   00??           01243     MOVWF   PORTB_ACTUAL
+                      01244     ;---------------------------------------------------------------------------------------------------
+                            --------------------------------
+Warning[207]: Found label after column 1. (SI_YA_SE_ENTRO_ANTES_TEMPORIZADOR)
+Warning[208]: Label truncated at 32 characters. (SI_YA_SE_ENTRO_ANTES_TEMPORIZADOR)
+023D                  01245     SI_YA_SE_ENTRO_ANTES_TEMPORIZADOR
+                      01246     ;-------------------- SE EVITA EL PARPADEO DE LOS LEDS DEL CENTRO ----------------------------------
+                            ------
+023D   1509           01247     BSF PORTE,2
+                      01248     ;---------------------------------------------------------------------------------------------------
+                            ----------------------------
+                      01249     ;SE HACE EL CAMBIO ENTRE 0 O 1 PARA EL VALOR A EDITAR (SE VERIFICA QUE HAYA OCURRIDO FLANCO DE SUBID
+                            A)
+023E   1900           01250     BTFSC PORTB_ANTERIOR,2 ;RB2 
+023F   2???           01251     GOTO    CAMBIAR_TEMPORIZADOR
+                      01252     
+0240   1D00           01253     BTFSS   PORTB_ACTUAL,2 
+0241   2???           01254     GOTO CAMBIAR_TEMPORIZADOR
+                      01255     ;---------SE HACE EL CAMBIO DEL VALOR A EDITAR -----------------
+0242   1D00           01256     BTFSS   FLAGS,2 ;SE VE SI ESTA EN 1
+0243   2???           01257     GOTO CAMBIAR_0_TEMPORIZADOR
+                      01258     
+0244   1100           01259     BCF FLAGS,2 ;SE  LIMPIA SI ESTA EN 1
+0245   2???           01260     GOTO    CAMBIAR_TEMPORIZADOR
+Warning[207]: Found label after column 1. (CAMBIAR_0_TEMPORIZADOR)
+0246                  01261     CAMBIAR_0_TEMPORIZADOR  ;SI NO ESTA EN 1 ESTA EN CERO ENTONCES 
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0246   1500           01262     BSF FLAGS,2 
+                      01263     ;-------------------------------------------------------------------------------------------
+Warning[207]: Found label after column 1. (CAMBIAR_TEMPORIZADOR)
+0247                  01264     CAMBIAR_TEMPORIZADOR
+0247   1900           01265     BTFSC   FLAGS,2 ; SE VE SI LA EDICION ESTA EN HORAS(1) O MINUTOS(0)
+0248   2???           01266     GOTO EDIT_MINUTE_TEMPORIZADOR
+                      01267     
+                      01268     
+Warning[207]: Found label after column 1. (EDIT_SECOND)
+0249                  01269     EDIT_SECOND
+                      01270     ;---------SE VERIFICA SI SE DEBE DECREMENTAR--------------------------------------
+Warning[207]: Found label after column 1. (DECREMENTAR_SECOND)
+0249                  01271     DECREMENTAR_SECOND
+0249   1800           01272     BTFSC   PORTB_ANTERIOR,0
+024A   2???           01273     GOTO    INCREMENTAR_SECOND
+                      01274     
+024B   1C00           01275     BTFSS   PORTB_ACTUAL,0
+024C   2???           01276     GOTO INCREMENTAR_SECOND
+                      01277     ;--------SI HUBO UN FLANCO DE SUBIDA SE EN RB0 SE EJECUTA ESTO  DECREMENTAR ---------------
+024D   03??           01278     DECF    SEGUNDOS_TEMPORIZADOR_EDITAR,F
+                      01279     
+                      01280     ;SE VERIFICA SI MINUTOS_TEMPORIZADOR_EDITAR ES DIFERENCE DE CERO
+024E   08??           01281     MOVF    MINUTOS_TEMPORIZADOR_EDITAR,W
+024F   3C00           01282     SUBLW   .0 ;SOLO SI ES 0 Z=1 
+0250   1D03           01283     BTFSS   STATUS,2 
+0251   2???           01284     GOTO CORREGIR_BCD_TEMP_SEG_DEC
+                      01285     ;-------- SI MINUTOS ES CERO SE EJECUTA ESTO ----------------- 
+0252   08??           01286     MOVF    SEGUNDOS_TEMPORIZADOR_EDITAR,W
+0253   3C00           01287     SUBLW   .0 ;SI ESTO DA CERO
+0254   1D03           01288     BTFSS   STATUS,2
+0255   2???           01289     GOTO    CORREGIR_BCD_TEMP_SEG_DEC
+                      01290     
+0256   3059           01291     MOVLW   B'01011001' ;59 EN BCD
+0257   00??           01292     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+                      01293     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_TEMP_SEG_DEC)
+0258                  01294     CORREGIR_BCD_TEMP_SEG_DEC
+                      01295     ;--- CORRECCION DEL BCD ----------
+                      01296     ;PRIMERO SE VERIFICA SI SE PASO DE 00 A 59
+0258   30FF           01297     MOVLW .255 ;ESTE VALOR HABRIA SI SE LE RESTA 1 A 0X00H 
+0259   02??           01298     SUBWF   SEGUNDOS_TEMPORIZADOR_EDITAR,W
+025A   1D03           01299     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+025B   2???           01300     GOTO    CORREGIR_BCD_SEGUNDO_TEMPORIZADOR_EDITAR
+                      01301     
+025C   3059           01302     MOVLW   B'01011001' ;59 EN BCD
+025D   00??           01303     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+                      01304     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_SEGUNDO_TEMPORIZADOR_EDITAR)
+Warning[208]: Label truncated at 32 characters. (CORREGIR_BCD_SEGUNDO_TEMPORIZADOR_EDITAR)
+025E                  01305     CORREGIR_BCD_SEGUNDO_TEMPORIZADOR_EDITAR
+025E   300F           01306     MOVLW   B'00001111' 
+025F   05??           01307     ANDWF   SEGUNDOS_TEMPORIZADOR_EDITAR,W;SE CONSERVA EL PRIMER DIGITO
+0260   3C0F           01308     SUBLW   .15 ;ESTE VALOR DARIA SI PASA DE 0 A 9 
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 29
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0261   1D03           01309     BTFSS   STATUS,2 ;SI DA 1 SE SALTA LA INSTRUCCION (SE CORRIGE EL BCD)
+0262   2???           01310     GOTO INCREMENTAR_SECOND
+                      01311     
+0263   3006           01312     MOVLW   .6 
+0264   02??           01313     SUBWF   SEGUNDOS_TEMPORIZADOR_EDITAR,F ;SE COLOCA  EN 9 COMO DEBERIA DE SER
+                      01314     
+Warning[207]: Found label after column 1. (INCREMENTAR_SECOND)
+0265                  01315     INCREMENTAR_SECOND
+                      01316     ;---------------------- SE VERIFICA SI SE DEBE INCREMENTAR -------------------------
+0265   1880           01317     BTFSC   PORTB_ANTERIOR,1  ;SI EL ANTERIOR ERA 0 SE VERIFICA QUE EL SIGUIENTE SEA 1
+0266   2???           01318     GOTO    SALIR_TEMPORIZADOR
+                      01319     
+0267   1C80           01320     BTFSS   PORTB_ACTUAL,1
+0268   2???           01321     GOTO    SALIR_TEMPORIZADOR
+                      01322     
+                      01323     ;----------- SI SE LLEGA HASTA AQUI ES QUE SE DEBIA INCREMENTAR ----------------------
+0269   0A??           01324     INCF    SEGUNDOS_TEMPORIZADOR_EDITAR,F
+                      01325         ;SE VERIFICA SI MINUTOS_TEMPORIZADOR_EDITAR ES DIFERENCE DE CERO
+026A   08??           01326     MOVF    MINUTOS_TEMPORIZADOR_EDITAR,W
+026B   3C00           01327     SUBLW   .0 ;SOLO SI ES 0 Z=1 
+026C   1D03           01328     BTFSS   STATUS,2 
+026D   2???           01329     GOTO CORREGIR_BCD_TEMP_SEG_INC
+                      01330     ;-------- SI MINUTOS ES CERO SE EJECUTA ESTO ----------------- 
+026E   08??           01331     MOVF    SEGUNDOS_TEMPORIZADOR_EDITAR,W
+026F   3C5A           01332     SUBLW   B'01011010' ;SI ESTO DA CERO
+0270   1D03           01333     BTFSS   STATUS,2
+0271   2???           01334     GOTO    CORREGIR_BCD_TEMP_SEG_INC
+                      01335     
+0272   3001           01336     MOVLW   .1 ;59 EN BCD
+0273   00??           01337     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+Warning[207]: Found label after column 1. (CORREGIR_BCD_TEMP_SEG_INC)
+0274                  01338     CORREGIR_BCD_TEMP_SEG_INC
+                      01339     ;----------------CORRECION DE BCD CUANDO SE PASA DE X9 A (X+1)0
+0274   300F           01340     MOVLW   B'00001111' ;SE CONSERVA EL PRIMER DIGITO
+0275   05??           01341     ANDWF   SEGUNDOS_TEMPORIZADOR_EDITAR,W
+0276   3C0A           01342     SUBLW .10 ;SI DA 0 SE DEBE SUMAR LAS DECENAS
+0277   1D03           01343     BTFSS   STATUS,2 ;SI DA 0 SE SALTA ESTA INSTRUCCION
+0278   2???           01344     GOTO VERIFICAR_OVERFLOW_SEGUNDOS_TEMPORIZADOR_EDITAR
+                      01345     
+0279   3006           01346     MOVLW   .6
+027A   07??           01347     ADDWF   SEGUNDOS_TEMPORIZADOR_EDITAR,F ;SE ARREGLA EL BCD
+                      01348     ;-----------------VERIFICAR SI SE PASA DE 59 A 00
+Warning[207]: Found label after column 1. (VERIFICAR_OVERFLOW_SEGUNDOS_TEMPORIZADOR_EDITAR)
+Warning[208]: Label truncated at 32 characters. (VERIFICAR_OVERFLOW_SEGUNDOS_TEMPORIZADOR_EDITAR)
+027B                  01349     VERIFICAR_OVERFLOW_SEGUNDOS_TEMPORIZADOR_EDITAR
+027B   3060           01350     MOVLW B'01100000' ;60 EN BCD
+027C   02??           01351     SUBWF   SEGUNDOS_TEMPORIZADOR_EDITAR,W
+027D   1903           01352     BTFSC   STATUS,2 ;SI DA 0 SE REINICIA
+027E   01??           01353     CLRF    SEGUNDOS_TEMPORIZADOR_EDITAR
+                      01354     
+027F   2???           01355     GOTO SALIR_TEMPORIZADOR
+                      01356     
+Warning[207]: Found label after column 1. (EDIT_MINUTE_TEMPORIZADOR)
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 30
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0280                  01357     EDIT_MINUTE_TEMPORIZADOR
+                      01358     ;------------------------ CADA VEZ QUE SE ENTRA AQUI SE VERIFICA SI SEGUNDOS ES 0 PARA ESTABLECER EL
+                             TIEMPO MINIMO----
+0280   3000           01359     MOVLW .0
+0281   02??           01360     SUBWF SEGUNDOS_TEMPORIZADOR_EDITAR,W
+0282   1D03           01361     BTFSS   STATUS,2 
+0283   2???           01362     GOTO    VER_PORTB
+                      01363     
+                      01364     ;SI SEGUNDOS ES 0 ENTONCES SE VERIFICA QUE MINUTOS SEA 0 
+0284   3000           01365     MOVLW .0
+0285   02??           01366     SUBWF   MINUTOS_TEMPORIZADOR_EDITAR,W
+0286   1D03           01367     BTFSS   STATUS,2 
+0287   2???           01368     GOTO VER_PORTB
+                      01369     
+                      01370     ;SI SE LLEGA HASTA AQUI ENTONCES ES QUE SE DEBE CORREGIR PARA NO DAR OPCION DE PONER 0 MIN 0 SEG
+0288   3001           01371     MOVLW   .1
+0289   00??           01372     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
+                      01373     
+Warning[207]: Found label after column 1. (VER_PORTB)
+028A                  01374     VER_PORTB
+                      01375     ;------SE VERIFICA SI SE DEBE DECREMENTAR------------------
+028A   1800           01376     BTFSC   PORTB_ANTERIOR,0 ;SE MIRA SI HUBO UN CAMBIO DE 0 A 1 (FLANCO DE SUBIDA
+028B   2???           01377     GOTO    INCREMENTAR_MINUTE_TEMPORIZADOR
+                      01378     
+028C   1C00           01379     BTFSS   PORTB_ACTUAL,0
+028D   2???           01380     GOTO INCREMENTAR_MINUTE_TEMPORIZADOR
+                      01381     ;--------SIm HUBO UN FLANCO DE SUBIDA SE EN RB0 SE EJECUTA ESTO ---------------
+028E   03??           01382     DECF    MINUTOS_TEMPORIZADOR_EDITAR,F
+                      01383     ;--- CORRECCION DEL BCD ----------
+                      01384     ;PRIMERO SE VERIFICA SI SE PASO DE 00 A 99
+028F   30FF           01385     MOVLW .255 ;ESTE VALOR HABRIA SI SE LE RESTA 1 A 0X00H 
+0290   02??           01386     SUBWF   MINUTOS_TEMPORIZADOR_EDITAR,W
+0291   1D03           01387     BTFSS   STATUS,2 ;SI ES 1 SE SALTA EL GOTO
+0292   2???           01388     GOTO    CORREGIR_BCD_MINUTOS_TEMPORIZADOR_EDITAR
+                      01389     
+0293   3099           01390     MOVLW   B'10011001' ;99 EN BCD
+0294   00??           01391     MOVWF   MINUTOS_TEMPORIZADOR_EDITAR
+                      01392     
+Warning[207]: Found label after column 1. (CORREGIR_BCD_MINUTOS_TEMPORIZADOR_EDITAR)
+Warning[208]: Label truncated at 32 characters. (CORREGIR_BCD_MINUTOS_TEMPORIZADOR_EDITAR)
+0295                  01393     CORREGIR_BCD_MINUTOS_TEMPORIZADOR_EDITAR
+0295   300F           01394     MOVLW   B'00001111' 
+0296   05??           01395     ANDWF   MINUTOS_TEMPORIZADOR_EDITAR,W;SE CONSERVA EL PRIMER DIGITO
+0297   3C0F           01396     SUBLW   .15 ;ESTE VALOR DARIA SI PASA DE 0 A 9 
+0298   1D03           01397     BTFSS   STATUS,2 ;SI DA 1 SE SALTA LA INSTRUCCION
+0299   2???           01398     GOTO INCREMENTAR_MINUTE_TEMPORIZADOR
+                      01399     
+029A   3006           01400     MOVLW   .6 
+029B   02??           01401     SUBWF   MINUTOS_TEMPORIZADOR_EDITAR,F ;SE COLOCA  EN 9 COMO DEBERIA DE SER
+                      01402     
+Warning[207]: Found label after column 1. (INCREMENTAR_MINUTE_TEMPORIZADOR)
+029C                  01403     INCREMENTAR_MINUTE_TEMPORIZADOR
+                      01404     ;---------------SE VERIFICA SI SE DEBE INCREMENTAR-----------------------------------------------
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 31
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+029C   1880           01405     BTFSC   PORTB_ANTERIOR,1
+029D   2???           01406     GOTO    SALIR_TEMPORIZADOR
+                      01407     
+029E   1C80           01408     BTFSS   PORTB_ACTUAL,1
+029F   2???           01409     GOTO    SALIR_TEMPORIZADOR
+                      01410     
+                      01411     ;----------- SI SE LLEGA HASTA AQUI ES QUE SE DEBIA INCREMENTAR ----------------------
+02A0   0A??           01412     INCF    MINUTOS_TEMPORIZADOR_EDITAR,F
+                      01413     
+                      01414     ;----------------CORRECION DE BCD CUANDO SE PASA DE X9 A (X+1)0
+02A1   300F           01415     MOVLW   B'00001111' ;SE CONSERVA EL PRIMER DIGITO
+02A2   05??           01416     ANDWF   MINUTOS_TEMPORIZADOR_EDITAR,W
+02A3   3C0A           01417     SUBLW .10 ;SI DA 0 SE DEBE SUMAR LAS DECENAS
+02A4   1D03           01418     BTFSS   STATUS,2 ;SI DA 0 SE SALTA ESTA INSTRUCCION
+02A5   2???           01419     GOTO VERIFICAR_OVERFLOW_MINUTOS_EDITAR
+                      01420     
+02A6   3006           01421     MOVLW   .6
+02A7   07??           01422     ADDWF  MINUTOS_TEMPORIZADOR_EDITAR,F ;SE ARREGLA EL BCD
+                      01423     ;-----------------VERIFICAR SI SE PASA DE 99 A 00
+Warning[207]: Found label after column 1. (VERIFICAR_OVERFLOW_MINUTOS_EDITAR)
+Warning[208]: Label truncated at 32 characters. (VERIFICAR_OVERFLOW_MINUTOS_EDITAR)
+02A8                  01424     VERIFICAR_OVERFLOW_MINUTOS_EDITAR
+02A8   30A0           01425     MOVLW B'10100000' 
+02A9   02??           01426     SUBWF   MINUTOS_TEMPORIZADOR_EDITAR,W
+02AA   1903           01427     BTFSC   STATUS,2 ;SI DA 0 SE REINICIA
+02AB   01??           01428     CLRF    MINUTOS_TEMPORIZADOR_EDITAR
+                      01429     ;------- LUEGO DE TODO SE LLEGA A ESTE PUNTO --------------------------------------------------
+Warning[207]: Found label after column 1. (SALIR_TEMPORIZADOR)
+02AC                  01430     SALIR_TEMPORIZADOR
+                      01431     ;------- SE VERIFICA QUE SI SE HA SALIDO SOLO PULSANDO EL BOTON (SALIDA SIN GUARDAR DATOS)--------
+02AC   1A80           01432     BTFSC   PORTB_ANTERIOR,5
+02AD   0008           01433     RETURN
+                      01434     
+02AE   1E80           01435     BTFSS   PORTB_ACTUAL,5
+02AF   0008           01436     RETURN
+                      01437     
+                      01438   
+                      01439     ;-------------- SI HUBO FLANCO DE SUBIDA SE LLEGA A ESTE PUNTO -----------------------------------
+02B0   1180           01440     BCF FLAGS,3 ;SE DESHABILITA EL BIT DE VERIFICACION DE PRIMERA VEZ ENTRANDO A EDITAR HORA
+02B1   1100           01441     BCF FLAGS,2 ;SE COLOCA EN EDITAR MINUTO/DIA 
+02B2   1080           01442     BCF FLAGS,1 ;SE DESHABILITA EL MODO DE EDICION
+                      01443     
+02B3   300B           01444    MOVLW   VALOR_TMR1H
+02B4   008F           01445    MOVWF   TMR1H
+02B5   30DC           01446    MOVLW   VALOR_TMR1L
+02B6   008E           01447     MOVWF   TMR1L
+                      01448     
+02B7   3002           01449     MOVLW   VALOR_TMR1
+02B8   00??           01450     MOVWF   CONTADOR_TMR1
+02B9   1010           01451     BCF T1CON,0 ;SE APAGA EL TMR1
+                      01452     
+02BA   0008           01453     RETURN 
+                      01454     
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 32
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      01455     
+02BB                  01456 DELAY_US: ;RETARDO DE 228uS
+02BB   30FF           01457     MOVLW   .255
+02BC   00??           01458     MOVWF   DELAY
+02BD   0B??           01459     DECFSZ  DELAY, F
+02BE   2???           01460     GOTO $-1
+02BF   0008           01461     RETURN
+                      01462     
+                      01463 
+20D4 3FFF             01464     END
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ABDEN                             00000000
+ABDOVF                            00000007
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ANS0                              00000000
+ANS1                              00000001
+ANS10                             00000002
+ANS11                             00000003
+ANS12                             00000004
+ANS13                             00000005
+ANS2                              00000002
+ANS3                              00000003
+ANS4                              00000004
+ANS5                              00000005
+ANS6                              00000006
+ANS7                              00000007
+ANS8                              00000000
+ANS9                              00000001
+ANSEL                             00000188
+ANSELH                            00000189
+BAUDCTL                           00000187
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRG0                              00000000
+BRG1                              00000001
+BRG10                             00000002
+BRG11                             00000003
+BRG12                             00000004
+BRG13                             00000005
+BRG14                             00000006
+BRG15                             00000007
+BRG16                             00000003
+BRG2                              00000002
+BRG3                              00000003
+BRG4                              00000004
+BRG5                              00000005
+BRG6                              00000006
+BRG7                              00000007
+BRG8                              00000000
+BRG9                              00000001
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BRGH                              00000002
+C                                 00000000
+C1CH0                             00000000
+C1CH1                             00000001
+C1IE                              00000005
+C1IF                              00000005
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+C1POL                             00000004
+C1R                               00000002
+C1RSEL                            00000005
+C1SEN                             00000005
+C2CH0                             00000000
+C2CH1                             00000001
+C2IE                              00000006
+C2IF                              00000006
+C2OE                              00000005
+C2ON                              00000007
+C2OUT                             00000006
+C2POL                             00000004
+C2R                               00000002
+C2REN                             00000004
+C2RSEL                            00000004
+C2SYNC                            00000000
+CAMBIAR                           0000014E
+CAMBIAR_0                         0000014D
+CAMBIAR_0_TEMPORIZADOR            00000246
+CAMBIAR_1                         000001BC
+CAMBIAR_FECHA                     000001BD
+CAMBIAR_TEMPORIZADOR              00000247
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CKE                               00000006
+CKP                               00000004
+CM1CON0                           00000107
+CM2CON0                           00000108
+CM2CON1                           00000109
+CONTADOR_ALARMA                   00000006
+CONTADOR_BUZZER                   00000004
+CONTADOR_TMR1                     00000002
+CONTADOR_TMR2                     00000005
+CONTAR_SEGUNDO                    00000042
+CONTINUE                          00000235
+CONTROL_DISPLAY                   00000009
+CORRECCION_HORA                   0000012F
+CORREGIR_BCD_DIA_EDITAR           000001D1
+CORREGIR_BCD_HORA_EDITAR          0000017E
+CORREGIR_BCD_MES_EDITAR           000001F7
+CORREGIR_BCD_MES_INCREMENTAR      0000020B
+CORREGIR_BCD_MINUTOS_TEMPORIZADO  00000295
+CORREGIR_BCD_MINUTO_EDITAR        0000015B
+CORREGIR_BCD_SEGUNDO_TEMPORIZADO  0000025E
+CORREGIR_BCD_TEMP_SEG_DEC         00000258
+CORREGIR_BCD_TEMP_SEG_INC         00000274
+CREN                              00000004
+CSRC                              00000007
+CUENTALED                         00000001
+CUENTATMR0                        00000000
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DECISION_FECHA                    000001C5
+DECREMENTAR_DAY                   000001C8
+DECREMENTAR_MINUTE                00000150
+DECREMENTAR_MINUTOS_TEMPORIZADOR  00000085
+DECREMENTAR_SECOND                00000249
+DEC_MINUTO_TEMPORIZADOR           000000F4
+DELAY                             00000008
+DELAY_US                          000002BB
+DIA                               00000015
+DIA_EDITAR                        00000019
+DIA_MAX                           00000016
+DISPLAY_1                         00000021
+DISPLAY_1_1_EDITAR_NORMAL         000000CD
+DISPLAY_1_2_EDITAR                000000D1
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DISPLAY_1_2_EDITAR_NORMAL         000000D5
+DISPLAY_2                         00000022
+DISPLAY_2_1_EDITAR                000000D9
+DISPLAY_2_1_EDITAR_NORMAL         000000DD
+DISPLAY_2_2_EDITAR                000000E1
+DISPLAY_2_2_EDITAR_NORMAL         000000E5
+DISPLAY_EDITAR                    000000C2
+DISPLAY_NO_EDITAR                 000000A8
+DISP_1_2                          000000B2
+DISP_2_1                          000000B6
+DISP_2_2                          000000BA
+D_A                               00000005
+D_NOT_A                           00000005
+ECCPAS                            0000009C
+ECCPAS0                           00000004
+ECCPAS1                           00000005
+ECCPAS2                           00000006
+ECCPASE                           00000007
+EDITANDO_FECHA                    00000062
+EDITANDO_HORA                     0000005C
+EDITANDO_TIMER                    00000069
+EDITAR_FECHA                      000001A4
+EDITAR_HORA                       00000137
+EDITAR_TEMPORIZADOR               00000221
+EDIT_DAY                          000001C8
+EDIT_HOUR                         00000173
+EDIT_MINUTE                       00000150
+EDIT_MINUTE_TEMPORIZADOR          00000280
+EDIT_MONTH                        000001EB
+EDIT_SECOND                       00000249
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDAT                             0000010C
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+ESTABLECER_OPCION                 00000057
+F                                 00000001
+FERR                              00000002
+FLAGS                             0000000A
+FSR                               00000004
+FUNCIONAMIENTO_NORMAL_TEMPORIZAD  0000007F
+FVREN                             00000000
+GCEN                              00000007
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HORAS                             00000010
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+HORA_EDITAR                       00000012
+HTS                               00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IF_NOT_CERO                       00000233
+INCREMENTAR_DAY                   000001D8
+INCREMENTAR_HOUR                  00000185
+INCREMENTAR_MINUTE                00000162
+INCREMENTAR_MINUTE_TEMPORIZADOR   0000029C
+INCREMENTAR_MONTH                 000001FE
+INCREMENTAR_SECOND                00000265
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IOCB6                             00000006
+IOCB7                             00000007
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
+IRP                               00000007
+LOAD                              00000086
+LOOP                              0000003F
+LTS                               00000001
+MC1OUT                            00000007
+MC2OUT                            00000006
+MES_BCD                           00000013
+MES_BCD_EDITAR                    00000017
+MES_BIN                           00000014
+MES_BIN_EDITAR                    00000018
+MINUTOS                           0000000F
+MINUTOS_TEMPORIZADOR              0000001B
+MINUTOS_TEMPORIZADOR_EDITAR       0000001D
+MINUTO_EDITAR                     00000011
+MOSTRAR_DISPLAY_EDITAR            000000E8
+MOSTRAR_VALOR                     000000BD
+MSK                               00000093
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 38
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+MSK6                              00000006
+MSK7                              00000007
+NORMAL                            0000004D
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NO_EDITAR_FECHA                   00000081
+NO_EDITAR_HORA                    00000071
+NO_EDITAR_TEMPORIZADOR            00000091
+OERR                              00000001
+OPCION                            0000000B
+OPCIONES                          00000065
+OPCIONES_NORMAL                   00000062
+OPCION_FECHA                      0000007E
+OPCION_RELOJ                      0000006E
+OPCION_TEMPORIZADOR               0000008E
+OPTION_REG                        00000081
+OSCCON                            0000008F
+OSCTUNE                           00000090
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000003
+OVERFLOW_DIA                      000001E4
+P                                 00000004
+P1M0                              00000006
+P1M1                              00000007
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PDC0                              00000000
+PDC1                              00000001
+PDC2                              00000002
+PDC3                              00000003
+PDC4                              00000004
+PDC5                              00000005
+PDC6                              00000006
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 39
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PORTA                             00000005
+PORTB                             00000006
+PORTB_ACTUAL                      0000000C
+PORTB_ANTERIOR                    0000000D
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PRSEN                             00000007
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSSAC0                            00000002
+PSSAC1                            00000003
+PSSBD0                            00000000
+PSSBD1                            00000001
+PSTRCON                           0000009D
+PULSR                             00000002
+PULSS                             00000003
+PUNTOS_ENMEDIO                    00000031
+PWM1CON                           0000009B
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 40
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RCIDL                             00000006
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+RE3                               00000003
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SALIR                             00000195
+SALIR_FECHA                       00000212
+SALIR_TEMPORIZADOR                000002AC
+SAVE                              00000004
+SAVE_TEMP                         0000001E
+SBOREN                            00000004
+SCKP                              00000004
+SCS                               00000000
+SEGUIR_NO_EDITAR                  0000009B
+SEGUNDOS                          0000000E
+SEGUNDOS_ALARMA                   00000007
+SEGUNDOS_TEMPORIZADOR             0000001A
+SEGUNDOS_TEMPORIZADOR_EDITAR      0000001C
+SELECCIONAR                       00000007
+SEN                               00000000
+SENDB                             00000003
+SI_EDITAR_FECHA                   00000087
+SI_EDITAR_HORA                    00000077
+SI_EDITAR_TEMPORIZADOR            000000A1
+SI_YA_SE_ENTRO_ANTES              00000144
+SI_YA_SE_ENTRO_ANTES_FECHA        000001B3
+SI_YA_SE_ENTRO_ANTES_TEMPORIZADO  0000023D
+SMP                               00000007
+SONAR_BUZZER                      0000001C
+SPBRG                             00000099
+SPBRGH                            0000009A
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 41
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SPEN                              00000007
+SR0                               00000006
+SR1                               00000007
+SRCON                             00000185
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPMSK                            00000093
+SSPOV                             00000006
+SSPSTAT                           00000094
+START                             00000000
+STATUS                            00000003
+STATUSRAM                         00000020
+STRA                              00000000
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
+SWDTEN                            00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1GINV                            00000007
+T1GIV                             00000007
+T1GSS                             00000001
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TABLA                             0000008B
+TABLA_MESES                       00000096
+TITILAR_7S                        00000026
+TITILAR_DISPLAYS                  00000003
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0_INT                          0000000E
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 42
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR1_INT                          00000048
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TMR2_INT                          0000006E
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 43
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRISE3                            00000003
+TRMT                              00000001
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+ULPWUE                            00000005
+ULPWUIE                           00000002
+ULPWUIF                           00000002
+VALOR_BUZZER                      0000007D
+VALOR_CONTADOR_ALARMA             000000FA
+VALOR_CONTADOR_TMR2               00000032
+VALOR_CUENTATMR0                  000000FA
+VALOR_FECHA                       000000FC
+VALOR_LED                         0000003F
+VALOR_MES                         00000105
+VALOR_RELOJ                       0000011A
+VALOR_SEGUNDOS_ALARMA             0000003C
+VALOR_TEMPORIZADOR                000000ED
+VALOR_TITILAR_7S                  0000007D
+VALOR_TMR0                        00000006
+VALOR_TMR1                        00000002
+VALOR_TMR1H                       0000000B
+VALOR_TMR1L                       000000DC
+VALOR_TMR2                        0000007D
+VCFG0                             00000004
+VCFG1                             00000005
+VERIFICAR_OVERFLOW_HORA_EDITAR    00000191
+VERIFICAR_OVERFLOW_MINUTOS_EDITA  000002A8
+VERIFICAR_OVERFLOW_MINUTO_EDITAR  0000016E
+VERIFICAR_OVERFLOW_SEGUNDOS_TEMP  0000027B
+VER_PORTB                         0000028A
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000097
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 44
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+VRSS                              00000004
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000105
+WDTPS0                            00000001
+WDTPS1                            00000002
+WDTPS2                            00000003
+WDTPS3                            00000004
+WPUB                              00000095
+WPUB0                             00000000
+WPUB1                             00000001
+WPUB2                             00000002
+WPUB3                             00000003
+WPUB4                             00000004
+WPUB5                             00000005
+WPUB6                             00000006
+WPUB7                             00000007
+WR                                00000001
+WRAM                              0000001F
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BOR21V                           00003EFF
+_BOR40V                           00003FFF
+_BOR4V_BOR21V                     00003EFF
+_BOR4V_BOR40V                     00003FFF
+_BOREN_NSLEEP                     00003EFF
+_BOREN_OFF                        00003CFF
+_BOREN_ON                         00003FFF
+_BOREN_SBODEN                     00003DFF
+_BOR_NSLEEP                       00003EFF
+_BOR_OFF                          00003CFF
+_BOR_ON                           00003FFF
+_BOR_SBODEN                       00003DFF
+_CONFIG1                          00002007
+_CONFIG2                          00002008
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003F7F
+_CP_OFF                           00003FFF
+_CP_ON                            00003FBF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         00001FFF
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC                            00003FFF
+_EXTRCIO                          00003FFE
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FCMEN_OFF                        000037FF
+MPASM 5.84                          MAIN.ASM   9-19-2020  22:52:13         PAGE 45
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_FCMEN_ON                         00003FFF
+_FOSC_EC                          00003FFB
+_FOSC_EXTRC_CLKOUT                00003FFF
+_FOSC_EXTRC_NOCLKOUT              00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRC_CLKOUT                00003FFD
+_FOSC_INTRC_NOCLKOUT              00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_IESO_OFF                         00003BFF
+_IESO_ON                          00003FFF
+_INTOSC                           00003FFD
+_INTOSCIO                         00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_LVP_OFF                          00002FFF
+_LVP_ON                           00003FFF
+_MAIN_PROG_02BE                   000002BE
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FF9
+__16F887                          00000001
+
+Errors   :     0
+Warnings :   107 reported,     0 suppressed
+Messages :    18 reported,     0 suppressed
+
+
