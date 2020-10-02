@@ -1,4 +1,4 @@
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  1
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ Warning[207]: Found label after column 1. (VALOR_CONTADOR_TMR2)
   00000032            00034  VALOR_CONTADOR_TMR2 EQU .50 ;50
   000000FA            00035 VALOR_CONTADOR_ALARMA EQU .250
 Warning[207]: Found label after column 1. (VALOR_SEGUNDOS_ALARMA)
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  2
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ Warning[207]: Found label after column 1. (TITILAR_DISPLAYS)
 Warning[207]: Found label after column 1. (CONTADOR_BUZZER)
 0018                  00071  CONTADOR_BUZZER RES 1 ;CONTADOR USADO PARA HACER SONAR EL BUZZER
 Warning[207]: Found label after column 1. (DIA_MAX)
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  3
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ Message[305]: Using default destination of 1 (file).
 0014   2???           00112     GOTO    SONAR_BUZZER
                       00113     
 0015   30FA           00114     MOVLW   VALOR_CONTADOR_ALARMA
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  4
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ Warning[207]: Found label after column 1. (PUNTOS_ENMEDIO)
 0034   1F00           00161     BTFSS   FLAGS,6    
 0035   390B           00162     ANDLW   B'1011' ;SE CONSERVAN TODOS MENOS RE2 
 0036   1B00           00163     BTFSC   FLAGS,6 
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  5
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -293,7 +293,7 @@ Message[305]: Using default destination of 1 (file).
 005A   1900           00211     BTFSC   OPCION,2 ;SI ESTABA EN 1, ES QUE SE ESTABA EDITANDO EL CRONOMETRO
 005B   2???           00212     GOTO    EDITANDO_TIMER
                       00213     
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  6
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ Warning[207]: Found label after column 1. (FUNCIONAMIENTO_NORMAL_TEMPORIZADOR)
 Warning[208]: Label truncated at 32 characters. (FUNCIONAMIENTO_NORMAL_TEMPORIZADOR)
 007F                  00260     FUNCIONAMIENTO_NORMAL_TEMPORIZADOR
                       00261     ;--- SE VERIFICA SI PASA DE 00 A 59
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  7
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -411,7 +411,7 @@ Warning[207]: Found label after column 1. (TABLA)
 009C   0000           00308     NOP ; VARIABLE PARA 0 (EN FUNCIONAMIENTO NORMAL NO DEBERIA EJECUTARSE)
 009D   3432           00309     RETLW   B'00110010'  ;32 EN BCD  ENERO
 009E   3429           00310     RETLW   B'00101001' ;29 EN BCD FEBRERO
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  8
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -470,7 +470,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0010   0092           00352     MOVWF   PR2 ;CUENTA 125 VECES SE EJECUTA LA INTERRUPCION CADA 20mS
                       00353     
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE  9
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE  9
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -529,7 +529,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00404     
 003B   303C           00405    MOVLW    VALOR_SEGUNDOS_ALARMA
 003C   00??           00406    MOVWF    SEGUNDOS_ALARMA
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 10
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 10
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -588,7 +588,7 @@ Message[305]: Using default destination of 1 (file).
                       00448     ;------------------------SE VERIFICA SI SE PRESIONO EL BOTON PARA CAMBIAR DE OPCION ----------------
                             -----
 Warning[207]: Found label after column 1. (ESTABLECER_OPCION)
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 11
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 11
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -647,7 +647,7 @@ Warning[207]: Found label after column 1. (OPCION_RELOJ)
 006F   2???           00490     GOTO NO_EDITAR_HORA
 0070   2???           00491     GOTO SI_EDITAR_HORA
                       00492     
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 12
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 12
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -706,7 +706,7 @@ Warning[207]: Found label after column 1. (OPCION_TEMPORIZADOR)
                       00537     
 Warning[207]: Found label after column 1. (NO_EDITAR_TEMPORIZADOR)
 008D                  00538     NO_EDITAR_TEMPORIZADOR:
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 13
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 13
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -765,7 +765,7 @@ Warning[207]: Found label after column 1. (SEGUNDOS_1_TEMP)
 Warning[207]: Found label after column 1. (SEGUNDOS_2_TEMP)
 00AF                  00586     SEGUNDOS_2_TEMP
 00AF   0E??           00587     SWAPF   SEGUNDOS_TEMPORIZADOR,W 
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 14
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 14
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -824,7 +824,7 @@ Warning[207]: Found label after column 1. (DIA_2)
 00D0                  00632    DIA_2
 00D0   0E??           00633     SWAPF   DIA ,W
 00D1   390F           00634     ANDLW   B'00001111'
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 15
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 15
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -883,7 +883,7 @@ Warning[207]: Found label after column 1. (HORAS_2)
 00F3   1980           00681     BTFSC   CONTROL_DISPLAY,3
 00F4   2???           00682     GOTO HORAS_2_EDITAR
                       00683     
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 16
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 16
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -942,7 +942,7 @@ Warning[207]: Found label after column 1. (HORAS_2_EDITAR)
 Warning[207]: Found label after column 1. (HORAS_2_EDITAR_NORMAL)
 0112                  00727     HORAS_2_EDITAR_NORMAL
 0112   0E??           00728     SWAPF   HORA_EDITAR,W
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 17
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 17
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1001,7 +1001,7 @@ Warning[207]: Found label after column 1. (DIA_1_EDITAR)
 0132   3400           00774     RETLW   .0 ;SE APAGAN TODOS LOS BITS DEL PUERTO C
 Warning[207]: Found label after column 1. (DIA_1_EDITAR_NORMAL)
 0133                  00775     DIA_1_EDITAR_NORMAL
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 18
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 18
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1060,7 +1060,7 @@ Warning[207]: Found label after column 1. (SEGUNDOS_TEMPORIZADOR_2_EDITAR)
 0152   1D00           00820     BTFSS   FLAGS,2
 0153   3400           00821     RETLW   .0
 Warning[207]: Found label after column 1. (SEGUNDOS_TEMPORIZADOR_2_EDITAR_NORMAL)
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 19
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 19
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1119,7 +1119,7 @@ Warning[207]: Found label after column 1. (DEC_MINUTO_TEMPORIZADOR)
 016F   300F           00864     MOVLW   B'00001111'
 0170   05??           00865     ANDWF   MINUTOS_TEMPORIZADOR,W
 0171   3C0F           00866     SUBLW   .15 ;
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 20
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 20
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1178,7 +1178,7 @@ Message[305]: Using default destination of 1 (file).
 0191   3001           00915     MOVLW .1
 0192   00??           00916     MOVWF   MES_BIN
 0193   00??           00917     MOVWF   MES_BCD
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 21
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 21
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1237,7 +1237,7 @@ Warning[207]: Found label after column 1. (CORRECCION_HORA)
                       00967     ;-----------------SE ENTRA A ESTA PARTE SOLO CUANDO ES LA PRIMERA VEZ ------------------------------
                             --------------
 01B4   1580           00968     BSF FLAGS,3 ;PARA QUE NO SE VUELVA A ENTRAR AQUI HASTA QUE SE SALGA DEL MODO EDICION
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 22
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 22
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1296,7 +1296,7 @@ Warning[207]: Found label after column 1. (DECREMENTAR_MINUTE)
 01CB                  01010     DECREMENTAR_MINUTE
 01CB   1800           01011     BTFSC   PORTB_ANTERIOR,0
 01CC   2???           01012     GOTO    INCREMENTAR_MINUTE
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 23
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 23
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1355,7 +1355,7 @@ Warning[207]: Found label after column 1. (VERIFICAR_OVERFLOW_MINUTO_EDITAR)
 01E9   3060           01060     MOVLW B'01100000' ;60 EN BCD
 01EA   02??           01061     SUBWF   MINUTO_EDITAR,W
 01EB   1903           01062     BTFSC   STATUS,2 ;SI DA 0 SE REINICIA
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 24
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 24
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1414,7 +1414,7 @@ Warning[207]: Found label after column 1. (INCREMENTAR_HOUR)
 0206   05??           01110     ANDWF   HORA_EDITAR,W
 0207   3C0A           01111     SUBLW .10 ;SI DA 0 SE DEBE SUMAR LAS DECENAS
 0208   1D03           01112     BTFSS   STATUS,2 ;SI DA 0 SE SALTA ESTA INSTRUCCION
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 25
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 25
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1473,7 +1473,7 @@ Warning[207]: Found label after column 1. (SALIR)
                       01160     
 0225   08??           01161     MOVF    MES_BCD,W
 0226   00??           01162     MOVWF   MES_BCD_EDITAR ;SE GUARDAN LOS VALORES EN EL INSTANTE QUE SE ENTRA AL MODO DE EDICION
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 26
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 26
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1532,7 +1532,7 @@ Warning[207]: Found label after column 1. (CAMBIAR_FECHA)
 023F   00??           01206     MOVWF   DIA_EDITAR
                       01207     
 Warning[207]: Found label after column 1. (DECISION_FECHA)
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 27
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 27
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1591,7 +1591,7 @@ Warning[207]: Found label after column 1. (INCREMENTAR_DAY)
                       01250     ;------------------------------ SI SE VERIFICA QUE SE DEBE INCREMENTAR SE EJECUTA ESTO--------------
                             ----
 0257   0A??           01251     INCF    DIA_EDITAR,F 
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 28
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 28
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1650,7 +1650,7 @@ Warning[207]: Found label after column 1. (CORREGIR_BCD_MES_EDITAR)
 0272                  01296     CORREGIR_BCD_MES_EDITAR
                       01297     ;--------- SE CORRIGE EL BCD -------------------------------------------------------------
 0272   300F           01298     MOVLW B'00001111'
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 29
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 29
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1709,7 +1709,7 @@ Warning[207]: Found label after column 1. (SALIR_FECHA)
                       01343    ;ESTA ACTIVA
 028F   1E80           01344     BTFSS   PORTB_ACTUAL,5
 0290   0008           01345     RETURN
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 30
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 30
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1768,7 +1768,7 @@ Warning[207]: Found label after column 1. (IF_NOT_CERO)
 Warning[207]: Found label after column 1. (CONTINUE)
 02B0                  01393     CONTINUE
 02B0   1410           01394     BSF T1CON,0 ;SE ACTIVA EL TIMER 1
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 31
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 31
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1827,7 +1827,7 @@ Warning[207]: Found label after column 1. (DECREMENTAR_SECOND)
 02C5   2???           01434     GOTO    INCREMENTAR_SECOND
                       01435     
 02C6   1C00           01436     BTFSS   PORTB_ACTUAL,0
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 32
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 32
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1886,7 +1886,7 @@ Warning[207]: Found label after column 1. (INCREMENTAR_SECOND)
                       01483     
                       01484     ;----------- SI SE LLEGA HASTA AQUI ES QUE SE DEBIA INCREMENTAR ----------------------
 02E4   0A??           01485     INCF    SEGUNDOS_TEMPORIZADOR_EDITAR,F
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 33
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 33
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1945,7 +1945,7 @@ Warning[207]: Found label after column 1. (EDIT_MINUTE_TEMPORIZADOR)
                       01531     ;SI SE LLEGA HASTA AQUI ENTONCES ES QUE SE DEBE CORREGIR PARA NO DAR OPCION DE PONER 0 MIN 0 SEG
 0303   3001           01532     MOVLW   .1
 0304   00??           01533     MOVWF   SEGUNDOS_TEMPORIZADOR_EDITAR
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 34
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 34
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -2004,7 +2004,7 @@ Warning[207]: Found label after column 1. (INCREMENTAR_MINUTE_TEMPORIZADOR)
 0320   2???           01580     GOTO VERIFICAR_OVERFLOW_MINUTOS_EDITAR
                       01581     
 0321   3006           01582     MOVLW   .6
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 35
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 35
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -2056,7 +2056,7 @@ Warning[207]: Found label after column 1. (SALIR_TEMPORIZADOR)
                       01623     
                       01624 
 20D4 3FFF             01625     END
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 36
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 36
 
 
 SYMBOL TABLE
@@ -2115,7 +2115,7 @@ BRG6                              00000006
 BRG7                              00000007
 BRG8                              00000000
 BRG9                              00000001
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 37
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 37
 
 
 SYMBOL TABLE
@@ -2174,7 +2174,7 @@ CCPR1                             00000015
 CCPR1H                            00000016
 CCPR1L                            00000015
 CCPR2                             0000001B
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 38
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 38
 
 
 SYMBOL TABLE
@@ -2233,7 +2233,7 @@ DIA_1_EDITAR                      0000012F
 DIA_1_EDITAR_NORMAL               00000133
 DIA_2                             000000D0
 DIA_2_EDITAR                      00000137
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 39
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 39
 
 
 SYMBOL TABLE
@@ -2292,7 +2292,7 @@ GO_NOT_DONE                       00000001
 HORAS                             00000004
 HORAS_1                           000000E5
 HORAS_1_EDITAR                    00000106
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 40
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 40
 
 
 SYMBOL TABLE
@@ -2351,7 +2351,7 @@ MES_BIN_EDITAR                    00000013
 MINUTOS                           00000003
 MINUTOS_1                         000000DD
 MINUTOS_1_EDITAR                  000000F6
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 41
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 41
 
 
 SYMBOL TABLE
@@ -2410,7 +2410,7 @@ OSCTUNE                           00000090
 OSFIE                             00000007
 OSFIF                             00000007
 OSTS                              00000003
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 42
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 42
 
 
 SYMBOL TABLE
@@ -2469,7 +2469,7 @@ RA6                               00000006
 RA7                               00000007
 RB0                               00000000
 RB1                               00000001
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 43
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 43
 
 
 SYMBOL TABLE
@@ -2528,7 +2528,7 @@ SALIR_TEMPORIZADOR                00000327
 SAVE                              00000004
 SAVE_TEMP                         00000015
 SBOREN                            00000004
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 44
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 44
 
 
 SYMBOL TABLE
@@ -2587,7 +2587,7 @@ STRB                              00000001
 STRC                              00000002
 STRD                              00000003
 STRSYNC                           00000004
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 45
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 45
 
 
 SYMBOL TABLE
@@ -2646,7 +2646,7 @@ TRISA4                            00000004
 TRISA5                            00000005
 TRISA6                            00000006
 TRISA7                            00000007
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 46
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 46
 
 
 SYMBOL TABLE
@@ -2705,7 +2705,7 @@ ULPWUIE                           00000002
 ULPWUIF                           00000002
 VALOR_BUZZER                      0000007D
 VALOR_CONTADOR_ALARMA             000000FA
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 47
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 47
 
 
 SYMBOL TABLE
@@ -2764,7 +2764,7 @@ WRERR                             00000003
 WUE                               00000001
 Z                                 00000002
 _BOR21V                           00003EFF
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 48
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 48
 
 
 SYMBOL TABLE
@@ -2823,7 +2823,7 @@ _MAIN_PROG_0339                   00000339
 _MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
-MPASM 5.84                          MAIN.ASM   9-16-2020  22:15:49         PAGE 49
+MPASM 5.84                          MAIN.ASM   9-20-2020  14:16:57         PAGE 49
 
 
 SYMBOL TABLE

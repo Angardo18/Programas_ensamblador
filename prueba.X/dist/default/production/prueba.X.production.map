@@ -1,16 +1,16 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Thu Sep 03 23:20:44 2020
+Linker Map File - Created Tue Sep 22 09:26:38 2020
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                  RES_VECT       code   0x000000    program   0x000002
                    .cinit    romdata   0x000001    program   0x000004
-                 ISR_VECT       code   0x000004    program   0x000064
-                MAIN_PROG       code   0x000036    program   0x00010a
-.config_2007_BUILD/DEFAULT/PRODUCTION/NEWPIC_       code   0x002007    program   0x000002
-.config_2008_BUILD/DEFAULT/PRODUCTION/NEWPIC_       code   0x002008    program   0x000002
-                  GPR_VAR      udata   0x000020       data   0x00000a
+                 ISR_VECT       code   0x000004    program   0x0000d2
+                MAIN_PROG       code   0x00006d    program   0x00040a
+.config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
+.config_2008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002008    program   0x000002
+                  GPR_VAR      udata   0x000020       data   0x00001f
 
 
 
@@ -18,94 +18,256 @@ Linker Map File - Created Thu Sep 03 23:20:44 2020
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000002      
-                            0x000004    0x0000ba      
+                            0x000004    0x000271      
                             0x002007    0x002008      
-            188 out of 8455 program addresses used, program memory utilization is 2%
+            627 out of 8455 program addresses used, program memory utilization is 7%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-              APAGAR_LEDS   0x000055    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-         CONFIG_INTERRUPT   0x0000ae    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                CONFIG_IO   0x000074    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR0   0x000086    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR1   0x000093    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR2   0x0000a1    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                  DISPLAY   0x000065    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                DISPLAY_0   0x000068    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                DISPLAY_1   0x00006d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              FIN_DISPLAY   0x000072    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR0   0x00000e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR1   0x000013    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR2   0x00001a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      ISR   0x000008    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                     LEDS   0x00004d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                     LOOP   0x00003c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      POP   0x00001e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-             PRENDER_LEDS   0x000052    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                     PUSH   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-           SEPARAR_NIBBLE   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                SIGUIENTE   0x000045    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    START   0x000036    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TABLE   0x000024    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                TOGGLE_B0   0x00005f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TOG_0   0x000063    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TOG_1   0x000061    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-          _MAIN_PROG_0016   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 BANDERAS   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      BCD   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    CONT1   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    CONT2   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 NIBBLE_H   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 NIBBLE_L   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              STATUS_TEMP   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              VAR_DISPLAY   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              VAR_REVTEMP   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                   W_TEMP   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
+                    ABRIL   0x000189    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   AGOSTO   0x0001cd    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   ALARMA   0x000119    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               CADA_500mS   0x00000f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              CONDICIONES   0x000140    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+        CONDICIONES_MODOS   0x00013d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           CONDICION_MOD0   0x000222    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           CONDICION_MOD1   0x000142    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 CONFIG_I   0x00023a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONFIG_IS   0x00026a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DELAY_2MS   0x00022f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              DELAY_768US   0x000235    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DICIEMBRE   0x000211    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  DISPLAY   0x00003b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_0   0x000042    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_1   0x000047    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_2   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_3   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           EDICICION_DIAS   0x000103    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          EDICICION_HORAS   0x0000b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            EDICION_FECHA   0x0000e5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            EDICION_RELOJ   0x000098    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   EDIT_2   0x00009f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    ENERO   0x000146    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  FEBRERO   0x000157    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    FECHA   0x0000cc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                      FIN   0x00022e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              FIN_DISPLAY   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 INT_TRM0   0x00000a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    JULIO   0x0001bc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    JUNIO   0x0001ab    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          LIMITACIONES_HD   0x0000db    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          LIMITACIONES_HR   0x000094    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     LOAD   0x000029    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     LOOP   0x00006f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               LOOP_DELAY   0x000231    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    MARZO   0x000178    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     MAYO   0x00019a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    MES_I   0x000143    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  MINUTOS   0x000016    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                NOVIEMBRE   0x000200    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  OCTUBRE   0x0001ef    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    RELOJ   0x000087    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          SELECCION_MODOS   0x000076    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                SEPARAR_L   0x00012b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            SEPARAR_NHIGH   0x000135    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          SEPARAR_NIBBLES   0x000121    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               SEPTIEMBRE   0x0001de    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    START   0x00006d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              TABLA_MESES   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    TABLE   0x00002f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                TOGGLE_B0   0x000067    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0037   0x0000a4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_003D   0x0000aa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0042   0x0000af    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0047   0x0000b4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_004D   0x0000ba    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0052   0x0000bf    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0057   0x0000c4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_005C   0x0000c9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0071   0x0000de    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0082   0x0000ef    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0088   0x0000f5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_008D   0x0000fa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0092   0x0000ff    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0099   0x000106    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_009E   0x00010b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00A3   0x000110    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00A8   0x000115    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00DC   0x000149    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00ED   0x00015a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00F5   0x000162    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00FD   0x00016a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_010E   0x00017b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_011F   0x00018c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0130   0x00019d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0141   0x0001ae    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0152   0x0001bf    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0163   0x0001d0    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0174   0x0001e1    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0185   0x0001f2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0196   0x000203    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01A7   0x000214    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01B8   0x000225    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01CB   0x000238    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  ANTIREB   0x00002e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 BANDERAS   0x00002c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    CONT1   0x00003a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    CONT2   0x00003b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_AH   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_AM   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_DD   0x00002b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_DM   0x00002a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_RH   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_RM   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM0   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              CONT_TRM0_S   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM1   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM2   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  EDICION   0x00003c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     EDIT   0x00003d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    FLAGS   0x00003e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                LED_500MS   0x000035       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     MODO   0x00002d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBH_H   0x000030       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBH_L   0x000031       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBM_H   0x000033       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBM_L   0x000034       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              TEMP_STATUS   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   TEMP_W   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    VAR_H   0x00002f       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    VAR_M   0x000032       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               VAR_TEMP_H   0x000037       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_HL   0x000039       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_MH   0x000036       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_ML   0x000038       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
 
 
 
                               Symbols - Sorted by Address
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                     PUSH   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      ISR   0x000008    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR0   0x00000e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR1   0x000013    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 FUE_TMR2   0x00001a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      POP   0x00001e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TABLE   0x000024    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    START   0x000036    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                     LOOP   0x00003c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                SIGUIENTE   0x000045    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-          _MAIN_PROG_0016   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                     LEDS   0x00004d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-             PRENDER_LEDS   0x000052    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              APAGAR_LEDS   0x000055    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-           SEPARAR_NIBBLE   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                TOGGLE_B0   0x00005f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TOG_1   0x000061    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    TOG_0   0x000063    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                  DISPLAY   0x000065    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                DISPLAY_0   0x000068    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                DISPLAY_1   0x00006d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              FIN_DISPLAY   0x000072    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                CONFIG_IO   0x000074    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR0   0x000086    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR1   0x000093    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              CONFIG_TMR2   0x0000a1    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-         CONFIG_INTERRUPT   0x0000ae    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                   W_TEMP   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              STATUS_TEMP   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    CONT1   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                    CONT2   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 NIBBLE_L   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 NIBBLE_H   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                 BANDERAS   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              VAR_DISPLAY   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-                      BCD   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
-              VAR_REVTEMP   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Laboratorios\ProgramacionPic\prueba.X\newpic_8b_simple.asm
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 INT_TRM0   0x00000a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               CADA_500mS   0x00000f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  MINUTOS   0x000016    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     LOAD   0x000029    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    TABLE   0x00002f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  DISPLAY   0x00003b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_0   0x000042    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_1   0x000047    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_2   0x00004c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DISPLAY_3   0x000051    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              FIN_DISPLAY   0x000056    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              TABLA_MESES   0x000058    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                TOGGLE_B0   0x000067    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    START   0x00006d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     LOOP   0x00006f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          SELECCION_MODOS   0x000076    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    RELOJ   0x000087    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          LIMITACIONES_HR   0x000094    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            EDICION_RELOJ   0x000098    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   EDIT_2   0x00009f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0037   0x0000a4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_003D   0x0000aa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0042   0x0000af    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0047   0x0000b4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          EDICICION_HORAS   0x0000b7    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_004D   0x0000ba    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0052   0x0000bf    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0057   0x0000c4    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_005C   0x0000c9    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    FECHA   0x0000cc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          LIMITACIONES_HD   0x0000db    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0071   0x0000de    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            EDICION_FECHA   0x0000e5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0082   0x0000ef    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0088   0x0000f5    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_008D   0x0000fa    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0092   0x0000ff    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           EDICICION_DIAS   0x000103    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0099   0x000106    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_009E   0x00010b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00A3   0x000110    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00A8   0x000115    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   ALARMA   0x000119    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          SEPARAR_NIBBLES   0x000121    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                SEPARAR_L   0x00012b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+            SEPARAR_NHIGH   0x000135    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+        CONDICIONES_MODOS   0x00013d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              CONDICIONES   0x000140    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           CONDICION_MOD1   0x000142    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    MES_I   0x000143    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    ENERO   0x000146    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00DC   0x000149    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  FEBRERO   0x000157    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00ED   0x00015a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00F5   0x000162    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_00FD   0x00016a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    MARZO   0x000178    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_010E   0x00017b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    ABRIL   0x000189    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_011F   0x00018c    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     MAYO   0x00019a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0130   0x00019d    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    JUNIO   0x0001ab    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0141   0x0001ae    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    JULIO   0x0001bc    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0152   0x0001bf    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   AGOSTO   0x0001cd    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0163   0x0001d0    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               SEPTIEMBRE   0x0001de    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0174   0x0001e1    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  OCTUBRE   0x0001ef    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0185   0x0001f2    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                NOVIEMBRE   0x000200    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_0196   0x000203    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DICIEMBRE   0x000211    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01A7   0x000214    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+           CONDICION_MOD0   0x000222    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01B8   0x000225    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                      FIN   0x00022e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                DELAY_2MS   0x00022f    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               LOOP_DELAY   0x000231    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              DELAY_768US   0x000235    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+          _MAIN_PROG_01CB   0x000238    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 CONFIG_I   0x00023a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONFIG_IS   0x00026a    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM2   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM1   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                CONT_TRM0   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              CONT_TRM0_S   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   TEMP_W   0x000024       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              TEMP_STATUS   0x000025       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_RM   0x000026       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_RH   0x000027       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_AM   0x000028       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_AH   0x000029       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_DM   0x00002a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  CONT_DD   0x00002b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                 BANDERAS   0x00002c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     MODO   0x00002d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  ANTIREB   0x00002e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    VAR_H   0x00002f       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBH_H   0x000030       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBH_L   0x000031       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    VAR_M   0x000032       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBM_H   0x000033       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                   NIBM_L   0x000034       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                LED_500MS   0x000035       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_MH   0x000036       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+               VAR_TEMP_H   0x000037       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_ML   0x000038       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+              VAR_TEMP_HL   0x000039       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    CONT1   0x00003a       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    CONT2   0x00003b       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                  EDICION   0x00003c       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                     EDIT   0x00003d       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
+                    FLAGS   0x00003e       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\prueba.X\main.asm
 
 

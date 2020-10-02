@@ -1,24 +1,15 @@
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  1
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
                       00001 ; TODO INSERT CONFIG CODE HERE USING CONFIG BITS GENERATOR
-                      00002 
-                      00003     
-                      00004     ;*******************************************************************************
-                      00005 ;
-                      00006 ;   Filename:       Laboratorio 5 -> Lab5.asm
-                      00007 ;   Date:                   24/08/2020
-                      00008 ;   File Version:           v.1
-                      00009 ;   Author:                 Noel Prado
-                      00010 ;   Company:        UVG
-                      00011 ;   Description:            Timer1 y TImer2
-                      00012 ;
-                      00013 ;*******************************************************************************  
-                      00014     
-                      00015     #include "p16f887.inc"
+                      00002 ; PIC16F887 Configuration Bit Settings
+                      00003 
+                      00004 ; Assembly source line config statements
+                      00005 
+                      00006 #include "p16f887.inc"
                       00001         LIST
                       00002 
                       00003 ;==========================================================================
@@ -29,373 +20,170 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00008 ;==========================================================================
                       00009 
                       00810         LIST
-                      00016 
-                      00017 ; CONFIG1
-                      00018 ; __config 0xFFD4
-2007   3FD4           00019     __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF &
-                             _BOREN_ON & _IESO_ON & _FCMEN_ON & _LVP_ON
-                      00020 ; CONFIG2
-                      00021 ; __config 0xFFFF
-2008   3FFF           00022     __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
-                      00023 
-                      00024 
-                      00025 GPR_VAR         UDATA
-0000                  00026 W_TEMP          RES 1
-0001                  00027 STATUS_TEMP     RES 1
-0002                  00028 CONT1           RES 1
-0003                  00029 CONT2           RES 1
-0004                  00030 NIBBLE_L                RES 1
-0005                  00031 NIBBLE_H                RES 1
-0006                  00032 BANDERAS        RES 1
-0007                  00033 VAR_DISPLAY     RES 1   
-0008                  00034 BCD             RES 1
-0009                  00035 VAR_REVTEMP     RES 1
-                      00036         
-                      00037 ;**************************************************INICIO DEL PROGRAMA**********************************
-                            ****************************
-                      00038 RES_VECT  CODE    0x0000            ; processor reset vector
-0000   2???           00039     GOTO    START                   ; go to beginning of program
-                      00040 
-                      00041 ;*****************************************************INTERRUPCIONES************************************
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  2
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-                            *******************************
-                      00042 
-Warning[207]: Found label after column 1. (ISR_VECT)
-                      00043  ISR_VECT   CODE    0X0004
-                      00044    
-0004                  00045 PUSH:
-0004   138B           00046     BCF     INTCON, GIE
-0005   00??           00047     MOVWF           W_TEMP
-0006   0E03           00048     SWAPF          STATUS, W
-0007   00??           00049     MOVWF          STATUS_TEMP 
-                      00050         
-0008                  00051 ISR:
-0008   190B           00052     BTFSC   INTCON, T0IF
-0009   2???           00053     GOTO    FUE_TMR0
-000A   180C           00054     BTFSC   PIR1, TMR1IF
-000B   2???           00055     GOTO    FUE_TMR1
-000C   188C           00056     BTFSC   PIR1, TMR2IF
-000D   2???           00057     GOTO    FUE_TMR2
-                      00058     
-                      00059     
-Warning[207]: Found label after column 1. (FUE_TMR0)
-000E                  00060      FUE_TMR0:
-                      00061   
-000E   30F9           00062     MOVLW           .249
-000F   0081           00063     MOVWF           TMR0
-0010   110B           00064     BCF     INTCON, T0IF    
-0011   2???           00065     CALL            DISPLAY
-0012   2???           00066     GOTO            POP
-                      00067     
-                      00068     
-Warning[207]: Found label after column 1. (FUE_TMR1)
-0013                  00069     FUE_TMR1:
-                      00070     
-0013   100C           00071     BCF    PIR1, TMR1IF
-0014   0A??           00072     INCF           VAR_DISPLAY, F
-                      00073     
-0015   3085           00074     MOVLW   085H
-0016   008F           00075     MOVWF   TMR1H
-0017   30EE           00076     MOVLW   0EEH
-0018   008E           00077     MOVWF   TMR1L
-0019   2???           00078     GOTO            POP
-                      00079 
-Warning[207]: Found label after column 1. (FUE_TMR2)
-001A                  00080     FUE_TMR2:
-                      00081    
-001A   0191           00082     CLRF    TMR2
-001B   108C           00083     BCF PIR1, TMR2IF
-001C   30FF           00084     MOVLW           .255
-001D   06??           00085     XORWF   CONT2,F 
-                      00086    
-001E                  00087 POP:
-001E   0E??           00088     SWAPF           STATUS_TEMP, W
-001F   0083           00089     MOVWF           STATUS
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0020   0E??           00090     SWAPF           W_TEMP, F
-0021   0E??           00091     SWAPF           W_TEMP, W
-0022   178B           00092     BSF     INTCON, GIE
-                      00093   
-0023   0009           00094     RETFIE
-                      00095     
-                      00096     
-Warning[207]: Found label after column 1. (TABLE)
-0024                  00097         TABLE
-                      00098     ;ANDWF   B'00001111'; LIMITANDO DE 0 A F
-0024   0782           00099     ADDWF   PCL, F
-                      00100     ;         PCDEGFAB
-0025   3477           00101     RETLW   B'01110111' ;0
-0026   3441           00102     RETLW   B'01000001' ;1
-0027   343B           00103     RETLW   B'00111011' ;2
-0028   346B           00104     RETLW   B'01101011' ;3
-0029   344D           00105     RETLW   B'01001101' ;4
-002A   346E           00106     RETLW   B'01101110' ;5
-002B   347E           00107     RETLW   B'01111110' ;6
-002C   3443           00108     RETLW   B'01000011' ;7
-002D   347F           00109     RETLW   B'01111111' ;8
-002E   346F           00110     RETLW   B'01101111' ;9
-002F   346F           00111     RETLW   B'01101111' ;9
-0030   346F           00112     RETLW   B'01101111' ;9
-0031   346F           00113     RETLW   B'01101111' ;9
-0032   346F           00114     RETLW   B'01101111' ;9
-0033   346F           00115     RETLW   B'01101111' ;9
-0034   346F           00116     RETLW   B'01101111' ;9
-                      00117     
-0035   0008           00118     RETURN
-                      00119 ;----------------------------------------------------SUBRUTINAS DE LA INTERRUPCION----------------------
-                            ----------------------
-                      00120 
-                      00121 
-                      00122    
-                      00123  
-                      00124 
-                      00125 
-                      00126 ;----------------------------------------------------------PRINCIPAL------------------------------------
-                            -----------------------------------
-                      00127 
-                      00128 MAIN_PROG CODE                      ; let linker place main program
-                      00129 
-0000                  00130 START
-                      00131 
-0000   2???           00132     CALL        CONFIG_IO
-0001   2???           00133     CALL        CONFIG_TMR0     ; 2MS
-0002   2???           00134     CALL        CONFIG_TMR1     ; 1 SEGUNDO
-0003   2???           00135     CALL        CONFIG_TMR2     ; 500MS
-0004   2???           00136     CALL        CONFIG_INTERRUPT
-0005   01??           00137     CLRF    VAR_DISPLAY
-                      00138     
-Warning[207]: Found label after column 1. (LOOP)
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  4
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0006                  00139  LOOP
-                      00140  
-0006   08??           00141     MOVF            VAR_DISPLAY, W
-0007   390F           00142     ANDLW          B'00001111'
-0008   00??           00143     MOVWF           VAR_REVTEMP
-0009   300A           00144     MOVLW       .10
-000A   02??           00145     SUBWF       VAR_REVTEMP, W
-000B   1D03           00146     BTFSS       STATUS, Z
-000C   2???           00147     GOTO    SIGUIENTE
-000D   3006           00148     MOVLW   .6
-Message[305]: Using default destination of 1 (file).
-000E   07??           00149     ADDWF   VAR_DISPLAY
-                      00150  
-000F                  00151 SIGUIENTE:
-000F   2???           00152     CALL            LEDS
-0010   2???           00153     CALL            SEPARAR_NIBBLE
-                      00154    
-0011   30A0           00155     MOVLW   .160
-0012   02??           00156     SUBWF   VAR_DISPLAY, W
-0013   1903           00157     BTFSC         STATUS, Z
-0014   01??           00158     CLRF        VAR_DISPLAY
-                      00159 
-                      00160    
-                      00161     
-                      00162    
-0015   2???           00163     GOTO    LOOP
-0016   2???           00164     GOTO $                          ; loop forever
-                      00165 
-                      00166     
-                      00167 ;-----------------------------------------------------------SUBRUTINAS----------------------------------
-                            ---------------------------------
-                      00168 
-0017                  00169 LEDS
-0017   1C00           00170     BTFSS          CONT2, 0
-0018   2???           00171     CALL           APAGAR_LEDS
-0019   1800           00172     BTFSC          CONT2, 0
-001A   2???           00173     CALL           PRENDER_LEDS
-001B   0008           00174     RETURN
-                      00175 
-001C                  00176 PRENDER_LEDS
-001C   3003           00177     MOVLW   B'00000011'
-001D   0086           00178     MOVWF   PORTB
-001E   0008           00179     RETURN
-                      00180 
-Warning[207]: Found label after column 1. (APAGAR_LEDS)
-001F                  00181     APAGAR_LEDS
-001F   3000           00182     MOVLW   B'00000000'
-0020   0086           00183     MOVWF   PORTB
-0021   0008           00184     RETURN
-                      00185     
-0022                  00186 SEPARAR_NIBBLE
-0022   08??           00187     MOVF    VAR_DISPLAY, W
-0023   390F           00188     ANDLW   B'00001111'
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  5
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0024   00??           00189     MOVWF   NIBBLE_L
-                      00190     
-0025   0E??           00191     SWAPF   VAR_DISPLAY, W
-0026   390F           00192     ANDLW   B'00001111'
-0027   00??           00193     MOVWF   NIBBLE_H
-0028   0008           00194     RETURN
-                      00195      
-0029                  00196 TOGGLE_B0
-0029   1C00           00197     BTFSS   BANDERAS, 0
-002A   2???           00198     GOTO    TOG_0
-002B                  00199 TOG_1:
-002B   1000           00200     BCF BANDERAS, 0
-002C   0008           00201     RETURN
-002D                  00202 TOG_0:
-002D   1400           00203     BSF BANDERAS, 0
-002E   0008           00204     RETURN   
-                      00205     
-                      00206 
+                      00007 
+                      00008 ; CONFIG1
+                      00009 ; __config 0xE0D4
+2007   20D4           00010  __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _B
+                            OREN_OFF & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
+                      00011 ; CONFIG2
+                      00012 ; __config 0xFFFF
+2008   3FFF           00013  __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+                      00014 
+                      00015 
+                      00016  
+Warning[207]: Found label after column 1. (GPR)
+                      00017  GPR UDATA
+Warning[207]: Found label after column 1. (VALORADC)
+0000                  00018     VALORADC RES 1
 Warning[207]: Found label after column 1. (DISPLAY)
-002F                  00207         DISPLAY
-002F   0188           00208     CLRF    PORTD
-0030   1800           00209     BTFSC   BANDERAS, 0
-0031   2???           00210     GOTO    DISPLAY_1
-0032                  00211 DISPLAY_0:
-0032   08??           00212     MOVFW   NIBBLE_L
-0033   2???           00213     CALL          TABLE
-0034   0087           00214     MOVWF   PORTC
-0035   1408           00215     BSF     PORTD, RD0
-0036   2???           00216     GOTO    FIN_DISPLAY
-0037                  00217 DISPLAY_1:
-0037   08??           00218     MOVFW    NIBBLE_H   
-0038   2???           00219     CALL    TABLE
-0039   0087           00220     MOVWF   PORTC
-003A   1488           00221     BSF     PORTD, RD1
-003B   2???           00222     GOTO    FIN_DISPLAY
-003C                  00223 FIN_DISPLAY:
-003C   2???           00224     CALL    TOGGLE_B0
-003D   0008           00225     RETURN
-                      00226     
-                      00227     
-                      00228    
-                      00229     
-                      00230     
-                      00231 
-                      00232 ;-----------------------------------------------------------CONFIGURACION-------------------------------
-                            ------------------------------
-                      00233     
-003E                  00234 CONFIG_IO
-003E   1683 1303      00235     BANKSEL     TRISA   ;LOS PUERTOS COMO SALIDAS
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0040   0185           00236     CLRF                TRISA
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0041   0186           00237     CLRF                TRISB
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  6
+0001                  00019     DISPLAY RES  1
+Warning[207]: Found label after column 1. (SAVE_PORTD)
+0002                  00020     SAVE_PORTD RES 1
+Warning[207]: Found label after column 1. (FLAGS)
+0003                  00021     FLAGS   RES 1
+Warning[207]: Found label after column 1. (STATUS_RAM)
+0004                  00022     STATUS_RAM RES 1
+Warning[207]: Found label after column 1. (W_RAM)
+0005                  00023     W_RAM RES 1
+                      00024  
+Warning[207]: Found label after column 1. (RES_VECT)
+                      00025  RES_VECT  CODE    0x0000            ; processor reset vector
+0000   2???           00026     GOTO    START                   ; go to beginning of program
+                      00027     
+                      00028 ISRs CODE 0x004 
+0004                  00029 SAVE
+0004   00??           00030     MOVWF   W_RAM
+0005   0E03           00031     SWAPF   STATUS,W
+0006   00??           00032     MOVWF   STATUS_RAM
+0007                  00033 ISR_ADC:
+0007   130C           00034     BCF PIR1,6 ;SE LIMPIA LA INTERRUPCION DEL ADC
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
+0008   081E           00035     MOVF   ADRESH,W ;SE MUEVE EL VALOR DEL ADC
+0009   00??           00036     MOVWF   VALORADC
+000A   149F           00037     BSF ADCON0,1 ;SE INICIA LA CONVERCION
+                      00038     
+000B                  00039 LOAD
+000B   0E??           00040     SWAPF   STATUS_RAM,W
+000C   0083           00041     MOVWF   STATUS
+000D   0E??           00042     SWAPF   W_RAM,F
+000E   0E??           00043     SWAPF   W_RAM,W 
+000F   0009           00044     RETFIE
+                      00045     
+                      00046 ; TODO ADD INTERRUPTS HERE IF USED
+                      00047 
+                      00048 MAIN_PROG CODE                      ; let linker place main program
+                      00049 
+0000                  00050 START
+0000   1683           00051     BSF STATUS, 5
+0001   1703           00052     BSF STATUS, 6 ;BANCO 3
+                      00053 
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0042   0187           00238     CLRF                TRISC
+0002   0189           00054     CLRF    ANSELH ;PUERTO B DE I/O DIGITAL 
+0003   30FF           00055     MOVLW   .255
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0043   0188           00239     CLRF                TRISD
-                      00240 
-0044   1683 1703      00241     BANKSEL     ANSEL   ;DIGITAL
+0004   0088           00056     MOVWF   ANSEL ;PUERTO A COMO IENTRADA DIGITAL
+                      00057     
+0005   1303           00058     BCF STATUS,6; BANCO 1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0046   0188           00242     CLRF                ANSEL
+0006   0186           00059     CLRF        TRISB ;PUERTO B COMO SALIDA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0047   0189           00243     CLRF                ANSELH
-0048   1283 1303      00244     BANKSEL     PORTA   
-004A   0185           00245     CLRF                PORTA
-004B   0186           00246     CLRF                PORTB
-004C   0187           00247     CLRF                PORTC
-004D   0188           00248     CLRF                PORTD
-                      00249 
-004E   01??           00250     CLRF                VAR_DISPLAY
-004F   0008           00251     RETURN
-                      00252  
-Warning[207]: Found label after column 1. (CONFIG_TMR0)
-0050                  00253  CONFIG_TMR0
-0050   1683 1303      00254     BANKSEL TRISA
+0007   0187           00060     CLRF        TRISC ; PUERTO C COMO SALIDA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0052   1281           00255     BCF     OPTION_REG, T0CS;   RELOJ INTERNO
+0008   0188           00061     CLRF        TRISD ; PUERTO D COMO SALIDA
+0009   30FF           00062     MOVLW   .255
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0053   1181           00256     BCF     OPTION_REG, PSA;    PRESCALER A TMR0
+000A   0085           00063     MOVWF   TRISA ;PUERTO A COMO ENTRADA (ANALOGICA)
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0054   1501           00257     BSF     OPTION_REG, PS2;    SE PONE 111 PARA PRESCALER DE 256
+000B   139F           00064     BCF ADCON1,7 ;JUSTIFICADO A LA DERECHA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0055   1481           00258     BSF     OPTION_REG, PS1
+000C   129F           00065     BCF ADCON1,5 ;VSS COMO VREF-
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0056   1401           00259     BSF     OPTION_REG, PS0
-0057   1283 1303      00260     BANKSEL PORTA
-0059   30F9           00261     MOVLW   .249
-005A   0081           00262     MOVWF   TMR0
-005B   110B           00263     BCF     INTCON, T0IF
-005C   0008           00264     RETURN
-                      00265  
-Warning[207]: Found label after column 1. (CONFIG_TMR1)
-005D                  00266  CONFIG_TMR1
-                      00267  
-005D   1283 1303      00268     BANKSEL     PORTA
-005F   1310           00269     BCF         T1CON, TMR1GE   
-0060   1690           00270     BSF         T1CON, T1CKPS1  ;PRESCALER 1:2
-0061   1210           00271     BCF         T1CON, T1CKPS0
-0062   1190           00272     BCF         T1CON, T1OSCEN  ; NO SE USA EL LP
-0063   1090           00273     BCF         T1CON, TMR1CS   ; RELOJ INTERNO
-0064   1410           00274     BSF         T1CON, TMR1ON   ; SE PRENDE TMR1
-0065   3085           00275     MOVLW               0X85
-0066   008F           00276     MOVWF               TMR1H
-0067   30EE           00277     MOVLW               0XEE
-0068   008E           00278     MOVWF               TMR1L
-0069   100C           00279     BCF         PIR1, TMR1IF
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  7
+000D   121F           00066     BCF ADCON1,4;VDD COMO VREF+
+                      00067    
+                      00068     ;-------- CONFIGURACION DE INTERRUPCIONES ----------------
+000E   30C0           00069     MOVLW   B'11000000'
+000F   008B           00070     MOVWF   INTCON ;INTERRUPCIONES GLOBALES Y PERIFERICAS ACTIVADAS, TMO Y OTRAS DESACTIVADAS
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0010   170C           00071       BSF       PIE1,6 ;SE ACTIVA LA INTERRUPCION DEL ADC
+0011   1283           00072     BCF STATUS,5 ;BANCO 0
+                      00073     
+0012   3000           00074    MOVLW    B'0000000' ;PRESCALER y POSTESCALER EN 0, APAGADO
+0013   3041           00075     MOVLW   B'01000001' ;CONFIGURADO EN  FOSC/8 AN0, GO APAGADO Y ADC ENCENDIDO
+0014   009F           00076     MOVWF   ADCON0
+                      00077     
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00280     
-                      00281  
-006A   0008           00282     RETURN
-                      00283  
-Warning[207]: Found label after column 1. (CONFIG_TMR2)
-006B                  00284  CONFIG_TMR2
-006B   1283 1303      00285     BANKSEL         PORTA
-006D   30FF           00286     MOVLW           B'11111111'
-006E   0092           00287     MOVWF           T2CON
-006F   1683 1303      00288     BANKSEL         TRISA
-0071   30F4           00289     MOVLW           .244
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0072   0092           00290     MOVWF           PR2
-0073   1283 1303      00291     BANKSEL         PORTA
-0075   0191           00292     CLRF            TMR2
-0076   108C           00293     BCF     PIR1, TMR2IF
-0077   0008           00294     RETURN
-                      00295  
-Warning[207]: Found label after column 1. (CONFIG_INTERRUPT)
-0078                  00296  CONFIG_INTERRUPT
-                      00297     
-0078   1683 1303      00298     BANKSEL     TRISA
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-007A   140C           00299     BSF         PIE1, TMR1IE
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-007B   148C           00300     BSF         PIE1, TMR2IE
-007C   1283 1303      00301     BANKSEL     PORTA
-007E   178B           00302     BSF         INTCON, GIE
-007F   170B           00303     BSF         INTCON, PEIE
-0080   100C           00304     BCF         PIR1, TMR1IF
-0081   108C           00305     BCF         PIR1, TMR2IF
-0082   168B           00306     BSF         INTCON, T0IE
-0083   110B           00307     BCF         INTCON, T0IF
-                      00308     
-0084   0008           00309     RETURN
-                      00310     
-3FD4 3FFF             00311     END
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  8
+                      00078     ;VALORES INICIALES
+0015   0187           00079     CLRF    PORTC
+0016   3001           00080     MOVLW   .1
+0017   0088           00081     MOVWF     PORTD
+0018   00??           00082     MOVWF   FLAGS
+0019   0186           00083     CLRF    PORTB
+001A   01??           00084     CLRF    VALORADC
+001B   01??           00085     CLRF    DISPLAY
+                      00086     
+001C   2???           00087     CALL DELAY 
+001D   149F           00088     BSF ADCON0,1 ; INICIA LA CONVERSION
+001E                  00089 LOOP:
+001E   08??           00090     MOVF        VALORADC,W
+001F   0086           00091     MOVWF       PORTB ;SE MUEVE EL VALOR REGISTRADO EN VALOR ACD AL PUERTO B
+0020   0188           00092     CLRF    PORTD
+0021   2???           00093     CALL TABLA
+0022   0087           00094     MOVWF   PORTC
+0023   09??           00095     COMF    FLAGS,F
+0024   08??           00096     MOVF    FLAGS,W
+0025   0088           00097     MOVWF   PORTD
+                      00098     
+0026   2???           00099     GOTO LOOP
+                      00100     
+                      00101 
+                      00102 
+                      00103     
+Warning[207]: Found label after column 1. (TABLA)
+0027                  00104  TABLA:
+0027   08??           00105     MOVFW   VALORADC
+0028   1800           00106     BTFSC FLAGS,0 ; SI ESTA EN CERO SE USAN LOS BITS MENOS SIGNIFICATIVOS SI ESTA EN 1 LO CONTRARIO
+0029   0E??           00107     SWAPF VALORADC,W
+002A   390F           00108     ANDLW B'00001111' ;CONSERVAMOS SOLO EL NIBBLE INFERIOR DEL DATO GUARDADO EN W
+002B   0782           00109     ADDWF   PCL,F
+                      00110     ;   
+002C   3477           00111     RETLW B'01110111'  ; 0  EN EL DISPLAY
+002D   3414           00112     RETLW B'00010100' ;1
+002E   34B3           00113     RETLW B'10110011' ;2
+002F   34B6           00114     RETLW B'10110110';3
+0030   34D4           00115     RETLW B'11010100';4
+0031   34E6           00116     RETLW   B'11100110' ;5
+0032   34E7           00117     RETLW B'11100111' ;6
+0033   3434           00118     RETLW   B'00110100' ;7
+0034   34F7           00119     RETLW   B'11110111';8
+0035   34F6           00120     RETLW   B'11110110';9
+0036   34F5           00121     RETLW   B'11110101';A
+0037   34C7           00122     RETLW   B'11000111';B
+0038   3463           00123     RETLW   B'01100011';C
+0039   3497           00124     RETLW   B'10010111';D
+003A   34E3           00125     RETLW   B'11100011';E
+003B   34E1           00126     RETLW   B'11100001';F
+                      00127 
+003C                  00128 DELAY: ;DELAY 5 uS
+003C   0000           00129     NOP
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+003D   0008           00130     RETURN
+20D4 3FFF             00131     END
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  5
 
 
 SYMBOL TABLE
@@ -433,10 +221,7 @@ ANS8                              00000000
 ANS9                              00000001
 ANSEL                             00000188
 ANSELH                            00000189
-APAGAR_LEDS                       0000001F
-BANDERAS                          00000006
 BAUDCTL                           00000187
-BCD                               00000008
 BCLIE                             00000003
 BCLIF                             00000003
 BF                                00000000
@@ -454,15 +239,15 @@ BRG3                              00000003
 BRG4                              00000004
 BRG5                              00000005
 BRG6                              00000006
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE  9
+BRG7                              00000007
+BRG8                              00000000
+BRG9                              00000001
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-BRG7                              00000007
-BRG8                              00000000
-BRG9                              00000001
 BRGH                              00000002
 C                                 00000000
 C1CH0                             00000000
@@ -513,27 +298,20 @@ CCPR2                             0000001B
 CCPR2H                            0000001C
 CCPR2L                            0000001B
 CHS0                              00000002
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 10
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  7
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-CHS1                              00000003
-CHS2                              00000004
-CHS3                              00000005
 CKE                               00000006
 CKP                               00000004
 CM1CON0                           00000107
 CM2CON0                           00000108
 CM2CON1                           00000109
-CONFIG_INTERRUPT                  00000078
-CONFIG_IO                         0000003E
-CONFIG_TMR0                       00000050
-CONFIG_TMR1                       0000005D
-CONFIG_TMR2                       0000006B
-CONT1                             00000002
-CONT2                             00000003
 CREN                              00000004
 CSRC                              00000007
 D                                 00000005
@@ -543,9 +321,8 @@ DC1B0                             00000004
 DC1B1                             00000005
 DC2B0                             00000004
 DC2B1                             00000005
-DISPLAY                           0000002F
-DISPLAY_0                         00000032
-DISPLAY_1                         00000037
+DELAY                             0000003C
+DISPLAY                           00000001
 D_A                               00000005
 D_NOT_A                           00000005
 ECCPAS                            0000009C
@@ -565,19 +342,10 @@ EEIF                              00000004
 EEPGD                             00000007
 F                                 00000001
 FERR                              00000002
-FIN_DISPLAY                       0000003C
+FLAGS                             00000003
 FSR                               00000004
-FUE_TMR0                          0000000E
-FUE_TMR1                          00000013
-FUE_TMR2                          0000001A
 FVREN                             00000000
 GCEN                              00000007
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 11
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 GIE                               00000007
 GO                                00000001
 GO_DONE                           00000001
@@ -592,6 +360,12 @@ INTCON                            0000000B
 INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 IOCB                              00000096
 IOCB0                             00000000
 IOCB1                             00000001
@@ -605,9 +379,9 @@ IRCF0                             00000004
 IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
-ISR                               00000008
-LEDS                              00000017
-LOOP                              00000006
+ISR_ADC                           00000007
+LOAD                              0000000B
+LOOP                              0000001E
 LTS                               00000001
 MC1OUT                            00000007
 MC2OUT                            00000006
@@ -620,8 +394,6 @@ MSK4                              00000004
 MSK5                              00000005
 MSK6                              00000006
 MSK7                              00000007
-NIBBLE_H                          00000005
-NIBBLE_L                          00000004
 NOT_A                             00000005
 NOT_ADDRESS                       00000005
 NOT_BO                            00000000
@@ -631,12 +403,6 @@ NOT_PD                            00000003
 NOT_POR                           00000001
 NOT_RBPU                          00000007
 NOT_RC8                           00000006
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 12
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 NOT_T1SYNC                        00000002
 NOT_TO                            00000004
 NOT_TX8                           00000006
@@ -653,6 +419,12 @@ P                                 00000004
 P1M0                              00000006
 P1M1                              00000007
 PCL                               00000002
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 PCLATH                            0000000A
 PCON                              0000008E
 PDC0                              00000000
@@ -668,14 +440,12 @@ PIE1                              0000008C
 PIE2                              0000008D
 PIR1                              0000000C
 PIR2                              0000000D
-POP                               0000001E
 PORTA                             00000005
 PORTB                             00000006
 PORTC                             00000007
 PORTD                             00000008
 PORTE                             00000009
 PR2                               00000092
-PRENDER_LEDS                      0000001C
 PRSEN                             00000007
 PS0                               00000000
 PS1                               00000001
@@ -688,14 +458,7 @@ PSSBD1                            00000001
 PSTRCON                           0000009D
 PULSR                             00000002
 PULSS                             00000003
-PUSH                              00000004
 PWM1CON                           0000009B
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 13
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 R                                 00000002
 RA0                               00000000
 RA1                               00000001
@@ -715,6 +478,12 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RC0                               00000000
 RC1                               00000001
 RC2                               00000002
@@ -749,24 +518,18 @@ READ_WRITE                        00000002
 RP0                               00000005
 RP1                               00000006
 RSEN                              00000001
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 14
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RX9                               00000006
 RX9D                              00000000
 R_NOT_W                           00000002
 R_W                               00000002
 S                                 00000003
+SAVE                              00000004
+SAVE_PORTD                        00000002
 SBOREN                            00000004
 SCKP                              00000004
 SCS                               00000000
 SEN                               00000000
 SENDB                             00000003
-SEPARAR_NIBBLE                    00000022
-SIGUIENTE                         0000000F
 SMP                               00000007
 SPBRG                             00000099
 SPBRGH                            0000009A
@@ -774,6 +537,12 @@ SPEN                              00000007
 SR0                               00000006
 SR1                               00000007
 SRCON                             00000185
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 SREN                              00000005
 SSPADD                            00000093
 SSPBUF                            00000013
@@ -791,7 +560,7 @@ SSPOV                             00000006
 SSPSTAT                           00000094
 START                             00000000
 STATUS                            00000003
-STATUS_TEMP                       00000001
+STATUS_RAM                        00000004
 STRA                              00000000
 STRB                              00000001
 STRC                              00000002
@@ -808,12 +577,6 @@ T1CKPS1                           00000005
 T1CON                             00000010
 T1GINV                            00000007
 T1GIV                             00000007
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 15
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 T1GSS                             00000001
 T1INSYNC                          00000002
 T1OSCEN                           00000003
@@ -821,7 +584,7 @@ T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
 T2CON                             00000012
-TABLE                             00000024
+TABLA                             00000027
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
@@ -833,13 +596,16 @@ TMR1IE                            00000000
 TMR1IF                            00000000
 TMR1L                             0000000E
 TMR1ON                            00000000
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TMR2                              00000011
 TMR2IE                            00000001
 TMR2IF                            00000001
 TMR2ON                            00000002
-TOGGLE_B0                         00000029
-TOG_0                             0000002D
-TOG_1                             0000002B
 TOUTPS0                           00000003
 TOUTPS1                           00000004
 TOUTPS2                           00000005
@@ -867,12 +633,6 @@ TRISC0                            00000000
 TRISC1                            00000001
 TRISC2                            00000002
 TRISC3                            00000003
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 16
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TRISC4                            00000004
 TRISC5                            00000005
 TRISC6                            00000006
@@ -895,6 +655,12 @@ TRMT                              00000001
 TUN0                              00000000
 TUN1                              00000001
 TUN2                              00000002
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TUN3                              00000003
 TUN4                              00000004
 TX8_9                             00000006
@@ -910,8 +676,7 @@ UA                                00000001
 ULPWUE                            00000005
 ULPWUIE                           00000002
 ULPWUIF                           00000002
-VAR_DISPLAY                       00000007
-VAR_REVTEMP                       00000009
+VALORADC                          00000000
 VCFG0                             00000004
 VCFG1                             00000005
 VR0                               00000000
@@ -926,12 +691,6 @@ VRSS                              00000004
 W                                 00000000
 WCOL                              00000007
 WDTCON                            00000105
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 17
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 WDTPS0                            00000001
 WDTPS1                            00000002
 WDTPS2                            00000003
@@ -949,12 +708,18 @@ WR                                00000001
 WREN                              00000002
 WRERR                             00000003
 WUE                               00000001
-W_TEMP                            00000000
+W_RAM                             00000005
 Z                                 00000002
 _BOR21V                           00003EFF
 _BOR40V                           00003FFF
 _BOR4V_BOR21V                     00003EFF
 _BOR4V_BOR40V                     00003FFF
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _BOREN_NSLEEP                     00003EFF
 _BOREN_OFF                        00003CFF
 _BOREN_ON                         00003FFF
@@ -985,12 +750,6 @@ _FOSC_EXTRC_NOCLKOUT              00003FFE
 _FOSC_HS                          00003FFA
 _FOSC_INTRC_CLKOUT                00003FFD
 _FOSC_INTRC_NOCLKOUT              00003FFC
-MPASM 5.84              NEWPIC_8B_SIMPLE.ASM   9-3-2020  23:20:43         PAGE 18
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _FOSC_LP                          00003FF8
 _FOSC_XT                          00003FF9
 _HS_OSC                           00003FFA
@@ -1007,7 +766,6 @@ _INTRC_OSC_NOCLKOUT               00003FFC
 _LP_OSC                           00003FF8
 _LVP_OFF                          00002FFF
 _LVP_ON                           00003FFF
-_MAIN_PROG_0016                   00000016
 _MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
@@ -1015,6 +773,12 @@ _PWRTE_ON                         00003FEF
 _WDTE_OFF                         00003FF7
 _WDTE_ON                          00003FFF
 _WDT_OFF                          00003FF7
+MPASM 5.84                          MAIN.ASM   9-30-2020  20:54:05         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _WDT_ON                           00003FFF
 _WRT_1FOURTH                      00003BFF
 _WRT_256                          00003DFF
@@ -1024,7 +788,7 @@ _XT_OSC                           00003FF9
 __16F887                          00000001
 
 Errors   :     0
-Warnings :    12 reported,     0 suppressed
-Messages :    15 reported,     0 suppressed
+Warnings :     9 reported,     0 suppressed
+Messages :    10 reported,     0 suppressed
 
 
