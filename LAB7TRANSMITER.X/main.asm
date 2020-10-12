@@ -10,10 +10,10 @@
 
 VARIABLES UDATA
     VALOR   RES 1
-   W_RAM    RES 1
+    W_RAM    RES 1
     STATUS_RAM RES 1
     DELAY RES 1
-RES_VECT  CODE    0x0000            ; processor reset vector
+    RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
 
 
