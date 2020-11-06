@@ -1,0 +1,57 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Tue Nov 03 14:28:39 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                 RES_VECT       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                    INTER       code   0x000004    program   0x00002e
+                MAIN_PROG       code   0x00001b    program   0x00003a
+.config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
+.config_2008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002008    program   0x000002
+                VARIABLES      udata   0x000020       data   0x000004
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000037      
+                            0x002007    0x002008      
+            57 out of 8455 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     ES_0   0x00000e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     LOAD   0x000011    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     LOOP   0x000033    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                    START   0x00001b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                   ADC_C0   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                   ADC_C1   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+               STATUS_RAM   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                    W_RAM   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     SAVE   0x000004    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                      ISR   0x000007    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     ES_0   0x00000e    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     LOAD   0x000011    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                    START   0x00001b    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                     LOOP   0x000033    program     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                   ADC_C1   0x000020       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                   ADC_C0   0x000021       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+                    W_RAM   0x000022       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+               STATUS_RAM   0x000023       data     static C:\Users\AngelOrellana\OneDrive\Escritorio\uvg\4toSemestre\PrograDeMicros\Programas_ensamblador\Lab8.X\main.asm
+
+
