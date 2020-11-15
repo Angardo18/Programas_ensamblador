@@ -8,16 +8,17 @@
 ; __config 0xFFFF
  __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
  
-
-RES_VECT  CODE    0x0000            ; processor reset vector
-    GOTO    START                   ; go to beginning of program
-
- 
 VARIABLES UDATA	
     ADC_C1  RES 1
     ADC_C0 RES 1
     W_RAM RES 1
     STATUS_RAM RES 1
+ 
+RES_VECT  CODE    0x0000            ; processor reset vector
+    GOTO    START                   ; go to beginning of program
+
+ 
+
 ; TODO ADD INTERRUPTS HERE IF USED
 INTER CODE 0x0004
 SAVE:
@@ -92,6 +93,9 @@ START
     MOVWF   CCP2CON
     
     BSF	ADCON0,1 ;INICIA LA CONVERSON
+    
+    
+    
     
 LOOP:
     
